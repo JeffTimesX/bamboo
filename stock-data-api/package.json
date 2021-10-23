@@ -1,0 +1,47 @@
+{
+    "name": "stock-data-api",
+    "version": "1.0.0",
+    "description": "stock-data-api is the ultimate backend solution",
+    "main": "src/server.js",
+    "scripts": {
+        "setup": "npm install && npm update",
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js"
+    },
+    "keywords": [
+        "express",
+        "backend",
+        "stock-data-api"
+    ],
+    "license": "UNLICENSED",
+    "dependencies": {
+        "async": "^1.5.2",
+        "axios": "^0.23.0",
+        "cookie-parser": "^1.4.4",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-custom-error": "^1.8.4",
+        "express-jwt": "^6.1.0",
+        "has-keys": "^0.1.0",
+        "helmet": "^3.21.2",
+        "http-status": "^1.3.2",
+        "jwks-rsa": "^2.0.5",
+        "luxon": "^2.0.2",
+        "module-alias": "^2.2.2",
+        "mongodb": "^3.3.3",
+        "mongoose": "^6.0.11",
+        "morgan": "^1.9.1",
+        "rotating-file-stream": "^1.4.6"
+    },
+    "_moduleAliases": {
+        "@root": "src",
+        "@controllers": "src/controllers",
+        "@models": "src/models",
+        "@util": "src/util",
+        "@routes": "src/routes"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.14"
+    }
+}
