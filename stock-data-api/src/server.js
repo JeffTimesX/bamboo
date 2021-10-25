@@ -74,5 +74,5 @@ app.use('*', (req, res) => {
 // Open Server on selected Port
 app.listen(
     PORT,
-    () => console.info('Server listening on port ', PORT)
+    () => console.info('Stock API Server listening on port ', PORT)
 );

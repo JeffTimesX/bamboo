@@ -11,16 +11,16 @@ GET https://api.polygon.io/v3/reference/tickers?apiKey=z0WumBiwbxcFPEDsiqcqA8XsP
 GET http://localhost:6061/ticker/init
 
 ### get ticker by name, support fuzzy search
-GET http://localhost:6061/ticker/name/international%20business
+GET http://localhost:6061/ticker/name/general%20motor
 
-### get ticker by symbol, support fuzzy search
+### get ticker by symbol, exactly matched, case-insensitive.
 GET http://localhost:6061/ticker/symbol/aa
 
 ### get ticker by id, return the exactly matched.
 GET http://localhost:6061/ticker/id/6170d9d8913511aa4af87fb9
 
 ### get ticker by multi-factors query string, support fuzzy search
-GET http://localhost:6061/ticker/search?ticker=aa&primary_exchange=xnys
+GET http://localhost:6061/ticker/search?ticker=f&primary_exchange=xnys
 
 
 
@@ -45,11 +45,11 @@ GET http://localhost:6061/ticker/aggs/APPL/minute/1/2020-10-10/2020-10-14
 
 
 ### sync aggregates from alphaVantages.co
-GET http://localhost:6061/aggregates/sync/AAA
+GET http://localhost:6061/aggregates/sync/F
 
 
 ### get aggregate locally 
-GET http://localhost:6061/aggregates/aggregate/IBM/60min
+GET http://localhost:6061/aggregate/aa/15min
 
 
 ### daily

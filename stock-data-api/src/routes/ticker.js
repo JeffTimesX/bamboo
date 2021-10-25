@@ -14,13 +14,9 @@ router.get('/search', tickerController.searchTickers);
 
 router.get('/name/:name', tickerController.getTickersByName);
 
-router.get('/symbol/:symbol', tickerController.getTickersBySymbol);
+router.get('/symbol/:symbol', tickerController.getTickerBySymbol);
 
 router.get('/id/:id', tickerController.getTickerById);
 
-router.get('/aggs/:name/:unit/:multi/:start/:end', tickerController.testRoute);
-// router.put('/:filter',  tickerController.updateTicker);
-
-// router.delete('/:filter', tickerController.deleteTicker);
 
 module.exports = router;

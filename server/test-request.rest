@@ -1,0 +1,107 @@
+
+
+### GET user/profile/:sub endpoint for getProfile()
+GET http://localhost:5050/user/profile/auth0|616a4aaacac37f00684a95d5
+
+
+### POST user/profile/:sub for updateProfile()
+POST http://localhost:5050/user/profile/auth0|616a4aaacac37f00684a95d5
+Content-Type: application/json
+
+{
+  "profile":{
+    "auth": {
+      "nickname": "eight",
+      "name": "eight@three.com",
+      "email": "three@three.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email_verified": false,
+      "sub": "auth0|616a4aaacac37f00684a95d5"
+    },
+    "ext": {
+      "first_name": "three",
+      "last_name": "EFG",
+      "gender": "female",
+      "date_of_birth": "2020-11-01",
+      "occupation": "none"
+    }
+  },
+  "portfolio": [
+    "TSLA",
+    "AAPL"
+  ],
+  "posts": ["good","better","best"]
+
+}
+
+
+### GET /user/portfolio/:sub for getPortfolio()
+GET http://localhost:5050/user/portfolio/auth0|616a4aaacac37f00684a95d5
+
+### POST /user/portfolio/:sub for updatePortfolio()
+POST http://localhost:5050/user/portfolio/auth0|616a4aaacac37f00684a95d5
+Content-Type: application/json
+
+{
+  "portfolio": [
+  "F",
+  "GM",
+  "T",
+  "FF",
+  "AAA",
+  "A"
+  ]
+}
+
+
+### GET /user/watches/:sub for getgetWatches()
+GET http://localhost:5050/user/watches/auth0|616a4aaacac37f00684a95d5
+
+
+### POST /user/watches/:sub for updateWatches()
+POST http://localhost:5050/user/watches/auth0|616a4aaacac37f00684a95d5
+Content-Type: application/json
+
+{
+  "watches": [
+  "F",
+  "GM",
+  "FF",
+  "BB",
+  "TMUS"
+  ]
+}
+
+### deleteUserById()
+DELETE http://localhost:5050/user/user/6175c9ccb34193cab03b2599
+
+### GET /user/posts/:id for getPosts() with posts populated
+GET http://localhost:5050/user/posts/6175ca28e3d3030939d300b0
+
+### getUserById()
+GET http://localhost:5050/user/user/6175ca28e3d3030939d300b1
+
+
+
+
+### POST /post/:userId for createPost()
+POST http://localhost:5050/post/6175ca28e3d3030939d300b0
+Content-Type: application/json
+
+{ "post":
+  {
+    "title": "good evening.",
+    "body" : "I want a good sleep."
+  }
+}
+
+### DELETE /post/:id deletePost()
+DELETE  http://localhost:5050/post/61760a0a8232207179dabda7
+
+
+### GET /post/user/:id for getPostsByUserId()
+GET http://localhost:5050/post/user/6175ca28e3d3030939d300b0 
+
+### GET /post/title/:title for getPostsByTitle()
+GET http://localhost:5050/post/title/HeLLo

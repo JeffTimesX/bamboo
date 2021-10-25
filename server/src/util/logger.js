@@ -10,11 +10,10 @@ const logDirectory = path.resolve(__dirname, '../../log');
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
 
 // create a rotating write stream
-const accessLogStream = rfs('access.log', {
+const accessLogStream = rfs.createStream('access.log', {
     interval: '1d',
     path: logDirectory
 })
-
 
 module.exports = {
     dev: morgan('dev'),

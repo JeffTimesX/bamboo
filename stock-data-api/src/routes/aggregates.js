@@ -10,7 +10,7 @@ const { hasScope } = require('../auth/has-scope')
 
 router.get('/sync/:symbol', aggregatesController.syncAggregates );
 
-router.get('/aggregate/:symbol/:interval', aggregatesController.getAggregateBySymbolAndInterval);
+router.get('/:symbol/:interval', aggregatesController.getAggregateBySymbolAndInterval);
 
 
 

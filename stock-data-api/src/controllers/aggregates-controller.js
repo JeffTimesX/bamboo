@@ -25,32 +25,30 @@ const interval = {
 }
 
 /**
- * synchronize the 5min interval Intraday aggregates
- * and daily history aggregates to local database.
- * `https://www.alphavantage.co/query?function=${TIME_SERIES_DAILY/TIME_SERIES_INTRADAY}&symbol=${symbol}&apikey=${HISHIS8F8CUE8LR8N9N}&interval=${1min/5min/15min/30min/60min}&outputsize=${compact/full}`
- */
-const sourcingAggregates = async function (req, res, next) {
+ * sourcingAggregates() fetch all the available aggregates corresponding to 
+ * the given symbol(5min, 15min, 30min, 60min, daily), and save them to local
+ * database with transferred data model.
+ **/
+async function sourcingAggregates(req, res, next) {
   
-  let dailyResult = null
-  let intradayResult = null
   const { symbol } = req.params
 
+  // endpoint call function for daily aggregate
   function fetchDailyAggregate(symbol) {
     const url = `${aggregatesEndpoint}apikey=${apiKey}&function=${sourceFunc.daily}&symbol=${symbol}&outputsize=${outputSize}`
     return axios.get(url)
   }
-
+  // endpoint call function for intraday aggregate
   async function fetchIntradayAggregate(symbol, int) {
     const url = `${aggregatesEndpoint}apikey=${apiKey}&function=${sourceFunc.intraday}&symbol=${symbol}&outputsize=${outputSize}&interval=${int}`
     return axios.get(url)
   }
   
   /**
-   * 
-   * @param {*} symbol the ticker symbol.
-   * @param {*} intervalArg the interval parameter, intervals in the enum allowed.
-   * @returns { aggregate }
-   */
+   * @param {String} symbol the ticker symbol.
+   * @param {String} intervalArg the interval parameter, intervals in the enum allowed.
+   * @returns {Aggregate}
+   **/
   async function fetchAggregate(symbol, intervalArg){  
     if(!symbol || !intervalArg) return next(new Error('symbol or interval params missing.')) 
     if(intervalArg === interval.daily){
@@ -61,10 +59,9 @@ const sourcingAggregates = async function (req, res, next) {
   }
 
   /**
-   * 
-   * @param {*} key the original name if time series property
-   * @returns the transferred name
-   */
+   * @param {String} key the original name if time series property
+   * @returns the transferred key
+   **/
   function transTimeSeriesKeyName(key){
     return 'ts_' + key.split(' ')[2].slice(1,-1).toLowerCase()
   }
@@ -73,7 +70,10 @@ const sourcingAggregates = async function (req, res, next) {
     return key.toLowerCase().split(' ').join('_')
   }
   
-    // trans data model. 
+/**
+   * @param {Aggregate} aggregate the original aggregate which the key names needs to be transferred.
+   * @returns the aggregate with property keys transferred 
+   **/
 function transferAggregateKeyName(aggregate){
   const transArray = Object.keys(aggregate).map((key) => {
     let transferredKey = null
@@ -94,6 +94,10 @@ function transferAggregateKeyName(aggregate){
   return transferredAggregate
 }
 
+/**
+   * @param {subDocument} subDocument the original subDocument the key names need to be transferred.
+   * @returns the aggregate with property keys transferred 
+   **/
 function transferSubDocumentKeyName( subDocument ) {
   const transArray = Object.keys(subDocument).map( key => {
     const transferredKey = key.slice(3).toLowerCase().split(' ').join('_')
@@ -106,10 +110,9 @@ function transferSubDocumentKeyName( subDocument ) {
   return transferredSubDocument
 }
 /**
- * 
  * @param {*} aggregate 
  * @returns { metaKeysTransferred, tsArrayTransferred }
- */
+ **/
 function formatAggregate(aggregate) {
   let tsKey = null
   // first level keys' name transferred
@@ -150,10 +153,10 @@ function formatAggregate(aggregate) {
 }
 
   /**
-   * save
+   * saveAggregate()
    * @param {*} aggregate 
    * @returns aggregate.meta_data if saved
-   */
+   **/
    async function saveAggregate(aggregate) {
     if(aggregate['meta_data'].information.includes('Daily')){
       tsKey = 'ts_daily'
@@ -166,7 +169,6 @@ function formatAggregate(aggregate) {
     }else if (aggregate['meta_data'].information.includes('(60min)')) {
       tsKey = 'ts_60min'
     }
-    
     const meta = aggregate['meta_data']
     const ticks = aggregate[tsKey]
     // creating sub-document array of ts.
@@ -235,29 +237,52 @@ const syncAggregates = [
   }
 ]
 
-/**
- * getAggregateBySymbolAndInterval() takes the req.params and 
- * return the matched aggregate.
- */
 
 
 const getAggregateBySymbolAndIntervalLocally = function (req, res, next) {
 
   const { symbol, interval } = req.params
   console.log(symbol, interval)
-  // if find() document meta matches the given 'symbol' and 'interval',  res.json() it.
-  // otherwise, souringAggregates(symbol) and try again 
+  
   Aggregate
-    .find({'meta.symbol':'IBM'})
+    .find({
+      'meta.symbol':symbol,
+      'meta.interval':interval,
+    })
     .exec(function (err, aggregates) {
       if(err) return next(err)
-      console.log(aggregates[0])
-      res.json(aggregates[0])
+      // console.log('what is it: ', typeof aggregates[0])
+      if(aggregates[0]){
+        console.log(`Ticker:'${symbol}' with '${interval}' interval found, ${aggregates[0].ts.length} ts records returned.`)
+        return res.json({ 
+          status: 'OK',
+          symbol: symbol, 
+          interval: interval,
+          ts_records: aggregates[0].ts.length,
+          aggregate: aggregates[0]
+        })
+      }
+      return next()
+      
     })
 }
-
+/**
+ * getAggregateBySymbolAndInterval
+ * starting from call getAggregateBySymbolAndInterval(),  
+ * if any local document meta matches the given 'symbol' 
+ * and 'interval',  getAggregateBySymbolAndInterval() 
+ * return res.json(result) to end up the lifecycle of 
+ * current request, otherwise, it return next() to forward 
+ * the request to souringAggregates() to fetch data from 
+ * alpha vantage, then forwards the request to 
+ * getAggregateBySymbolAndIntervalLocally() again.
+ */
+ 
 const getAggregateBySymbolAndInterval = [
+  getAggregateBySymbolAndIntervalLocally, 
+  sourcingAggregates,
   getAggregateBySymbolAndIntervalLocally
+
 ]
 
 module.exports = {

@@ -51,14 +51,15 @@ const apiKey = process.env.POLYGON_API_KEY
     })
 }
 /**
- * getTickerBySymbol() returns an array of tickers which the symbol of each
- * ticker contains the given searching symbol.
+ * getTickerBySymbol() returns the profile of the ticker 
+ * exactly matches the given searching symbol, case-insensitive.
  */
-  const getTickersBySymbol = function (req, res, next) {
+  const getTickerBySymbol = function (req, res, next) {
   const ticker = req.params.symbol
+  const re = new RegExp( `^${ticker}$`, 'i')
   Ticker
     .find({ 
-      "ticker": {"$regex": ticker, "$options": "i"}
+      "ticker": {"$in": re }
     })
     .exec(function (err, tickers) {
       if(err) return next(err)
@@ -66,7 +67,7 @@ const apiKey = process.env.POLYGON_API_KEY
     })
 }
 /**
- * getTickerByName returns an array of tickers which the name of each
+ * getTickersByName returns an array of tickers which the name of each
  * ticker contains the given searching name.
  */
 const getTickersByName = async function (req, res, next) {
@@ -175,7 +176,7 @@ module.exports = {
   initTickers,
   searchTickers,
   getTickersByName,
-  getTickersBySymbol,
+  getTickerBySymbol,
   getTickerById,
   testRoute
   // updateTicker,
