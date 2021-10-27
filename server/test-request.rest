@@ -5,36 +5,89 @@ GET http://localhost:5050/user/profile/auth0|616a4aaacac37f00684a95d5
 
 
 ### POST user/profile/:sub for updateProfile()
-POST http://localhost:5050/user/profile/auth0|616a4aaacac37f00684a95d5
+POST http://localhost:5050/user/profile/auth0|636a4aaacac37f00684a95d5
 Content-Type: application/json
 
 {
-  "profile":{
+  "_id": {
+    "$oid": "6175ca28e3d3030939d300b0"
+  },
+  "profile": {
     "auth": {
-      "nickname": "eight",
-      "name": "eight@three.com",
-      "email": "three@three.com",
+      "nickname": "Henry",
+      "name": "eleven@eleven.com",
       "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
       "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "eleven@eleven.com",
       "email_verified": false,
-      "sub": "auth0|616a4aaacac37f00684a95d5"
+      "sub": "auth0|636a4aaacac37f00684a95d5"
     },
     "ext": {
-      "first_name": "three",
-      "last_name": "EFG",
+      "first_name": "Seven",
+      "last_name": "Eleven",
       "gender": "female",
-      "date_of_birth": "2020-11-01",
-      "occupation": "none"
+      "date_of_birth": "",
+      "occupation": "student"
     }
   },
   "portfolio": [
-    "TSLA",
-    "AAPL"
+    
   ],
-  "posts": ["good","better","best"]
-
+  "watches": [
+    {
+      "ticker": "F",
+      "inventory": 100,
+      "_id": {
+        "$oid": "61789fbf99cac0e414d42b83"
+      }
+    },
+    {
+      "ticker": "GM",
+      "inventory": 200,
+      "_id": {
+        "$oid": "61789fbf99cac0e414d42b84"
+      }
+    },
+    {
+      "ticker": "T",
+      "inventory": 2000,
+      "_id": {
+        "$oid": "61789fbf99cac0e414d42b85"
+      }
+    },
+    {
+      "ticker": "FF",
+      "inventory": 1200,
+      "_id": {
+        "$oid": "61789fbf99cac0e414d42b86"
+      }
+    },
+    {
+      "ticker": "AA",
+      "inventory": 1200,
+      "_id": {
+        "$oid": "61789fbf99cac0e414d42b87"
+      }
+    }
+  ],
+  "posts": [
+    {
+      "$oid": "617613b010e03462d645c22c"
+    },
+    {
+      "$oid": "6176140fae1079b923e4c9ff"
+    },
+    {
+      "$oid": "617628d71bbf878028515733"
+    },
+    {
+      "$oid": "617629171bbf878028515736"
+    }
+  ],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": []
 }
-
 
 ### GET /user/portfolio/:sub for getPortfolio()
 GET http://localhost:5050/user/portfolio/auth0|616a4aaacac37f00684a95d5
@@ -45,31 +98,30 @@ Content-Type: application/json
 
 {
   "portfolio": [
-  "F",
-  "GM",
-  "T",
-  "FF",
-  "AAA",
-  "A"
+  { "ticker": "F", "inventory": 100}, 
+  { "ticker": "GM", "inventory": 200},
+  { "ticker": "T", "inventory": 2000 },
+  { "ticker": "FF", "inventory": 1200 },
+  { "ticker": "AA", "inventory": 1200 }
   ]
 }
 
 
 ### GET /user/watches/:sub for getgetWatches()
-GET http://localhost:5050/user/watches/auth0|616a4aaacac37f00684a95d5
+GET http://localhost:5050/user/watches/auth0|626a4aaacac37f00684a95d5
 
 
 ### POST /user/watches/:sub for updateWatches()
-POST http://localhost:5050/user/watches/auth0|616a4aaacac37f00684a95d5
+POST http://localhost:5050/user/watches/auth0|626a4aaacac37f00684a95d5
 Content-Type: application/json
 
 {
   "watches": [
-  "F",
-  "GM",
-  "FF",
-  "BB",
-  "TMUS"
+  { "ticker": "F", "inventory": 100}, 
+  { "ticker": "GM", "inventory": 200},
+  { "ticker": "T", "inventory": 2000 },
+  { "ticker": "FF", "inventory": 1200 },
+  { "ticker": "AA", "inventory": 1200 }
   ]
 }
 

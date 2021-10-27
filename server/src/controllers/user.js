@@ -5,7 +5,12 @@ const axios = require('axios')
 const User = require('../models/user')
 const Post = require('../models/post')
 
+// getProfile()
 const getProfile = async function (req, res, next) {
+  
+  if(!req.params || !req.params.sub){
+    return res.json({message: "invalid input format."})
+  } 
   
   const { sub } = req.params
   console.log("query user\'s sub: ", sub)
@@ -26,24 +31,50 @@ const getProfile = async function (req, res, next) {
 
 // updateProfile()
 const updateProfile = async function (req, res, next) {
+  
+  if(!req.params || !req.params.sub || 
+    !req.body  || !req.body.profile || 
+    !req.body.profile.auth){
+      return res.json({message: "invalid input format."})
+  } 
+
   const { sub } = req.params
   const { profile } = req.body
   if(sub !== profile.auth.sub) return next(new Error({message:'update different sub not allowed.'}))
-  console.log('profile: ', profile)
-  User
-  .findOneAndUpdate(
-    { "profile.auth.sub": profile.auth.sub },
-    { "$set": { "profile": profile }},
-    { "upsert": true }
-  )
-  .exec(function (err, user){
-    if(err) return next(err)
-    return res.json(user.profile)
-    })
-}
+  
+  // extending profile exists, updates all profile.
+  if(profile.ext) {
+    User
+      .findOneAndUpdate(
+        { "profile.auth.sub": profile.auth.sub },
+        { "$set": { "profile": profile }},
+        { "upsert": true, new: true }
 
+      ).exec(function(err, user){
+        if(err) return next(err)
+        console.log('returned profile: ', user.profile)
+        return res.json(user.profile)
+      })
+  }else{  // otherwise updates profile.auth part only.
+    User
+      .findOneAndUpdate(
+        { "profile.auth.sub": profile.auth.sub },
+        { "$set": { "profile.auth": profile.auth }},
+        { "upsert": true, new: true }
+      )
+      .exec(function (err, user){
+        if(err) return next(err)
+        console.log('returned profile: ', user.profile)
+        return res.json(user.profile)
+      })
+  }
+}
 // getPortfolio()
 const getPortfolio = async function (req, res, next) {
+
+  if(!req.params || !req.params.sub){
+  return res.json({message: "invalid input format."})
+  } 
   const { sub } = req.params
   console.log("query user\'s sub: ", sub)
   User
@@ -59,10 +90,19 @@ const getPortfolio = async function (req, res, next) {
       console.log('returned user\'s portfolio: ', user.portfolio)
       return res.json(user.portfolio)
     })
-}
+
+  }
+
+  
 
 // updatePortfolio()
 function updatePortfolio(req, res, next){
+
+  if(!req.params || !req.params.sub || 
+      !req.body  || !req.body.portfolio){
+        return res.json({message: "invalid input format."})
+  } 
+    
   const { sub } = req.params
   const { portfolio } = req.body
   console.log("sub: ", sub, )
@@ -71,7 +111,7 @@ function updatePortfolio(req, res, next){
     .findOneAndUpdate(
       { "profile.auth.sub": sub },
       { "$set": { "portfolio": portfolio }},
-      { upsert: true }
+      { upsert: true, new: true }
     )
     .exec(function (err, user){
       if(err) return next(err)
@@ -80,6 +120,9 @@ function updatePortfolio(req, res, next){
 }
 // getWatches()
 const getWatches = async function (req, res, next) {
+  if(!req.params || !req.params.sub){
+    return res.json({message: "invalid input format."})
+  } 
   const { sub } = req.params
   console.log("query user\'s sub: ", sub)
   User
@@ -98,6 +141,10 @@ const getWatches = async function (req, res, next) {
 }
 
 function updateWatches(req, res, next){
+  if(!req.params || !req.params.sub || 
+    !req.body  || !req.body.watches){
+    return res.json({message: "invalid input format."})
+  } 
   const { sub } = req.params
   const { watches } = req.body
   console.log("sub: ", sub, )
@@ -106,7 +153,7 @@ function updateWatches(req, res, next){
     .findOneAndUpdate(
       { "profile.auth.sub": sub },
       { "$set": { "watches": watches }},
-      { upsert: true }
+      { upsert: true , new: true }
     )
     .exec(function (err, user){
       if(err) return next(err)
@@ -115,6 +162,10 @@ function updateWatches(req, res, next){
 }
 
 const getPosts = function (req, res, next) {
+
+  if(!req.params || !req.params.userId){
+    return res.json({message: "invalid input format."})
+  } 
   const { userId } = req.params
   User
     .findById(userId)
@@ -126,6 +177,9 @@ const getPosts = function (req, res, next) {
 }
 
 const deleteUserById = function (req, res, next){
+  if(!req.params || !req.params.id){
+    return res.json({message: "invalid input format."})
+  } 
   const { id } = req.params
   User
     .findByIdAndDelete(id)
@@ -136,6 +190,9 @@ const deleteUserById = function (req, res, next){
 }
 
 const getUserById= function (req, res, next) {
+  if(!req.params || !req.params.id){
+    return res.json({message: "invalid input format."})
+  } 
   const { id } = req.params
   User
     .findById(id)

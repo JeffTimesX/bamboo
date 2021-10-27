@@ -20,8 +20,10 @@ const userSchema = new Schema({
       occupation: String
     }
   },
-  portfolio: [ String ],
-  watches: [ String ],
+
+  // the data model of portfolio and watches should be changed to [{ ticker: String, inventory: Number }] 
+  portfolio: [{ ticker: String, inventory: Number }],
+  watches: [{ ticker: String, inventory: Number }],
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   follows: [{ type:Schema.Types.ObjectId, ref: 'User'}],
   paymentAccounts: [{ type:Schema.Types.ObjectId,ref: 'PaymentAccount'}],

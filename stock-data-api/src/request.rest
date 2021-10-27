@@ -14,7 +14,7 @@ GET http://localhost:6061/ticker/init
 GET http://localhost:6061/ticker/name/general%20motor
 
 ### get ticker by symbol, exactly matched, case-insensitive.
-GET http://localhost:6061/ticker/symbol/aa
+GET http://localhost:6061/ticker/symbol/tsla
 
 ### get ticker by id, return the exactly matched.
 GET http://localhost:6061/ticker/id/6170d9d8913511aa4af87fb9
@@ -49,7 +49,7 @@ GET http://localhost:6061/aggregates/sync/F
 
 
 ### get aggregate locally 
-GET http://localhost:6061/aggregate/aa/15min
+GET http://localhost:6061/aggregate/tsla/15min
 
 
 ### daily
