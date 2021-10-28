@@ -19,7 +19,9 @@ export default function App() {
             <Route path="/profile">
               <Profile user={userData} />
             </Route>
-            <Route path="/ticker-detail" component= {TickerDetail} />
+            <Route path="/ticker-detail">
+              <TickerDetail tickerSymbol='GM' />
+            </Route>
           </Switch>
         </div>
       </Container>

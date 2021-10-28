@@ -157,7 +157,7 @@ function formatAggregate(aggregate) {
    * @param {*} aggregate 
    * @returns aggregate.meta_data if saved
    **/
-   async function saveAggregate(aggregate) {
+  async function saveAggregate(aggregate) {
     if(aggregate['meta_data'].information.includes('Daily')){
       tsKey = 'ts_daily'
     } else if (aggregate['meta_data'].information.includes('(5min)')) {
@@ -206,7 +206,7 @@ function formatAggregate(aggregate) {
     ])
     
 
-    // map the results fran an of aggregates to an array
+    // map the results from an of aggregates to an array
     // of promises, then pass the array to Promise.all() 
     // to resolve the aggregate.save()
     const saveAggregatePromises = fetchAggregatesResults.map((result) =>{
@@ -229,6 +229,8 @@ function formatAggregate(aggregate) {
   }
 }
 
+// because sourcingAggregates does not end up the processing
+// add one more middleware to terminate the processing.
 const syncAggregates = [
   sourcingAggregates,
   (req, res, next) =>{
@@ -236,7 +238,6 @@ const syncAggregates = [
     return next(new Error({message: 'get aggregates failed.'}))
   }
 ]
-
 
 
 const getAggregateBySymbolAndIntervalLocally = function (req, res, next) {

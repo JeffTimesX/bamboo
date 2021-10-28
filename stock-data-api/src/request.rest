@@ -45,11 +45,11 @@ GET http://localhost:6061/ticker/aggs/APPL/minute/1/2020-10-10/2020-10-14
 
 
 ### sync aggregates from alphaVantages.co
-GET http://localhost:6061/aggregates/sync/F
+GET http://localhost:6061/aggregate/sync/F
 
 
-### get aggregate locally 
-GET http://localhost:6061/aggregate/tsla/15min
+### get aggregate by symbol and interval locally 
+GET http://localhost:6061/aggregate/GM/daily
 
 
 ### daily
