@@ -3,6 +3,8 @@ const { token } = require('morgan')
 const { FAILED_DEPENDENCY } = require('http-status')
 
 const axios = require('axios')
+const {DateTime} = require('luxon')
+
 const { Aggregate, Tick, Meta } = require('../models/aggregates')
 
 // configurations for accessing alphaVantage.co aggregates source.
@@ -30,8 +32,6 @@ const interval = {
  * database with transferred data model.
  **/
 async function sourcingAggregates(req, res, next) {
-  
-  const { symbol } = req.params
 
   // endpoint call function for daily aggregate
   function fetchDailyAggregate(symbol) {
@@ -99,6 +99,9 @@ function transferAggregateKeyName(aggregate){
    * @returns the aggregate with property keys transferred 
    **/
 function transferSubDocumentKeyName( subDocument ) {
+  
+  // console.log('input subDocument:' + subDocument )
+  
   const transArray = Object.keys(subDocument).map( key => {
     const transferredKey = key.slice(3).toLowerCase().split(' ').join('_')
     return { [transferredKey] : subDocument[key] }
@@ -114,6 +117,9 @@ function transferSubDocumentKeyName( subDocument ) {
  * @returns { metaKeysTransferred, tsArrayTransferred }
  **/
 function formatAggregate(aggregate) {
+
+  // console.log('formatAggregate() input aggregate:' + aggregate)
+
   let tsKey = null
   // first level keys' name transferred
   const firstLevelKeysTransferred = transferAggregateKeyName( aggregate )
@@ -135,11 +141,12 @@ function formatAggregate(aggregate) {
     tsKey = 'ts_60min'
   }
   // transferring time series object to an array of tick documents.
+  // formatting the timestamp to ISO formation. '2021-10-22T20:00:00'
   const originalTs = firstLevelKeysTransferred[tsKey]
   const tsArrayTransferred = Object.keys(originalTs).map( key => {
     return (
       { 
-        timestamp: key, 
+        timestamp: key.replace(' ', 'T'), 
         ...transferSubDocumentKeyName( originalTs[key] ) 
       }
     )
@@ -169,6 +176,8 @@ function formatAggregate(aggregate) {
     }else if (aggregate['meta_data'].information.includes('(60min)')) {
       tsKey = 'ts_60min'
     }
+
+    
     const meta = aggregate['meta_data']
     const ticks = aggregate[tsKey]
     // creating sub-document array of ts.
@@ -182,8 +191,8 @@ function formatAggregate(aggregate) {
       meta: metaSubDoc,
       ts: tickSubDocArray
     } )
-    console.log("To save timesSeries[0]: ", tickSubDocArray[0])
-    console.log("To save meta: ", metaSubDoc)
+    // console.log("To save timesSeries[0]: ", tickSubDocArray[0])
+    // console.log("To save meta: ", metaSubDoc)
     
     // saving the document.
     return aggregateDoc.save()
@@ -191,8 +200,11 @@ function formatAggregate(aggregate) {
 
   //====================================================================//
 
+  let { symbol } = req.params
+    
   // take and check the ticker symbol from req.params
   !symbol && res.json({ message: 'input symbol is missing.'})
+  symbol = symbol.toUpperCase()
 
   // fetch an aggregates from intraday access point or daily access point 
   // from alphaVantage endpoint according to the setting of 'interval'
@@ -205,14 +217,26 @@ function formatAggregate(aggregate) {
       fetchAggregate(symbol, interval.fiveMinutes)
     ])
     
+    
 
-    // map the results from an of aggregates to an array
+    // map the results from an aggregate to an array
     // of promises, then pass the array to Promise.all() 
     // to resolve the aggregate.save()
     const saveAggregatePromises = fetchAggregatesResults.map((result) =>{
       const aggregate = result.data
+      
+      // if the frontend requests come into fast than 5 per minutes,
+      // the fetches failed because exceeds the maximum limit.
+      if(aggregate.Note){
+        return new Promise((resolve,reject)=>{
+          resolve(({
+            meta:"exceed the 5 calls per minute limit.",
+            ts:[]
+          }))
+        })
+      }
       const formatted = formatAggregate(aggregate)
-      console.log("formatted aggregate meta : ", formatted.meta_data )
+      // console.log("formatted aggregate meta : ", formatted.meta_data )
       return saveAggregate(formatted)
     })
 
@@ -220,12 +244,12 @@ function formatAggregate(aggregate) {
     status.forEach(state=>{
       console.log(`${state.ts.length} ticks data saved with meta: `, state.meta)
     })
-    req.fetchSource = { message: `${status.length} aggregates saved.`}
+    req.fetchSource = { message: `syncAggregates() called, ${status.length} aggregates saved.`}
     return next()
 
   } catch (err) {
     console.log(err)
-    next(new Error({message: 'get aggregates failed.'}))
+    next(new Error({ message: 'get aggregates failed.' }))
   }
 }
 
@@ -242,8 +266,12 @@ const syncAggregates = [
 
 const getAggregateBySymbolAndIntervalLocally = function (req, res, next) {
 
-  const { symbol, interval } = req.params
-  console.log(symbol, interval)
+  let { symbol, interval } = req.params
+  
+  !symbol && res.json({ message: 'input symbol is missing.'})
+  symbol = symbol.toUpperCase()
+
+  console.log(`requesting ticker: ${symbol} with interval ${interval} at: ${DateTime.now().toISOTime()}.`)
   
   Aggregate
     .find({
@@ -262,8 +290,11 @@ const getAggregateBySymbolAndIntervalLocally = function (req, res, next) {
           ts_records: aggregates[0].ts.length,
           aggregate: aggregates[0]
         })
+      }else{
+        console.log(`Ticker:'${symbol}' data not found, go to sync source.`)
+        return next()
       }
-      return next()
+      
       
     })
 }

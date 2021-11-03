@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+// react hooks
+import { 
+  useState, 
+  useContext 
+} from 'react'
 
+// bootstrap components
 import {  
   Container, 
   Row, 
@@ -9,75 +13,77 @@ import {
   Button, 
 } from 'react-bootstrap'
 
+// profile sub components
 import {
   ProfileAuth,
   ProfileExt,
+  ProfileTable,
+  Loading,
 } from '../components'
 
+// to be replaced by UserProfileContext which defined in UserProfileProvider
+import {
+  UserProfileContext,  
+} from '../contexts'
 
-/**
- * each time the Profile view is rendered, a user profile populated with the data
- * from auth0 should be passed into as the props.
- * Profile Component useEffect() to query the backend server to findOneAndUpdate()
- * with the current user's auth data', the backend returns the updated profile.
- * Profile then populate the form with the returned profile.
- * when a user presses the 'save' button, it update the profile by setState(profile)
- * then triggers the useEffect() again. 
- */
-export default function Profile ({ user }) {
-  
-  const backendUrl=process.env.REACT_APP_BACKEND_URL
-  const profilePath='/user/profile/'
-  const portfolioPath='/user/portfolio/'
-  const watchesPath='/user/watches'
-  
-  const [profile, setProfile] = useState(user.profile)
-  const [toSave, setToSave] = useState(false)
-  const updateProfileUrl= user.profile.auth.sub 
-    ? backendUrl + profilePath + user.profile.auth.sub
-    : null
-  
-  // to update the backend profile and get the returned full 
-  // profile to populate the view profile.
-  useEffect(()=>{
-    updateProfileUrl && axios
-      .post( updateProfileUrl, {profile})
-      .then(response=>{
-        console.log("save changes response: ", response.data)
-        setProfile(response.data)
-      })
-  },[toSave])
+// to be replaced by the { isProfileChanged } in the UserProfileContext 
+import {useAuth0} from '@auth0/auth0-react'
 
-  // save changes.
+
+export default function Profile () {
+
+  const { isAuthenticated } = useAuth0()
+
+  const {
+    userProfile,
+    isProfileLoading,
+    updateProfileExt,
+  } = useContext(UserProfileContext)
+  
+  const [user, setUser] = useState(userProfile)
+
+  console.log('user profile in the profile path: ', userProfile)
+  console.log('is authenticated in the profile path: ', isAuthenticated)
+  console.log('is loading in the profile: ', isProfileLoading)
+
   function handleSaveButtonOnClick(event) {
-    setToSave(!toSave)
+    event.preventDefault()
+    console.log('user profile passing to updateProfileExt: ', user.profile.ext)
+    updateProfileExt(user.profile.ext)
   }
 
   // gender selected.
   function handleDropdownSelect(eventKey, event) {
     event.preventDefault()
-    setProfile(
-      {
-        auth: profile.auth,
+    setUser({
+      ...user,
+      profile:{
+        auth: user.profile.auth,
         ext: {
-            ...profile.ext,
+            ...user.profile.ext,
             [event.target.name]: eventKey
         }
       }
-    )
+    })
   }
 
+// first name, last name, date of birth inputs.
 function handleInputChange(event) {
-  setProfile({
-    auth: profile.auth,      
-    ext: { 
-      ...profile.ext, 
-      [event.target.name]: event.target.value
+  event.preventDefault()
+  setUser({
+    ...user,
+    profile:{
+      auth: user.profile.auth,
+      ext: {
+        ...user.profile.ext,
+        [event.target.name]: event.target.value
+      }
     }
   })
+  
 }
 
-  return updateProfileUrl ? (
+  return (!isProfileLoading) ? (
     <Container>
       <Row className="ps-2" > {/* close button */}
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.location('/')}}/>
@@ -85,8 +91,8 @@ function handleInputChange(event) {
       <Row className="p-2 justify-content-center"> {/* title */}
         <Col xs='auto' style={{'color': "#e5e5e5"}}>
           {
-            profile && profile.auth ? (
-              <h3>Welcome {profile.auth.nickname} </h3>
+            user && user.profile && user.profile.auth ? (
+              <h3>Welcome {user.profile.auth.nickname} </h3>
             ) : (
               <h3>Welcome Unknown</h3> 
             )
@@ -96,14 +102,20 @@ function handleInputChange(event) {
       <hr />
       {/* auth profile */}
       <Row xs={1} md={2} lg={2} xl={2} className="p-2 justify-content-center ">
-        <ProfileAuth authProfile={profile.auth} />
-        <div></div>
+        <Col sm={12} md={12} lg={12} xl={12}>
+          <h3> From Auth0 </h3>
+        </Col>
+        <ProfileAuth authProfile={user.profile.auth} />
+        <Col></Col>
       </Row>
       <hr />
       {/* extended profile */}
       <Row xs={1} md={2} lg={2} xl={2} className="p-2 justify-content-center "> {/* personal info */}
+        <Col sm={12} md={12} lg={12} xl={12}>
+          <h3> General Information </h3>
+        </Col>
         <ProfileExt 
-          extProfile={profile.ext} 
+          extProfile={user.profile.ext} 
           handleInputChange={handleInputChange}
           handleDropdownSelect={handleDropdownSelect}
         />
@@ -111,21 +123,37 @@ function handleInputChange(event) {
       <hr />
       {/* portfolio */}
       <Row className="p-2 justify-content-center">
-        <p>To be replaced by a list of portfolio information.</p>
+        <Col sm={12} md={12} lg={12} xl={12}>
+          <h3>Portfolio</h3>
+        </Col>
+        <ProfileTable 
+          array={user.portfolio}
+          firstHeadTitle="Ticker"
+          secondHeadTitle="Inventory"
+        />
       </Row>
       <hr />
       {/* watches */}
       <Row className="p-2 justify-content-center">
-        <p>To be replaced by a list of watches information.</p>
+        <Col sm={12} md={12} lg={12} xl={12}>
+          <h3>Watches</h3>
+        </Col>
+        <ProfileTable 
+          array={user.watches} 
+          firstHeadTitle="Ticker"
+          secondHeadTitle="Watched_At" 
+        />
       </Row>
       <hr />
       {/* exchange accounts */}
       <Row className="p-2 justify-content-center">
+        <h3>Exchange Account Information</h3>
         <p>To be replaced by a list of Exchange Account information.</p>
       </Row>
       <hr />
       {/* payment accounts */}
       <Row className="p-2 justify-content-center">
+        <h3>Payment Account Information</h3>
         <p>To be replaced by a list of Bank Account information.</p>
       </Row>
       <hr />
@@ -143,9 +171,5 @@ function handleInputChange(event) {
         </Col>
       </Row>
     </Container>
-  ) : (
-    <div>
-      <p>user's sub property is missing.</p>
-    </div>
-  )
+  ): (<Loading/>)
 }

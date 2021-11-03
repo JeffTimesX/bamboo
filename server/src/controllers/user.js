@@ -25,12 +25,14 @@ const getProfile = async function (req, res, next) {
         return res.json({message: 'user not found.'}) 
       }
       console.log('returned user\'s sub: ', user.profile.auth.sub)
-      return res.json(user.profile)
+      return res.json(user)
     })
 }
 
 // updateProfile()
 const updateProfile = async function (req, res, next) {
+  console.log(req.params)
+  console.log(req.body)
   
   if(!req.params || !req.params.sub || 
     !req.body  || !req.body.profile || 
@@ -40,7 +42,7 @@ const updateProfile = async function (req, res, next) {
 
   const { sub } = req.params
   const { profile } = req.body
-  if(sub !== profile.auth.sub) return next(new Error({message:'update different sub not allowed.'}))
+  if(sub !== profile.auth.sub) return next(new Error({message:'updating different sub is not allowed.'}))
   
   // extending profile exists, updates all profile.
   if(profile.ext) {
@@ -51,9 +53,12 @@ const updateProfile = async function (req, res, next) {
         { "upsert": true, new: true }
 
       ).exec(function(err, user){
-        if(err) return next(err)
-        console.log('returned profile: ', user.profile)
-        return res.json(user.profile)
+        if(err) {
+          console.log(err)
+          return next(err)
+        }
+        console.log('returned profile: ', user)
+        return res.json(user)
       })
   }else{  // otherwise updates profile.auth part only.
     User
@@ -63,12 +68,17 @@ const updateProfile = async function (req, res, next) {
         { "upsert": true, new: true }
       )
       .exec(function (err, user){
-        if(err) return next(err)
-        console.log('returned profile: ', user.profile)
-        return res.json(user.profile)
+        if(err) {
+          console.log(err)
+          return next(err)
+        }
+        console.log('returned profile: ', user)
+        return res.json(user)
       })
   }
 }
+
+
 // getPortfolio()
 const getPortfolio = async function (req, res, next) {
 
@@ -189,18 +199,53 @@ const deleteUserById = function (req, res, next){
     })
 }
 
-const getUserById= function (req, res, next) {
-  if(!req.params || !req.params.id){
+const getUserBySub= function (req, res, next) {
+  if(!req.params || !req.params.sub){
     return res.json({message: "invalid input format."})
   } 
-  const { id } = req.params
+  const { sub } = req.params
   User
-    .findById(id)
+    .findOne({ "profile.auth.sub": sub })
     .exec((err, user)=>{
-      if (err ) return next(err)
-      res.json(user)
+      if (err ) {
+        console.log(err) 
+        return next(err)
+      }
+      console.log('returned user: ', user)
+      return res.json(user)
     })
 }
+
+const updateUserBySub = function (req, res, next) {
+
+  if(!req.params || !req.params.sub || 
+    !req.body  || !req.body.profile || 
+    !req.body.profile.auth){
+      return res.json({message: "invalid input format."})
+  } 
+
+  const { sub } = req.params
+  const user = req.body
+  if(sub !== user.profile.auth.sub) {
+    return next(new Error({message:'updating different sub is not allowed.'}))
+  }
+  if(user._id) delete user._id
+  User
+    .findOneAndUpdate(
+      { "profile.auth.sub": user.profile.auth.sub },
+      user,
+      { "upsert": true, new: true }
+    ).exec(function(err, user){
+      if(err) {
+        console.log(err)
+        return next(err)
+      }
+      console.log('returned user: ', user)
+      return res.json(user)
+    })
+}
+
+
 
 module.exports = {
   getProfile,
@@ -211,5 +256,6 @@ module.exports = {
   updateWatches,
   deleteUserById,
   getPosts,
-  getUserById,
+  getUserBySub,
+  updateUserBySub,
 }

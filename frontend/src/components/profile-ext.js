@@ -5,11 +5,13 @@ import {
   Dropdown, 
   DropdownButton} from 'react-bootstrap'
 
+import {DateTime} from 'luxon'
+
 export default function ProfileExt({extProfile, handleInputChange, handleDropdownSelect}) {
 
   return extProfile ? ( 
     <>
-    <Col>
+    <Col key='first_name'>
       <InputGroup className="mb-4">
         <InputGroup.Text id="profile-ext-first-name" className='bg-secondary' style={{color:'white'}}>First Name:</InputGroup.Text>
         <FormControl
@@ -22,7 +24,7 @@ export default function ProfileExt({extProfile, handleInputChange, handleDropdow
         />
       </InputGroup>
     </Col>
-    <Col>
+    <Col key='last_name'>
       <InputGroup className="mb-4">
         <InputGroup.Text id="profile-ext-first-name" className='bg-secondary' style={{color:'white'}}>Last Name:</InputGroup.Text>
         <FormControl
@@ -35,20 +37,19 @@ export default function ProfileExt({extProfile, handleInputChange, handleDropdow
         />
       </InputGroup>
     </Col>
-    <Col>
+    <Col key='date_of_birth'>
       <InputGroup className="mb-4">
         <InputGroup.Text id="profile-ext-first-name" className='bg-secondary' style={{color:'white'}}>Date of Birth:</InputGroup.Text>
         <FormControl
-          placeholder="John"
           type="date"
           aria-label="date of birth"
           name="date_of_birth"
-          value={extProfile.date_of_birth}
+          value={DateTime.fromISO(extProfile.date_of_birth).toISODate()}
           onChange={handleInputChange}
         />
       </InputGroup>
     </Col>
-    <Col>
+    <Col key='gender'>
       <InputGroup className="mb-4">
         <DropdownButton
           variant="outline-light"
@@ -63,7 +64,10 @@ export default function ProfileExt({extProfile, handleInputChange, handleDropdow
         <FormControl 
           aria-label="Gender" 
           style={{color:'gray'}} 
-          value={extProfile.gender}/>
+          placeholder={extProfile.gender.toString()}
+          readOnly
+          />
+          
       </InputGroup>
     </Col>
     </>

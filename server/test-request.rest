@@ -1,11 +1,12 @@
 
 
 ### GET user/profile/:sub endpoint for getProfile()
-GET http://localhost:5050/user/profile/auth0|616a4aaacac37f00684a95d5
+GET http://localhost:5050/user/profile/auth0|616bae31c69eb2007050c605
 
 
 ### POST user/profile/:sub for updateProfile()
 POST http://localhost:5050/user/profile/auth0|636a4aaacac37f00684a95d5
+
 Content-Type: application/json
 
 {
@@ -14,7 +15,7 @@ Content-Type: application/json
   },
   "profile": {
     "auth": {
-      "nickname": "Henry",
+      "nickname": "Jack",
       "name": "eleven@eleven.com",
       "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
       "updated_at": "2021-10-23T22:04:15.147Z",
@@ -23,67 +24,16 @@ Content-Type: application/json
       "sub": "auth0|636a4aaacac37f00684a95d5"
     },
     "ext": {
-      "first_name": "Seven",
+      "first_name": "Two",
       "last_name": "Eleven",
       "gender": "female",
       "date_of_birth": "",
       "occupation": "student"
     }
   },
-  "portfolio": [
-    
-  ],
-  "watches": [
-    {
-      "ticker": "F",
-      "inventory": 100,
-      "_id": {
-        "$oid": "61789fbf99cac0e414d42b83"
-      }
-    },
-    {
-      "ticker": "GM",
-      "inventory": 200,
-      "_id": {
-        "$oid": "61789fbf99cac0e414d42b84"
-      }
-    },
-    {
-      "ticker": "T",
-      "inventory": 2000,
-      "_id": {
-        "$oid": "61789fbf99cac0e414d42b85"
-      }
-    },
-    {
-      "ticker": "FF",
-      "inventory": 1200,
-      "_id": {
-        "$oid": "61789fbf99cac0e414d42b86"
-      }
-    },
-    {
-      "ticker": "AA",
-      "inventory": 1200,
-      "_id": {
-        "$oid": "61789fbf99cac0e414d42b87"
-      }
-    }
-  ],
-  "posts": [
-    {
-      "$oid": "617613b010e03462d645c22c"
-    },
-    {
-      "$oid": "6176140fae1079b923e4c9ff"
-    },
-    {
-      "$oid": "617628d71bbf878028515733"
-    },
-    {
-      "$oid": "617629171bbf878028515736"
-    }
-  ],
+  "portfolio": [],
+  "watches": [],
+  "posts": [],
   "follows": [],
   "paymentAccounts": [],
   "exchangeAccounts": []
@@ -93,22 +43,22 @@ Content-Type: application/json
 GET http://localhost:5050/user/portfolio/auth0|616a4aaacac37f00684a95d5
 
 ### POST /user/portfolio/:sub for updatePortfolio()
-POST http://localhost:5050/user/portfolio/auth0|616a4aaacac37f00684a95d5
+POST http://localhost:5050/user/portfolio/auth0|636a4aaacac37f00684a95d5
 Content-Type: application/json
 
 {
   "portfolio": [
-  { "ticker": "F", "inventory": 100}, 
-  { "ticker": "GM", "inventory": 200},
-  { "ticker": "T", "inventory": 2000 },
-  { "ticker": "FF", "inventory": 1200 },
-  { "ticker": "AA", "inventory": 1200 }
+  { "ticker": "F", "inventory": 100, "purchased_at":"2020-01-01"}, 
+  { "ticker": "GM", "inventory": 200, "purchased_at":"2020-01-01"},
+  { "ticker": "T", "inventory": 2000 , "purchased_at":"2020-01-01"},
+  { "ticker": "FF", "inventory": 1200 , "purchased_at":"2020-01-01"},
+  { "ticker": "AA", "inventory": 1200 , "purchased_at":"2020-01-01"}
   ]
 }
 
 
 ### GET /user/watches/:sub for getgetWatches()
-GET http://localhost:5050/user/watches/auth0|626a4aaacac37f00684a95d5
+GET http://localhost:5050/user/watches/auth0|616a4aaacac37f00684a95d5
 
 
 ### POST /user/watches/:sub for updateWatches()
@@ -117,13 +67,17 @@ Content-Type: application/json
 
 {
   "watches": [
-  { "ticker": "F", "inventory": 100}, 
-  { "ticker": "GM", "inventory": 200},
-  { "ticker": "T", "inventory": 2000 },
-  { "ticker": "FF", "inventory": 1200 },
-  { "ticker": "AA", "inventory": 1200 }
+  { "ticker": "F", "watched_at": "2021-02-01" }, 
+  { "ticker": "GM", "watched_at": "2021-02-01" },
+  { "ticker": "T" , "watched_at": "2021-02-01" },
+  { "ticker": "FF" , "watched_at": "2021-02-01"},
+  { "ticker": "AA" , "watched_at": "2021-02-01" },
+  { "ticker": "IBM" , "watched_at": "2021-02-01"}
   ]
 }
+
+
+
 
 ### deleteUserById()
 DELETE http://localhost:5050/user/user/6175c9ccb34193cab03b2599
@@ -134,6 +88,39 @@ GET http://localhost:5050/user/posts/6175ca28e3d3030939d300b0
 ### getUserById()
 GET http://localhost:5050/user/user/6175ca28e3d3030939d300b1
 
+### POST user/user/:sub for updateUserBySub()
+POST http://localhost:5050/user/user/auth0|636a4aaacac37f00684a95d5
+Content-Type: application/json
+
+{
+  "_id": {
+    "$oid": "6175ca28e3d3030939d300b0"
+  },
+  "profile": {
+    "auth": {
+      "nickname": "Jack",
+      "name": "eleven@eleven.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "eleven@eleven.com",
+      "email_verified": false,
+      "sub": "auth0|636a4aaacac37f00684a95d5"
+    },
+    "ext": {
+      "first_name": "Two",
+      "last_name": "Eleven",
+      "gender": "female",
+      "date_of_birth": "",
+      "occupation": "student"
+    }
+  },
+  "portfolio": [],
+  "watches": [{"ticker":"AA", "watched_at": "2021-02-01"}],
+  "posts": [],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": []
+}
 
 
 

@@ -3,6 +3,8 @@ const router = express.Router();
 
 const user = require('../controllers/user.js');
 
+
+
 router.get('/profile/:sub', user.getProfile)
 router.post('/profile/:sub', user.updateProfile)
 
@@ -14,9 +16,11 @@ router.get('/watches/:sub', user.getWatches);
 router.post('/watches/:sub', user.updateWatches);
 // router.delete('/watches/:sub', user.deleteFromWatches)
 
-router.get('/user/:id', user.getUserById) 
+router.get('/user/:sub', user.getUserBySub) 
+router.post('/user/:sub', user.updateUserBySub)
 router.delete('/user/:id', user.deleteUserById)
 router.get('/posts/:userId', user.getPosts)
+ 
 // router.post('/posts/:sub', user.addToPosts)
 // router.put('/posts/:sub', user.updateToPosts)
 // router.delete('/posts/:sub', user.deleteFromPosts)

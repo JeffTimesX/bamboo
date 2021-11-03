@@ -11,10 +11,10 @@ GET https://api.polygon.io/v3/reference/tickers?apiKey=z0WumBiwbxcFPEDsiqcqA8XsP
 GET http://localhost:6061/ticker/init
 
 ### get ticker by name, support fuzzy search
-GET http://localhost:6061/ticker/name/general%20motor
+GET http://localhost:6061/ticker/name/AT&T
 
 ### get ticker by symbol, exactly matched, case-insensitive.
-GET http://localhost:6061/ticker/symbol/tsla
+GET http://localhost:6061/ticker/symbol/AT
 
 ### get ticker by id, return the exactly matched.
 GET http://localhost:6061/ticker/id/6170d9d8913511aa4af87fb9
@@ -45,11 +45,11 @@ GET http://localhost:6061/ticker/aggs/APPL/minute/1/2020-10-10/2020-10-14
 
 
 ### sync aggregates from alphaVantages.co
-GET http://localhost:6061/aggregate/sync/F
+GET http://localhost:6061/aggregate/sync/GM
 
 
 ### get aggregate by symbol and interval locally 
-GET http://localhost:6061/aggregate/GM/daily
+GET http://localhost:6061/aggregate/T/15min
 
 
 ### daily

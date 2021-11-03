@@ -10,7 +10,8 @@ const tickSchema = new Schema(
     "low": String,
     "close": String,
     "volume": String
-  }
+  },
+  {_id: false}
 )
 
 const metaSchema = new Schema(

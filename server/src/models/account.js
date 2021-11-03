@@ -1,9 +1,10 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
 const exchangeAccountSchema = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
-	account: String,
+	account_number: String,
+	balance: Number,
 	tickers: [{
 		ticker: String, 
 		amount: Number, 
@@ -19,7 +20,7 @@ const exchangeAccountSchema = new Schema({
 const paymentAccountSchema = new Schema({
 	account: String,
 	balance: Number,
-	transactions: [ {issue_at: Date, value: Number, counterpart: string} ]
+	transactions: [ {issue_at: Date, value: Number, counterpart: String} ]
 })
 
 

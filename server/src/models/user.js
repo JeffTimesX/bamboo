@@ -1,6 +1,23 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
+const portfolioSchema = new Schema (
+  {
+    ticker: String,
+    inventory: Number,
+    purchased_at: Date 
+  },
+  {_id: false}
+)
+
+const watchesSchema = new Schema (
+  {
+    ticker: String,
+    watched_at: Date
+  },
+  {_id: false}
+)
+
 const userSchema = new Schema({
   profile: { 
     auth: {
@@ -22,8 +39,8 @@ const userSchema = new Schema({
   },
 
   // the data model of portfolio and watches should be changed to [{ ticker: String, inventory: Number }] 
-  portfolio: [{ ticker: String, inventory: Number }],
-  watches: [{ ticker: String, inventory: Number }],
+  portfolio: [portfolioSchema],
+  watches: [watchesSchema],
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   follows: [{ type:Schema.Types.ObjectId, ref: 'User'}],
   paymentAccounts: [{ type:Schema.Types.ObjectId,ref: 'PaymentAccount'}],

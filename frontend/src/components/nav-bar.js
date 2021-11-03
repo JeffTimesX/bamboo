@@ -9,7 +9,7 @@ export default function NavBar() {
     
       <Navbar sticky="top" expand="lg" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/">
+          <Navbar.Brand href='/'>
             <img
               alt="Bamboo"
               src="/bamboo_logo.png"
