@@ -12,8 +12,14 @@ export default function UserProfileProvider({ backendUrl, children }) {
   const { user:authProfile, isAuthenticated, getAccessTokenSilently } = useAuth0()
   
   // path configurations
-  const UserProfileEndPoint = backendUrl + '/user/profile/'
+  // const UserProfileEndPoint = backendUrl + '/user/profile/'
   const UserEndPoint = backendUrl + '/user/user/'
+  // createAccountEndpoint  
+  const createExchangeAccountEndpoint = backendUrl + '/exchange/create/' 
+  // update balance endpoint
+  const popupExchangeAccountEndpoint = backendUrl + '/exchange/balance/' 
+  // remove account endpoint
+  const removeExchangeAccountEndpoint = backendUrl + '/exchange/remove/'
   
   // initializing user profile with only the auth part.
   const initUserProfile = {
@@ -72,7 +78,7 @@ export default function UserProfileProvider({ backendUrl, children }) {
 
 
 // if it is the first time the user signed in, populate the ext profile part with a framework.
-async function completeUserProfileForSignup(user, token){
+async function completeUserProfileAndUpdate(user, token){
   if(user && user.profile && user.profile.ext) return {...user}
   const transUser = {
     ...user,
@@ -107,13 +113,17 @@ async function completeUserProfileForSignup(user, token){
 // corresponding document and returns the full updated profile document.
 async function updateUserProfile(user){
 
-  if(!isAuthenticated || !user || !user.profile || !user.profile.auth || !user.profile.auth.sub ) {
+  if(!isAuthenticated || 
+    !user || 
+    !user.profile || 
+    !user.profile.auth || 
+    !user.profile.auth.sub ) {
     console.log("error: user does not login, nothing to update.")
     return
   }
   const token = await getAccessTokenSilently()
 
-  const url = UserProfileEndPoint + user.profile.auth.sub
+  const url = UserEndPoint + user.profile.auth.sub
   
   const firstCheck = await axios.get(
     url, 
@@ -124,12 +134,15 @@ async function updateUserProfile(user){
 
   console.log('first check: ', checkReturnedUserProfile)
   
-  // the first time user does not exit in backend server, create it with auth. 
+  // when message shows up in the response, 
+  // it means that this is the first time user signed up
+  // there is not any information associated with this 
+  // user in the backend server, create it with the auth. 
   if(checkReturnedUserProfile.message !== undefined) {
     checkReturnedUserProfile = user
   }
 
-  const completedUserProfile = await completeUserProfileForSignup(checkReturnedUserProfile, token)
+  const completedUserProfile = await completeUserProfileAndUpdate(checkReturnedUserProfile, token)
   
   console.log("update profile successfully, returned completed user profile: ", completedUserProfile)
   
@@ -165,6 +178,99 @@ async function addToPortfolio(ticker, amount){
   
 }
 
+async function createExchangeAccount( userId, account ){
+  if(!account || 
+    !account.account_number || 
+    !account.user ||
+    account.user !== userId){
+    return ({error:'mismatched inputs.'})
+  } else {
+
+    const token = await getAccessTokenSilently()
+
+    try {
+      console.log("account to be created: ", account)
+      const response = await axios.post(
+        createExchangeAccountEndpoint + userId,
+        account,
+        { headers: { Authorization: `Bearer ${token}` }}
+      ) 
+      const updatedUserProfile = await response.data
+      console.log("updated profile returned from create exchange account: ", updatedUserProfile)
+      return updatedUserProfile
+
+    } catch (err) {
+      console.log(err)
+      return ({error: 'creating account at backend failure.'})
+    }
+    
+  }
+
+}
+
+async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
+  
+  console.log('action: ', action)
+  console.log("payload: ", payload)
+
+  switch (action){
+    case 'create' : {
+      // checking the account_number passed by the payload, if it does not provided
+      // or it exists in the current exchangeAccounts[] of the userProfile context
+      // returns the feedback with error message.
+      if(!payload || !payload.account_number ) {
+        
+        console.log('account_number does not provided.')
+        afterUpdateCallback({error:'account_number does not provided.'})
+        break
+
+      } else if (userProfile.exchangeAccounts.filter(account =>{
+        return account.account_number === payload.account_number})[0]){
+        
+        console.log('account already exists.')
+        afterUpdateCallback({error:'account already exists.'})
+        break
+
+      } else {
+        // otherwise, axios.post() to send a request to the backend to create an account,
+        // then setUserProfile() with the returned userProfile
+        // then feedbacks an updated exchangeAccounts[] to the caller.
+        const updatedUserProfile = await createExchangeAccount(userProfile._id, payload)
+        
+        console.log("updatedUserProfile: ", updatedUserProfile)
+        
+        // createExchangeAccount() returned a qualify userProfile
+        if(!updatedUserProfile.error){
+
+          console.log("updatedUserProfile: ", updatedUserProfile)
+
+          setUserProfile(updatedUserProfile)
+          afterUpdateCallback(updatedUserProfile.exchangeAccounts)
+        } else {
+          // or not.
+          console.log("updatedUserProfile: ", updatedUserProfile)
+
+          afterUpdateCallback({error:'create account failure.'})
+        }
+      }
+      break
+    }
+    case 'popup' : {
+      break
+    }
+    case 'remove' : {
+      break
+    }
+    default: break; 
+  } 
+
+
+
+  
+
+
+}
+
 const contextValue = {
     userProfile,
     setUserProfile,
@@ -174,6 +280,7 @@ const contextValue = {
     addToWatches,
     addToPortfolio,
     updateUserProfile,
+    updateExchangeAccounts,
 
   }
 

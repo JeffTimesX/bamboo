@@ -19,6 +19,9 @@ router.post('/watches/:sub', user.updateWatches);
 router.get('/user/:sub', user.getUserBySub) 
 router.post('/user/:sub', user.updateUserBySub)
 router.delete('/user/:id', user.deleteUserById)
+
+
+
 router.get('/posts/:userId', user.getPosts)
  
 // router.post('/posts/:sub', user.addToPosts)

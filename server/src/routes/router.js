@@ -10,7 +10,7 @@ const exchangeRouter = require('./exchange')
 // Users routes
 router.use('/user', userRouter)
 router.use('/post', postRouter)
-router.use('/exchange-account', exchangeRouter)
+router.use('/exchange', exchangeRouter)
 
 
 

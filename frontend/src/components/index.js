@@ -9,17 +9,23 @@ import StockChart from './stock-chart';
 import ProfileTable from "./profile-table";
 import Loading from "./loading";
 import ProtectedRoute from "./protected-route";
+import ProfileExchangeAccounts from "./profile-exchange-account";
+import AccountActionsButtonGroup from "./account-actions-button-group";
+import CreateAccountInputModal from './modal-create-account-input';
 
 export { 
-  NavBar,
-  MainNav,
-  SearchNav,
+  AccountActionsButtonGroup,
   AuthNav,
+  CreateAccountInputModal,
   IndexCarousel,
+  Loading,
+  MainNav,
+  NavBar,
   ProfileAuth,
   ProfileExt,
-  ProfileTable,
+  ProfileTable,  
+  SearchNav,
   StockChart,
-  Loading,
+  ProfileExchangeAccounts,
   ProtectedRoute,
 }

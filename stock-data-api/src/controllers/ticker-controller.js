@@ -172,14 +172,26 @@ const testRoute = function (req, res, next) {
   res.json(req.route)
 }
 
+const getCurrentBySymbol = async function (req, res, next){
+  const {symbol} = req.params
+  const url = process.env.STOCK_DATA_API_URL + `/aggregate/${symbol}/5min`
+  
+  if(!symbol) return next(new Error({ message: 'ticker symbol missing.' }))
+  const response = await axios.get(url)
+  const aggregate = response.data.aggregate
+  console.log("length of ts:", aggregate.ts.length)
+  const seed = Math.floor(Math.random() * aggregate.ts.length)
+  const price= aggregate.ts[seed].open
+  res.json({price: parseFloat(price)})
+
+}
+
 module.exports = {
   initTickers,
   searchTickers,
   getTickersByName,
   getTickerBySymbol,
   getTickerById,
-  testRoute
-  // updateTicker,
-  // deleteTicker
+  getCurrentBySymbol,
 }
 

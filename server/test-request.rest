@@ -1,21 +1,20 @@
 
 
 ### GET user/profile/:sub endpoint for getProfile()
-GET http://localhost:5050/user/profile/auth0|616bae31c69eb2007050c605
+GET http://localhost:5050/user/profile/auth0|636a4aaacac37f00684a95d5
 
 
 ### POST user/profile/:sub for updateProfile()
 POST http://localhost:5050/user/profile/auth0|636a4aaacac37f00684a95d5
-
 Content-Type: application/json
 
 {
   "_id": {
-    "$oid": "6175ca28e3d3030939d300b0"
+    "$oid": "636a4aaacac37f00684a95d5"
   },
   "profile": {
     "auth": {
-      "nickname": "Jack",
+      "nickname": "Mike",
       "name": "eleven@eleven.com",
       "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
       "updated_at": "2021-10-23T22:04:15.147Z",
@@ -40,10 +39,10 @@ Content-Type: application/json
 }
 
 ### GET /user/portfolio/:sub for getPortfolio()
-GET http://localhost:5050/user/portfolio/auth0|616a4aaacac37f00684a95d5
+GET http://localhost:5050/user/portfolio/618463c503d71d13427750c6
 
 ### POST /user/portfolio/:sub for updatePortfolio()
-POST http://localhost:5050/user/portfolio/auth0|636a4aaacac37f00684a95d5
+POST http://localhost:5050/user/portfolio/618463c503d71d13427750c6
 Content-Type: application/json
 
 {
@@ -52,17 +51,22 @@ Content-Type: application/json
   { "ticker": "GM", "inventory": 200, "purchased_at":"2020-01-01"},
   { "ticker": "T", "inventory": 2000 , "purchased_at":"2020-01-01"},
   { "ticker": "FF", "inventory": 1200 , "purchased_at":"2020-01-01"},
-  { "ticker": "AA", "inventory": 1200 , "purchased_at":"2020-01-01"}
+  { "ticker": "B", "inventory": 1200 , "purchased_at":"2020-01-01"},
+    { "ticker": "BF", "inventory": 100, "purchased_at":"2020-01-01"}, 
+  { "ticker": "G", "inventory": 200, "purchased_at":"2020-01-01"},
+  { "ticker": "TT", "inventory": 2000 , "purchased_at":"2020-01-01"},
+  { "ticker": "FFF", "inventory": 1200 , "purchased_at":"2020-01-01"},
+  { "ticker": "AAA", "inventory": 1200 , "purchased_at":"2020-01-01"}
   ]
 }
 
 
 ### GET /user/watches/:sub for getgetWatches()
-GET http://localhost:5050/user/watches/auth0|616a4aaacac37f00684a95d5
+GET http://localhost:5050/user/watches/618463c503d71d13427750c6
 
 
 ### POST /user/watches/:sub for updateWatches()
-POST http://localhost:5050/user/watches/auth0|626a4aaacac37f00684a95d5
+POST http://localhost:5050/user/watches/auth0|636a4aaacac37f00684a95d5
 Content-Type: application/json
 
 {
@@ -79,26 +83,25 @@ Content-Type: application/json
 
 
 
+
 ### deleteUserById()
 DELETE http://localhost:5050/user/user/6175c9ccb34193cab03b2599
 
-### GET /user/posts/:id for getPosts() with posts populated
-GET http://localhost:5050/user/posts/6175ca28e3d3030939d300b0
 
-### getUserById()
-GET http://localhost:5050/user/user/6175ca28e3d3030939d300b1
+
+### getUserBySub()
+GET http://localhost:5050/user/user/618463c503d71d13427750c6
+
+###auth0|616bae31c69eb2007050c605
 
 ### POST user/user/:sub for updateUserBySub()
-POST http://localhost:5050/user/user/auth0|636a4aaacac37f00684a95d5
+POST http://localhost:5050/user/user/618463c503d71d13427750c6
 Content-Type: application/json
 
 {
-  "_id": {
-    "$oid": "6175ca28e3d3030939d300b0"
-  },
   "profile": {
     "auth": {
-      "nickname": "Jack",
+      "nickname": "Thank",
       "name": "eleven@eleven.com",
       "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
       "updated_at": "2021-10-23T22:04:15.147Z",
@@ -114,15 +117,64 @@ Content-Type: application/json
       "occupation": "student"
     }
   },
-  "portfolio": [],
+  "portfolio": [
+    {"ticker":"A", "watched_at": "2021-02-01"},
+    {"ticker":"C", "watched_at": "2021-02-01"}
+    ],
   "watches": [{"ticker":"AA", "watched_at": "2021-02-01"}],
   "posts": [],
   "follows": [],
   "paymentAccounts": [],
-  "exchangeAccounts": []
+  "exchangeAccounts": ["618468bb8f5e9b5721117ca0"]
 }
 
 
+
+
+### remove exchange account 
+DELETE http://localhost:5050/exchange/remove/6185fb0a17e4d8ed4d6ed211
+
+### create ExchangeAccount 
+POST http://localhost:5050/exchange/create/618463c503d71d13427750c6
+Content-Type: application/json
+
+{ 
+  "account_number": "13901129968",
+  "user": "618463c503d71d13427750c6",
+  "amount": "6666666"
+}
+
+### update balance for exchange account /balance/:id {}
+POST http://localhost:5050/exchange/balance/618468bb8f5e9b5721117ca0
+Content-Type: application/json
+
+{ 
+  "accountId": "618468bb8f5e9b5721117ca0",
+  "account_number": "7788850355",
+  "amount": "9999999"
+}
+
+### getAccountDetail() 
+GET http://localhost:5050/exchange/detail/618468bb8f5e9b5721117ca0
+
+### dealTicker()
+POST http://localhost:5050/exchange/deal/618468bb8f5e9b5721117ca0
+Content-Type: application/json
+
+{ 
+  "accountId": "618468bb8f5e9b5721117ca1",
+  "account_number": "7788850355",
+  "ticker": "F",
+  "amount": "1000",
+  "type": "sell",
+  "price": "299.99"
+}
+
+
+
+
+### GET /user/posts/:id for getPosts() with posts populated
+GET http://localhost:5050/user/posts/6175ca28e3d3030939d300b0
 
 ### POST /post/:userId for createPost()
 POST http://localhost:5050/post/6175ca28e3d3030939d300b0
@@ -144,3 +196,5 @@ GET http://localhost:5050/post/user/6175ca28e3d3030939d300b0
 
 ### GET /post/title/:title for getPostsByTitle()
 GET http://localhost:5050/post/title/HeLLo
+
+

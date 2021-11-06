@@ -43,8 +43,8 @@ const userSchema = new Schema({
   watches: [watchesSchema],
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   follows: [{ type:Schema.Types.ObjectId, ref: 'User'}],
-  paymentAccounts: [{ type:Schema.Types.ObjectId,ref: 'PaymentAccount'}],
-  exchangeAccounts: [{ type:Schema.Types.ObjectId,ref: 'ExchangeAccount'}],
+  paymentAccounts: [{ type: Schema.Types.ObjectId, ref: 'PaymentAccount' }],
+  exchangeAccounts: [{ type: Schema.Types.ObjectId, ref: 'ExchangeAccount' }],
 });
 
 userSchema

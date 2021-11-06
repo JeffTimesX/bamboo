@@ -1,7 +1,8 @@
 // react hooks
 import { 
   useState, 
-  useContext 
+  useContext,
+  useEffect,
 } from 'react'
 
 // bootstrap components
@@ -18,7 +19,9 @@ import {
   ProfileAuth,
   ProfileExt,
   ProfileTable,
+  ProfileExchangeAccounts,
   Loading,
+
 } from '../components'
 
 // to be replaced by UserProfileContext which defined in UserProfileProvider
@@ -42,9 +45,8 @@ export default function Profile () {
   
   const [user, setUser] = useState(userProfile)
 
-  console.log('user profile in the profile path: ', userProfile)
-  console.log('is authenticated in the profile path: ', isAuthenticated)
-  console.log('is loading in the profile: ', isProfileLoading)
+  console.log('user state in the profile path: ', user)
+
 
   function handleSaveButtonOnClick(event) {
     event.preventDefault()
@@ -119,6 +121,19 @@ function handleInputChange(event) {
           handleInputChange={handleInputChange}
           handleDropdownSelect={handleDropdownSelect}
         />
+        {/* save change button */}
+        <Row className="p-2 justify-content-end">
+          <Col sm={6}>
+          </Col>
+          <Col sm={6} className='justify-content-center'>
+            <Button 
+            variant="success"
+            onClick={handleSaveButtonOnClick}
+            >
+              Save Changes
+            </Button>
+          </Col>
+        </Row>
       </Row>
       <hr />
       {/* portfolio */}
@@ -146,10 +161,10 @@ function handleInputChange(event) {
       </Row>
       <hr />
       {/* exchange accounts */}
-      <Row className="p-2 justify-content-center">
-        <h3>Exchange Account Information</h3>
-        <p>To be replaced by a list of Exchange Account information.</p>
-      </Row>
+      <ProfileExchangeAccounts 
+        userId={ userProfile._id }
+        Accounts={ userProfile.exchangeAccounts}
+      />
       <hr />
       {/* payment accounts */}
       <Row className="p-2 justify-content-center">
@@ -157,19 +172,7 @@ function handleInputChange(event) {
         <p>To be replaced by a list of Bank Account information.</p>
       </Row>
       <hr />
-      {/* save change button */}
-      <Row className="p-2 justify-content-end">
-        <Col sm={6}>
-        </Col>
-        <Col sm={6} className='justify-content-end'>
-          <Button 
-          variant="success"
-          onClick={handleSaveButtonOnClick}
-          >
-            Save Changes
-          </Button>
-        </Col>
-      </Row>
+      
     </Container>
   ): (<Loading/>)
 }

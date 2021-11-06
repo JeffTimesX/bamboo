@@ -14,7 +14,7 @@ GET http://localhost:6061/ticker/init
 GET http://localhost:6061/ticker/name/AT&T
 
 ### get ticker by symbol, exactly matched, case-insensitive.
-GET http://localhost:6061/ticker/symbol/AT
+GET http://localhost:6061/ticker/symbol/T
 
 ### get ticker by id, return the exactly matched.
 GET http://localhost:6061/ticker/id/6170d9d8913511aa4af87fb9
@@ -42,6 +42,8 @@ GET http://localhost:6061/ticker/aggs/APPL/minute/1/2020-10-10/2020-10-14
 
 ###multi/1/start/2020-10-10/end/2020-10-14
 
+### ticker current 
+GET http://localhost:6061/ticker/current/T
 
 
 ### sync aggregates from alphaVantages.co
@@ -57,3 +59,5 @@ GET https://www.alphavantage.co/query?apikey=HISHIS8F8CUE8LR8N9N&function=TIME_S
 
 ### intraday
 GET https://www.alphavantage.co/query?apikey=HISHIS8F8CUE8LR8N9N&function=TIME_SERIES_INTRADAY&symbol=IBM&outputsize=compact&interval=15min
+
+

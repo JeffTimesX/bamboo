@@ -13,7 +13,8 @@ const exchangeAccountSchema = new Schema({
 		issue_at: Date, 
 		ticker: String, 
 		amount: Number, 
-		value: Number, 
+		price: Number, 
+		total: Number
 	}]
 })
 
