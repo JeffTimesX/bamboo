@@ -1,4 +1,4 @@
-import { Row, Col, Carousel } from 'react-bootstrap';
+import { Carousel } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom'
@@ -18,8 +18,6 @@ require('highcharts/modules/map')(Highcharts)
 
 export default function IndexCarousel({ inputTickers }) {
   
-  const [tickers, setTickers] = useState(inputTickers);
-  const [currentValue, setCurrentValue] = useState(Date.now());
   const [chartOptions, setChartOptions] = useState([])
 
   const history = useHistory()
@@ -87,24 +85,24 @@ function setStockOptions(symbol, ts) {
   return plotOptions
 }
 
-  async function ChartOptionWithAggregate ( symbol, interval ){
-    const getAggregatePath = stockApiUrl + '/aggregate/' + symbol + '/' + interval
-    // to check the path.
-    console.log("getAggregatePath: ", getAggregatePath)
-    const response = await axios.get(getAggregatePath)
-    const data = await response.data
-    const formattedTs = data.aggregate.ts.map( t => {
-      return [
-        DateTime.fromISO(t.timestamp).ts,
-        parseFloat(t.open),
-        parseFloat(t.high),
-        parseFloat(t.low),
-        parseFloat(t.close),
-        parseFloat(t.volume),
-      ]
-    })
-    return setStockOptions(symbol, formattedTs)
-  }
+async function ChartOptionWithAggregate ( symbol, interval ){
+  const getAggregatePath = stockApiUrl + '/aggregate/' + symbol + '/' + interval
+  // to check the path.
+  console.log("getAggregatePath: ", getAggregatePath)
+  const response = await axios.get(getAggregatePath)
+  const data = await response.data
+  const formattedTs = data.aggregate.ts.map( t => {
+    return [
+      DateTime.fromISO(t.timestamp).ts,
+      parseFloat(t.open),
+      parseFloat(t.high),
+      parseFloat(t.low),
+      parseFloat(t.close),
+      parseFloat(t.volume),
+    ]
+  })
+  return setStockOptions(symbol, formattedTs)
+}
 
   useEffect(()=>{
     async function readyCarouselChartOptions(){
@@ -120,31 +118,27 @@ function setStockOptions(symbol, ts) {
     readyCarouselChartOptions()
   },[])
 
-  function onSelectHandler(i, event) {
-    const value = tickers[i] + ": " + Date.now()
-    setCurrentValue(value)
-  }
 
   return (
     <>
-      <Carousel variant="dark" onSelect={onSelectHandler} >
+      <Carousel variant="dark"  >
         <Carousel.Item className='p-1'>
           <StockChart options={chartOptions[0]} highcharts={Highcharts}/> 
-          <Carousel.Caption onClick={() => history.push(`/ticker-detail/${tickers[0]}`)}>
-            <h4>{tickers[0]}</h4>
+          <Carousel.Caption onClick={() => history.push(`/ticker-detail/${inputTickers[0]}`)}>
+            <h4>{inputTickers[0]}</h4>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item className='p-1'>
           <StockChart options={chartOptions[1]} highcharts={Highcharts}/>
-          <Carousel.Caption onClick={() => history.push(`/ticker-detail/${tickers[1]}`)}>
-            <h4>{tickers[1]}</h4>
+          <Carousel.Caption onClick={() => history.push(`/ticker-detail/${inputTickers[1]}`)}>
+            <h4>{inputTickers[1]}</h4>
             
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item className='p-1'>
           <StockChart options={chartOptions[2]} highcharts={Highcharts}/>
-          <Carousel.Caption onClick={() => history.push(`/ticker-detail/${tickers[2]}`)}>
-            <h4>{tickers[2]}</h4>
+          <Carousel.Caption onClick={() => history.push(`/ticker-detail/${inputTickers[2]}`)}>
+            <h4>{inputTickers[2]}</h4>
             
           </Carousel.Caption>
         </Carousel.Item>

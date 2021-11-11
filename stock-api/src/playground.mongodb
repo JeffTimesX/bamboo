@@ -1,0 +1,15 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// The current database to use.
+use('stock_data');
+
+// Search for documents in the current collection.
+db.getCollection('aggregates')
+  .find({
+    "meta.symbol": "IBM",
+    "meta.interval": "daily",
+    "ts": { "$all": [ 
+            {"$elemMatch" : {"open" : "128.0500"}}
+            ]} 
+  })

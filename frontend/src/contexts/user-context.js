@@ -4,22 +4,25 @@ import React from 'react'
 const UserProfileContext = React.createContext({
   
   userProfile: {},
-  isProfileChanged: false,
-  isProfileLoading: false,
-  setIsProfileLoading: ()=>{},
-  setIsProfileChanged: () =>{},
-  updateProfileExt: ()=> {},
-  addToPortfolio: (ticker) => {},
-  // deleteFromPortfolio: (ticker) => {},
-  addToWatches: (ticker) =>{},
   setUserProfile: (profile) => {},
   updateUserProfile: (profile) =>{},
+  updateProfileExt: ()=> {},
 
-  // deleteFromWatches: (ticker) =>{},
-  // addToExchangeAccounts: (account) => {},
-  // deleteFromExchangeAccounts: (account) => {},
-  // addToPaymentAccounts: (account) => {},
-  // deleteFromPaymentAccounts:() =>{},
+  isProfileLoading: false,
+  setIsProfileLoading: ()=>{},
+  
+  addToWatches: (ticker) =>{},
+  removeFromWatches: (ticker) =>{},
+  
+  updateExchangeAccounts: (exchangeAccounts) =>{},
+
+  getTickerCurrentPrice: (ticker) => {},
+  
+  populatePortfolioWithPriceAndValue: (portfolio) => {},
+
+  dealTickerAndUpdateUserProfile: (transaction) => {}, 
+
+  getAggregateBySymbolAndInterval: (symbol, interval) => {},
 
 })
 

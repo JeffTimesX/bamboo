@@ -1,0 +1,106 @@
+[
+{
+  "profile": { 
+    "auth": {
+      "nickname": "eleven",
+      "name": "eleven@eleven.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "eleven@eleven.com",
+      "email_verified": false,
+      "sub": "auth0|616a4aaacac37f00684a95d5"
+    },
+    "ext": { 
+      "first_name": "Seven",
+      "last_name": "Eleven",
+      "gender": "male",
+      "date_of_birth": "",
+      "occupation": "none"
+    }
+  },
+  "portfolio": [ "TSLA","AAPL","BABA" ],
+  "watches": [ "F","GM","FF" ],
+  "posts": [],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": []
+},
+{
+  "profile": { 
+    "auth": {
+      "nickname": "seven",
+      "name": "seven@seven.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "seven@seven.com",
+      "email_verified": false,
+      "sub": "auth0|626a4aaacac37f00684a95d5"
+    },
+    "ext": { 
+      "first_name": "One",
+      "last_name": "Seven",
+      "gender": "male",
+      "date_of_birth": "",
+      "occupation": "none"
+    }
+  },
+  "portfolio": [ "TSLA"],
+  "watches": [ "IBM" ],
+  "posts": [],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": []
+},
+{
+  "profile": { 
+    "auth": {
+      "nickname": "one",
+      "name": "one@one.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "one@one.com",
+      "email_verified": false,
+      "sub": "auth0|636a4aaacac37f00684a95d5"
+    },
+    "ext": { 
+      "first_name": "One",
+      "last_name": "Eleven",
+      "gender": "male",
+      "date_of_birth": "",
+      "occupation": "none"
+    }
+  },
+  "portfolio": [ "AAPL" ],
+  "watches": [ "BABA" ],
+  "posts": [],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": []
+},
+{
+  "profile": { 
+    "auth": {
+      "nickname": "two",
+      "name": "two@two.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "two@two.com",
+      "email_verified": false,
+      "sub": "auth0|646a4aaacac37f00684a95d5"
+    },
+    "ext": { 
+      "first_name": "Two",
+      "last_name": "Eleven",
+      "gender": "female",
+      "date_of_birth": "",
+      "occupation": "none"
+    }
+  },
+  "portfolio": [ "BABA" ],
+  "watches": [ "IBM" ],
+  "posts": [],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": []
+}
+]

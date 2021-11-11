@@ -1,4 +1,4 @@
-import { Nav, Button } from 'react-bootstrap'
+import { Nav } from 'react-bootstrap'
 
 import AuthenticationButton from './authentication-button';
 
@@ -11,7 +11,3 @@ export default function AuthNav(){
     </Nav>
   )
 }
-
-//<Button variant="outline-success">
-//        Login
-//      </Button>

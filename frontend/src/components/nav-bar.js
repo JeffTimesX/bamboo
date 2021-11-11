@@ -1,5 +1,5 @@
 
-import {Container, Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
+import {Container, Navbar} from 'react-bootstrap';
 
 import { MainNav, SearchNav, AuthNav } from '../components'
 

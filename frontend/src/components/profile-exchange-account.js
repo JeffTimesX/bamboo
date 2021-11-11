@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import React, { 
   useState, 
   useEffect,
@@ -21,15 +19,11 @@ import {
  } from '../components'
 
 
-
-export default function ProfileExchangeAccounts({ userId, Accounts }) {
+export default function ProfileExchangeAccounts({ userId, accounts }) {
 
   // get updateExchangeAccount() from Context, use it to update the exchange 
   // account list in the UserProfileContext
-  const { 
-    userProfile, 
-    updateExchangeAccounts 
-  } = useContext(UserProfileContext)
+  const { updateExchangeAccounts } = useContext(UserProfileContext)
 
   const Actions = {
     create: 'create',
@@ -39,10 +33,6 @@ export default function ProfileExchangeAccounts({ userId, Accounts }) {
     none: null
   }
   
-  
-  // init the local accounts data with the data from the context.
-  const [exchangeAccounts, setExchangeAccounts] = useState(Accounts)
-  
   // the trigger will be set by create, popup, remove actions to update data to backend
   const [action, setAction] = useState('')
   const [payload, setPayload] = useState({})
@@ -50,21 +40,15 @@ export default function ProfileExchangeAccounts({ userId, Accounts }) {
   // showing modal
   const [show, setShow] = useState(false)
   
-  // inputs come from create account modal.
-  const [createAccountInput, setCreateAccountInput] = useState({})
-  
-
-  // set the local [exchangeAccounts] state to updated data.
   // set the [action] state to none to toggle off the useEffect()
   function afterUpdateCallback(updatedExchangeAccounts){
     if(!updatedExchangeAccounts.error) {
-      setExchangeAccounts(updatedExchangeAccounts)
       setAction(Actions.none)
     } else {
       setAction(Actions.none)
+      window.alert(updatedExchangeAccounts.error)
       console.log(updatedExchangeAccounts)
-    }
-    
+    } 
   }
   
   // write the changes happened on the exchangeAccounts to backend 
@@ -79,7 +63,7 @@ export default function ProfileExchangeAccounts({ userId, Accounts }) {
       // the userProfile context is updated.
       // watch what does happen on the local exchangeAccounts[] if I don't 
       // call the setExchangeAccounts() in the callback
-      updateExchangeAccounts(action, payload, afterUpdateCallback )    
+      updateExchangeAccounts(action, payload, afterUpdateCallback )  
     }
 
   },[action])
@@ -97,7 +81,7 @@ export default function ProfileExchangeAccounts({ userId, Accounts }) {
         setPayload({
           user: userId,
           account_number: accountNumber,
-          amount: parseFloat(balance)
+          value: parseFloat(balance)
         })
         // trigger useEffect() to updateExchangeAccounts() with payload
         setAction(Actions.create)
@@ -124,14 +108,30 @@ export default function ProfileExchangeAccounts({ userId, Accounts }) {
     //calling out a modal and asking user to input accountId and 
     setShow(true)
   }
-  function handlePopup(accountId, amount){
-    window.alert('popup')
-  }
+  
+  // call the removeExchangeAccount() function to remove
   function handleDelete(accountId){
-    window.alert('delete')
+    setPayload({
+      user: userId, 
+      accountId: accountId, 
+      account_number: accounts.filter(account => account._id === accountId)[0].account_number
+    })
+    setAction(Actions.remove)
+
   }
+
   function handleHistory(accountId){
     window.alert('history')
+  }
+
+  function handlePopup(accountId, amount){
+    setPayload({
+      user: userId, 
+      accountId: accountId,
+      account_number: accounts.filter(account => account._id === accountId)[0].account_number,   
+      value: parseFloat(amount)
+    })
+    setAction(Actions.popup)
   }
 
   function handleGroupButtonsOnClick (e) {
@@ -139,7 +139,7 @@ export default function ProfileExchangeAccounts({ userId, Accounts }) {
     switch (e.target.name) {
       case 'delete': handleDelete(e.target.id); break
       case 'history': handleHistory(e.target.id); break
-      case 'popup': handlePopup(e.target.id); break
+      case 'popup': handlePopup(e.target.id, 99999); break
       default: window.alert('nothing')
     }
   }
@@ -174,7 +174,7 @@ return (
       </thead>
       <tbody>
         {
-          exchangeAccounts && exchangeAccounts.map((account, index) => {
+          accounts && accounts.map((account, index) => {
             return (
               <tr key={account._id}>
                 <td>{index +1}</td>
