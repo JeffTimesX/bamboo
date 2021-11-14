@@ -1,11 +1,8 @@
 // ticker-controller
-const async = require('async')
-const { DateTime } = require('luxon')
+
 const axios = require('axios')
 
 const Ticker = require('../models/ticker')
-const { response } = require('express')
-const { token } = require('morgan')
 
 // config for tickers source.
 const tickersEndpoint = process.env.POLYGON_TICKERS
@@ -13,7 +10,7 @@ const apiKey = process.env.POLYGON_API_KEY
 
 /**
  * searchTickers() returns an array of tickers which each of 
- * the ticker match the key/value pairs sent in the query string.
+ * the ticker match the key/value pairs sent in by the query string.
  */
  const searchTickers = function (req, res, next) {
   let filter ={}
@@ -41,7 +38,7 @@ const apiKey = process.env.POLYGON_API_KEY
  * getTickerById() returns the exact ticker which the _id 
  * matches he given searching id.
  */
- const getTickerById = function (req, res, next) {
+const getTickerById = function (req, res, next) {
   const _id = req.params.id
   Ticker
     .find({ "_id": _id })
@@ -115,7 +112,7 @@ const initTickers = async function (req, res, next) {
   }
   console.log("original cursor: ", cursor)
   do{
-    // let data = await getTickersWithDelay(2000)
+
     let { 
       results: tickers,
       status: status,
@@ -159,24 +156,13 @@ const initTickers = async function (req, res, next) {
   
 }
 
-const testRoute = function (req, res, next) {
-  console.log('req.url: ', req.url)
-  console.log('req.originUrl: ', req.originalUrl)
-  console.log('req.path: ', req.path)
-  console.log('req.params: ', req.params)
-  // console.log('req.query: ', req.query)
-  // console.log('req.route: ', req.route)
-  
-  // console.log('req.app: ', req.app)
-
-  res.json(req.route)
-}
 
 const getCurrentBySymbol = async function (req, res, next){
   const {symbol} = req.params
   const url = process.env.STOCK_DATA_API_URL + `/aggregate/${symbol}/5min`
   
   if(!symbol) return next(new Error({ message: 'ticker symbol missing.' }))
+
   const response = await axios.get(url)
   const aggregate = response.data.aggregate
   console.log("length of ts:", aggregate.ts.length)

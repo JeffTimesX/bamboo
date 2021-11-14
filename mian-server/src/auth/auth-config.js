@@ -2,10 +2,10 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const audience = process.env.STOCK_API_IDENTIFIER;
-const domain = process.env.AUTH0_DOMAIN;
-const serverPort = process.env.PORT;
-const clientOriginUrl = process.env.CLIENT_ORIGIN_URL;
+const audience = process.env.MAIN_API_IDENTIFIER
+const domain = process.env.AUTH0_DOMAIN
+const serverPort = process.env.PORT
+const clientOriginUrl = process.env.CLIENT_ORIGIN_URL
 
 if (!audience) {
   throw new Error(

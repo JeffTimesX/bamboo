@@ -81,7 +81,7 @@ function setStockOptions(symbol, ts) {
       }
     ]
   }
-  console.log('updateStockChartOptions: ', plotOptions)
+  // console.log('updateStockChartOptions: ', plotOptions)
   return plotOptions
 }
 
@@ -112,7 +112,7 @@ async function ChartOptionWithAggregate ( symbol, interval ){
         })
       })
       const results = await Promise.all(resultPromises)
-      console.log(results)
+      // console.log(results)
       setChartOptions(results)
     }
     readyCarouselChartOptions()

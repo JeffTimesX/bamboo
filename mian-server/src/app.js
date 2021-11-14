@@ -31,7 +31,7 @@ db.on('error', function () {
 })
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONT_END_DOMAIN,
   credentials: true, 
   preflightContinue: true,
   //methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

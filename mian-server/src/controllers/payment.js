@@ -10,6 +10,7 @@ const secret = crypto.randomBytes(64).toString('hex')
 const PaymentEndpoint = process.env.PAYMENT_ENDPOINT;
 const frontEndPaymentReturned = process.env.FRONT_END_PAYMENT_RETURNED
 const updateBalanceEndpoint = process.env.UPDATE_BALANCE_ENDPOINT
+
 async function createCheckoutSession (req, res, next) {
   
   const { 
@@ -22,7 +23,7 @@ async function createCheckoutSession (req, res, next) {
 
   const accessToken = req.headers.authorization.split(' ')[1]
   
-  console.log("createCheckoutSession() received accessToken : ", accessToken)
+  // console.log("createCheckoutSession() received accessToken : ", accessToken)
   // console.log('checkoutEndpoint.createCheckoutSession() req.body: ', req.body)
   
   // checking the input of the request.
@@ -150,7 +151,7 @@ async function checkPaymentResponse (req, res, next) {
 
       const updateExchangeAccountUrl = updateBalanceEndpoint + '/' + accountId
       
-      const response = axios.post(
+      const response = await axios.post(
         updateExchangeAccountUrl,
         {
           accountId: accountId,
@@ -158,7 +159,7 @@ async function checkPaymentResponse (req, res, next) {
           value: value
         },
         {
-          Authorization: `Bearer ${accessToken}`
+          headers: { Authorization: `Bearer ${accessToken}`}
         }
       )
 

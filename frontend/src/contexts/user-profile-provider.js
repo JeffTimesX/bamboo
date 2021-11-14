@@ -32,6 +32,8 @@ export default function UserProfileProvider({ backendUrl, stockApiUrl, postApiUr
   const watchesEndpoint = backendUrl + '/user/watches/'
   // aggregate Endpoint
   const aggregateEndpoint = stockApiUrl + '/aggregate/'
+  // checkout with stripe endpoint
+  const checkoutEndpoint = backendUrl + '/payment/checkout'
 
 
   // user profile state will be enclosed in the context.
@@ -40,6 +42,7 @@ export default function UserProfileProvider({ backendUrl, stockApiUrl, postApiUr
   // indicator to postpone the renders of components to wait the profile loading.
   const [isProfileLoading, setIsProfileLoading] = useState(false)
   const [isProfileLoaded, setIsProfileLoaded] = useState(false)
+
 
 
 // loading the user profile 
@@ -84,8 +87,13 @@ useEffect(() => {
   // call GET /user/user/:sub to get the user profile.
   async function getUserProfile( userId ) {
 
+    const token = await getAccessTokenSilently()
+
     if(!userId) return ({error:'userId is not provided.'})
-    const response = await axios.get(userEndPoint + userId)
+    const response = await axios.get(
+      userEndPoint + userId,
+      { headers: { Authorization: `Bearer ${token}` }}
+      )
     const updatedUserProfile = response.data
     return updatedUserProfile
   }
@@ -109,7 +117,6 @@ async function updateUserProfile(user){
   // GET user/user/:sub 
   const firstCheck = await axios.get(
     userEndPoint + user.profile.auth.sub, 
-    user,
     { headers: { Authorization: `Bearer ${token}` }}
   )
   let checked = firstCheck.data
@@ -493,7 +500,9 @@ async function updateExchangeAccounts(operation, payload, afterUpdateCallback ){
 
 // get ticker current price
 async function getTickerCurrentPrice(ticker){
+
   const token = await getAccessTokenSilently()
+
   const response = await axios.get(
     tickerCurrentPriceEndpoint + ticker,
     {headers: { Authorization: `Bearer ${token}` }}
@@ -538,13 +547,37 @@ async function getAggregateBySymbolAndInterval(symbol, interval) {
   
   const path = aggregateEndpoint + symbol + '/' + interval
   
-  // const token = await getAccessTokenSilently()
+  const token = await getAccessTokenSilently()
+
   return axios.get(
     path,
-  //  { headers: { Authorization: `Bearer ${token}` }}
+    { headers: { Authorization: `Bearer ${token}` }}
     )
 }
 
+async function checkoutWithStripe(payload){
+      
+  const token = await getAccessTokenSilently()
+
+  const response = await axios.post(
+    checkoutEndpoint,
+    payload, 
+    { 
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        "Content-Type": 'application/json'
+      },
+      withCredentials: true
+    }
+  )
+
+  const checkoutSessionUrl = response.data.url
+
+  // console.log("checkoutSessionUrl: ", checkoutSessionUrl)
+  
+  window.location = checkoutSessionUrl
+
+}
 const contextValue = {
     userProfile,
     setUserProfile,
@@ -566,6 +599,8 @@ const contextValue = {
     getTickerCurrentPrice,
 
     getAggregateBySymbolAndInterval,
+
+    checkoutWithStripe,
   
   }
 

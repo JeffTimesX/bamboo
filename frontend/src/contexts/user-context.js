@@ -24,6 +24,8 @@ const UserProfileContext = React.createContext({
 
   getAggregateBySymbolAndInterval: (symbol, interval) => {},
 
+  checkoutWithStripe:  (payload) => {},
+
 })
 
 export default UserProfileContext

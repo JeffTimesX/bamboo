@@ -9,8 +9,9 @@ const ProtectedRoute = ({component, ...args}) => {
       component={ withAuthenticationRequired( component, 
         {
           onRedirecting: () => <Loading />,
-          returnTo: '/authorized'
-        })}
+          //returnTo: '/authorized'
+        })
+      }
       {...args}
     />
   )

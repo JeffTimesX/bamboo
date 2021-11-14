@@ -16,20 +16,17 @@ import {
 import { 
   AccountActionsButtonGroup,
   CreateAccountInputModal,
- } from '../components'
-
-
-import axios from 'axios'
-
-import { useAuth0 } from '@auth0/auth0-react' 
-
+} from '../components'
 
 
 export default function ProfileExchangeAccountsWithStripe({ userId, accounts }) {
 
   // get updateExchangeAccount() from Context, use it to update the exchange 
   // account list in the UserProfileContext
-  const { updateExchangeAccounts } = useContext(UserProfileContext)
+  const { 
+    updateExchangeAccounts,
+    checkoutWithStripe,
+  } = useContext(UserProfileContext)
 
   const Operations = {
     create: 'create',
@@ -44,8 +41,6 @@ export default function ProfileExchangeAccountsWithStripe({ userId, accounts }) 
     close: 'close', 
     none: null
   }
-
-  const {getAccessTokenSilently} = useAuth0();
   
 
   // the payload be sent to backend to process.
@@ -74,38 +69,7 @@ export default function ProfileExchangeAccountsWithStripe({ userId, accounts }) 
     } 
   }
   
-  // will be moved into user-profile-provider.
-  async function checkoutWithStripe(payload){
-    
-    window.alert('checkoutWithStripe() is calling.')
-    
-    const checkoutEndpoint = process.env.REACT_APP_BACKEND_URL + '/payment/checkout'
-    const token = await getAccessTokenSilently()
-
-    // will get the url to access the created stripe checkout session.
-    
-    // axios.defaults.withCredentials = true;
-
-    const response = await axios.post(
-      checkoutEndpoint,
-      payload, 
-      { 
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          "Content-Type": 'application/json'
-        },
-        withCredentials: true
-      }
-    )
-
-    const checkoutSessionUrl = response.data.url
-
-    console.log("checkoutSessionUrl: ", checkoutSessionUrl)
-   
-    window.location = checkoutSessionUrl
-
-  }
-
+  
 useEffect(()=>{
 
   // put all the following into an async function

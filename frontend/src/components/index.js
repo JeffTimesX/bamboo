@@ -8,7 +8,6 @@ import ProfileExt from './profile-ext'
 import StockChart from './stock-chart'
 import Loading from "./loading"
 import ProtectedRoute from "./protected-route"
-import ProfileExchangeAccounts from "./profile-exchange-account"
 import AccountActionsButtonGroup from "./account-actions-button-group"
 import CreateAccountInputModal from './modal-create-account-input'
 import WatchesTable from './watches-table'
@@ -33,7 +32,6 @@ export {
 
   PortfolioAccountSection,
   
-  ProfileExchangeAccounts,
   ProfileExchangeAccountsWithStripe,
   ProtectedRoute,
 
