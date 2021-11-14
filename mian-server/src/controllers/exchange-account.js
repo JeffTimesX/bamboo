@@ -125,7 +125,8 @@ function updateBalance(req, res, next){
         { _id: accountId, account_number: account_number },
         { 
           "$inc": { balance: value },
-          "$push": {transactions: { 
+          "$push": { 
+            transactions: { 
               issue_at: DateTime.now().toISO(),
               ticker: "Transfer",
               value: parseFloat(value), 
@@ -140,6 +141,7 @@ function updateBalance(req, res, next){
           console.log('update balance error: ',err.message)
           return next(err)
         }
+        console.log('updated account: ', account)
         return res.json(account)
       })
   } else {

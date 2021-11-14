@@ -18,7 +18,9 @@ import {
   Portfolio,
   Profile, 
   Watches,
-  WrapperTickerDetail
+  WrapperTickerDetail,
+  PaymentStripe,
+  PaymentResponse
 } from './views';
 
 import { 
@@ -36,9 +38,9 @@ export default function App() {
   const {isAuthenticated} = useAuth0()
 
   
-  console.log('App() checking isAuthorized: ', isAuthenticated)
-  console.log('App() checking isProfileLoading: ', isProfileLoading)
-  console.log('App() checking isProfileLoaded: ', isProfileLoaded)
+  // console.log('App() checking isAuthorized: ', isAuthenticated)
+  // console.log('App() checking isProfileLoading: ', isProfileLoading)
+  // console.log('App() checking isProfileLoaded: ', isProfileLoaded)
 
 
   return (!isAuthenticated || isProfileLoaded) ? (
@@ -53,6 +55,8 @@ export default function App() {
             <ProtectedRoute path="/profile" component={ Profile } />
             <Route path="/ticker-detail/:ticker" component={ WrapperTickerDetail } />
             <ProtectedRoute path="/authorized" component={ AfterAuthorization } />
+            <Route path='/checkout' component={ PaymentStripe } />
+            <Route path='/payment/returned/:status' component={ PaymentResponse } />
           </Switch>
         </div>
       </Container>

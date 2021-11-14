@@ -18,6 +18,7 @@ import {
   ProfileAuth,
   ProfileExt,
   ProfileExchangeAccounts,
+  ProfileExchangeAccountsWithStripe,
 } from '../components'
 
 // to be replaced by UserProfileContext which defined in UserProfileProvider
@@ -122,7 +123,7 @@ export default function Profile () {
       <hr />
 
       {/* exchange accounts */}
-      <ProfileExchangeAccounts 
+      <ProfileExchangeAccountsWithStripe 
         userId={ userProfile._id }
         accounts={ userProfile.exchangeAccounts }
       />

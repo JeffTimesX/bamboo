@@ -10,8 +10,8 @@ export default function MainNav() {
       <LinkContainer to='/watches'>
         <Nav.Link className="ms-3">Watches</Nav.Link>
       </LinkContainer>  
-      <LinkContainer to='/deals'>
-        <Nav.Link className="ms-3">Stocker</Nav.Link>
+      <LinkContainer to='/checkout'>
+        <Nav.Link className="ms-3">Payment</Nav.Link>
       </LinkContainer>
       <LinkContainer to='/profile'>
         <Nav.Link className="ms-3">Account</Nav.Link>

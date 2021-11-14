@@ -1,7 +1,11 @@
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+
 import React, {useState, useEffect} from 'react'
 
 import {
   Modal, 
+  Form,
   Row,  
   Button, 
   Container, 
@@ -9,7 +13,7 @@ import {
   FormControl
 } from 'react-bootstrap'
 
-export default function CreateAccountInputModal({
+function AccountInputFormModal({
   show, 
   operation, // create, popup, remove
   initAccountId,  // null or an given accountNumber
@@ -96,4 +100,34 @@ export default function CreateAccountInputModal({
       </Modal>
     </>
   );
+}
+
+
+
+export default function ProductDisplay(){ 
+
+  return (
+    <div>
+      <div className="product">
+        <img
+          src="https://i.imgur.com/EHyR2nP.png"
+          alt="The cover of Stubborn Attachments"
+        />
+        <div className="description">
+        <h3>Popup Account: 7788850355</h3>
+        <h5>Amount: $20000.00</h5>
+        </div>
+      </div>
+      <form action="http://localhost:5050/payment/checkout" method="POST">
+        <input name='currency' type='text' value='USD' />
+        <input name='account_number' type='text' value='7788850355' />
+        <input name='value' type='number' value='20000' />
+        <input name="accountId" type='text' value='34234f' />
+        <input name='user' type='text' value='1234567890' />
+        <button type="submit">
+          Checkout
+        </button>
+      </form>
+    </div>
+  )
 }

@@ -4,6 +4,8 @@ import TickerDetail from './ticker-detail';
 import WrapperTickerDetail from './ticker-detail-wrapped'
 import Portfolio from './portfolio'
 import Watches from './watches'
+import PaymentStripe from './payment-stripe'
+import PaymentResponse from './payment-response';
 
 export {
   Home,
@@ -12,5 +14,7 @@ export {
   TickerDetail,
   Watches,
   WrapperTickerDetail,
+  PaymentStripe,
+  PaymentResponse,
   
 }

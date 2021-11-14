@@ -5,7 +5,11 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const helmet = require('helmet')
 const logger = require('./util/logger')
+const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
+
 require('dotenv').config()
+
 
 const baseRouter = require('./routes/router')
 
@@ -26,12 +30,19 @@ db.on('error', function () {
     console.error.bind(console, 'MongoDB connection error.')
 })
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true, 
+  preflightContinue: true,
+  //methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  //optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 app.use(logger.dev, logger.combined)
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(cors('*'))
+app.use(cors(corsOptions))
 app.use(helmet())
 
 app.use('/', baseRouter)

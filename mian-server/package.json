@@ -25,7 +25,8 @@
     "mongodb": "^4.1.1",
     "mongoose": "^6.0.4",
     "morgan": "~1.9.1",
-    "rotating-file-stream": "^2.1.6"
+    "rotating-file-stream": "^2.1.6",
+    "stripe": "^8.186.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.14"

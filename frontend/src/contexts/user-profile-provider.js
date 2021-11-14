@@ -47,21 +47,21 @@ useEffect(() => {
   
   async function initUserProfile() {
     
-    console.log('UserProfileProvider().initUserProfile() checking authProfile in useEffect() before calling updateUserProfile(): ', authProfile)
-    console.log('UserProfileProvider().initUserProfile() checking userProfiler state before calling updateUserProfile(): ', userProfile)
+    // console.log('UserProfileProvider().initUserProfile() checking authProfile in useEffect() before calling updateUserProfile(): ', authProfile)
+    // console.log('UserProfileProvider().initUserProfile() checking userProfiler state before calling updateUserProfile(): ', userProfile)
     
     const result = await updateUserProfile({profile:{auth:authProfile}})
     
-    console.log('UserProfileProvider().initUserProfile() received returned user profiler from updateUserProfile(): ', result)
-    console.log('UserProfileProvider().initUserProfile() checking userProfiler state immediately after called updateUserProfile():', userProfile)
+    // console.log('UserProfileProvider().initUserProfile() received returned user profiler from updateUserProfile(): ', result)
+    // console.log('UserProfileProvider().initUserProfile() checking userProfiler state immediately after called updateUserProfile():', userProfile)
     
     setIsProfileLoading(false)
     setIsProfileLoaded(true)
   }
 
-  console.log('UserProfileProvider().useEffect() checking isAuthenticated: ', isAuthenticated)
-  console.log('UserProfileProvider().useEffect() checking isProfileLoading: ', isProfileLoading)
-  console.log('UserProfileProvider().useEffect() checking isProfileLaded: ', isProfileLoaded)
+  // console.log('UserProfileProvider().useEffect() checking isAuthenticated: ', isAuthenticated)
+  // console.log('UserProfileProvider().useEffect() checking isProfileLoading: ', isProfileLoading)
+  // console.log('UserProfileProvider().useEffect() checking isProfileLaded: ', isProfileLoaded)
 
   if(isAuthenticated){
 
@@ -69,13 +69,13 @@ useEffect(() => {
 
     setUserProfile({profile: {auth:authProfile}})
 
-    console.log('userProfileProvider().useEffect() calling initUserProfile()')
+    // console.log('userProfileProvider().useEffect() calling initUserProfile()')
 
     initUserProfile()
 
-    console.log('after userProfileProvider().useEffect().init() called checking isAuthenticated: ',isAuthenticated)
-    console.log('after userProfileProvider().useEffect().init() called checking isProfileLoading: ',isProfileLoading)
-    console.log('after userProfileProvider().useEffect().init() called checking isProfileLoaded: ',isProfileLoaded)
+    // console.log('after userProfileProvider().useEffect().init() called checking isAuthenticated: ',isAuthenticated)
+    // console.log('after userProfileProvider().useEffect().init() called checking isProfileLoading: ',isProfileLoading)
+    // console.log('after userProfileProvider().useEffect().init() called checking isProfileLoaded: ',isProfileLoaded)
   }
     
 },[isAuthenticated])
@@ -94,14 +94,14 @@ useEffect(() => {
 // corresponding document and returns the full updated profile document.
 async function updateUserProfile(user){
 
-  console.log('updateUserProfile received input UserProfile: ', user)
+  // console.log('updateUserProfile received input UserProfile: ', user)
 
   if(!isAuthenticated || 
     !user || 
     !user.profile || 
     !user.profile.auth || 
     !user.profile.auth.sub ) {
-    console.log("UserProfileProvider().updateUserProfile() reports error: user does not login, nothing to update.")
+    // console.log("UserProfileProvider().updateUserProfile() reports error: user does not login, nothing to update.")
     return
   }
   const token = await getAccessTokenSilently()
@@ -305,16 +305,16 @@ async function dealTickerAndUpdateUserProfile(transaction){
   
   if( !accountId || !ticker ||
     !price || !amount || !type ){
-      console.log('UserProfileProvider().dealTicker() report error: params are missing.')
+      // console.log('UserProfileProvider().dealTicker() report error: params are missing.')
       return ({error: 'dealTicker() report error: parameters are missing'})
   } else if( type ==='buy' && !checkBalance(accountId, parseInt(amount)*parseFloat(price))){
 
-    console.log(`UserProfileProvider().dealTicker() report error: the balance  of accountId ${accountId} is not enough to pay the transaction.`)
+    // console.log(`UserProfileProvider().dealTicker() report error: the balance  of accountId ${accountId} is not enough to pay the transaction.`)
     return ({error: 'insufficient balance'})
 
   } else if(type === 'sell' && !checkInventory(accountId, ticker, amount)){
     
-    console.log(`UserProfileProvider().dealTicker() report error: the inventory  of ${ticker} is not enough to sell.`)
+    // console.log(`UserProfileProvider().dealTicker() report error: the inventory  of ${ticker} is not enough to sell.`)
     return ({error: 'insufficient inventory'})
   
   } else {
@@ -330,11 +330,11 @@ async function dealTickerAndUpdateUserProfile(transaction){
     const updatedExchangeAccount = response.data
     
     if(updatedExchangeAccount.error) {
-      console.log("UserProfileProvider().dealTicker() report error: ", updatedExchangeAccount.error)
+      // console.log("UserProfileProvider().dealTicker() report error: ", updatedExchangeAccount.error)
       return {error: 'deal ticker failed, update exchange account failed.'}
     }
     
-    console.log('UserProfileProvider().dealTicker() received updated Exchange Account: ', updatedExchangeAccount)
+    // console.log('UserProfileProvider().dealTicker() received updated Exchange Account: ', updatedExchangeAccount)
     
     // get the related user id 
     const userId = updatedExchangeAccount.user
@@ -343,11 +343,11 @@ async function dealTickerAndUpdateUserProfile(transaction){
     const updatedUserProfile = await getUserProfile(userId)
 
     if(updatedUserProfile.error) {
-      console.log('UserProfileProvider().dealTicker() received error: ', updatedUserProfile.error)
+      // console.log('UserProfileProvider().dealTicker() received error: ', updatedUserProfile.error)
       return {error: 'deal ticker failed, update user profile failed.'}
     }
 
-    console.log("UserProfileProvider().dealTicker:() received updated User Profile: ", updatedUserProfile)
+    // console.log("UserProfileProvider().dealTicker:() received updated User Profile: ", updatedUserProfile)
 
     // update the userProfile context
     setUserProfile(updatedUserProfile)
@@ -358,26 +358,29 @@ async function dealTickerAndUpdateUserProfile(transaction){
 }
 
 // update exchange account.
-async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
-  
-  console.log('UserProfileProvider().updateExchangeAccounts() received action: ', action)
-  console.log("UserProfileProvider().updateExchangeAccounts() received payload: ", payload)
+// payload: {user, accountId, account_number, value}
+// when create: accountId should be null
 
-  switch (action){
+async function updateExchangeAccounts(operation, payload, afterUpdateCallback ){
+  
+  // console.log('UserProfileProvider().updateExchangeAccounts() received action: ', operation)
+  // console.log("UserProfileProvider().updateExchangeAccounts() received payload: ", payload)
+
+  switch (operation){
     case 'create' : {
       // checking the account_number passed by the payload, if it does not provided
       // or it exists in the current exchangeAccounts[] of the userProfile context
       // returns the feedback with error error.
       if(!payload || !payload.account_number ) {
         
-        console.log('UserProfileProvider().updateExchangeAccounts() -create- report error: account_number does not provided.')
+        // console.log('UserProfileProvider().updateExchangeAccounts() -create- report error: account_number does not provided.')
         afterUpdateCallback({error:'account_number does not provided.'})
         break
 
       } else if (userProfile.exchangeAccounts.filter(
         account => account.account_number === payload.account_number)[0]){
         
-        console.log('UserProfileProvider().updateExchangeAccounts() report error: account already exists.')
+        // console.log('UserProfileProvider().updateExchangeAccounts() report error: account already exists.')
         afterUpdateCallback({error:'account already exists.'})
         break
 
@@ -385,18 +388,21 @@ async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
         // otherwise, axios.post() to send a request to the backend to create an account,
         // then setUserProfile() with the returned userProfile
         // then feedbacks an updated exchangeAccounts[] to the caller.
+
+        // console.log('UserProfileProvider().updateExchangeAccounts() check payload: ', payload)
+        
         const updatedUserProfile = await createExchangeAccount(userProfile._id, payload)
                 
         // createExchangeAccount() returned an updated userProfile
         if(!updatedUserProfile.error){
 
-          console.log("UserProfileProvider().updateExchangeAccounts() -create- received updated user profile:  ", updatedUserProfile)
+          // console.log("UserProfileProvider().updateExchangeAccounts() -create- received updated user profile:  ", updatedUserProfile)
 
           setUserProfile(updatedUserProfile)
           afterUpdateCallback(updatedUserProfile.exchangeAccounts)
         } else {
           // or not.
-          console.log("UserProfileProvider().updateExchangeAccounts() -create- received updated failure: ", updatedUserProfile)
+          // console.log("UserProfileProvider().updateExchangeAccounts() -create- received updated failure: ", updatedUserProfile)
 
           afterUpdateCallback({error:'create account failure.'})
         }
@@ -406,14 +412,14 @@ async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
     case 'remove' : {
       if(!payload || !payload.accountId){
 
-        console.log('UserProfileProvider().updateExchangeAccounts() -remove- report error: accountId does not provided.')
+        // console.log('UserProfileProvider().updateExchangeAccounts() -remove- report error: accountId does not provided.')
 
         afterUpdateCallback({error:'accountId does not provided.'})
         break
       } else if(!userProfile.exchangeAccounts.filter(
         account => account._id === payload.accountId)[0]){
         
-        console.log('UserProfileProvider().updateExchangeAccounts() -remove- report error: account does not exist.')
+        // console.log('UserProfileProvider().updateExchangeAccounts() -remove- report error: account does not exist.')
 
         afterUpdateCallback({error:'account does not exist.'})
         break
@@ -422,13 +428,13 @@ async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
         const updatedUserProfile = await removeExchangeAccount(userProfile._id, payload)
         if(!updatedUserProfile.error){
           
-          console.log("UserProfileProvider().updateExchangeAccounts() -remove- received updated user profile: ", updatedUserProfile)
+          // console.log("UserProfileProvider().updateExchangeAccounts() -remove- received updated user profile: ", updatedUserProfile)
 
           setUserProfile(updatedUserProfile)
           afterUpdateCallback(updatedUserProfile.exchangeAccounts)
         } else {
 
-          console.log("UserProfileProvider().updateExchangeAccounts() -remove- received error:", updatedUserProfile)
+          // console.log("UserProfileProvider().updateExchangeAccounts() -remove- received error:", updatedUserProfile)
           
           afterUpdateCallback({error:'remove account failure.'})
         }
@@ -440,14 +446,14 @@ async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
         !payload.accountId || 
         !payload.value){
 
-        console.log('UserProfileProvider().updateExchangeAccounts() -popup- report error: accountId or amount does not provided.')
+        // console.log('UserProfileProvider().updateExchangeAccounts() -popup- report error: accountId or amount does not provided.')
 
         afterUpdateCallback({error:'accountId or amount does not provided.'})
         break
       } else if(!userProfile.exchangeAccounts.filter(
         account => account._id === payload.accountId)[0]){
         
-        console.log('UserProfileProvider().updateExchangeAccounts() -popup- report error: account does not exist.')
+        // console.log('UserProfileProvider().updateExchangeAccounts() -popup- report error: account does not exist.')
 
         afterUpdateCallback({error:'account does not exist.'})
         break
@@ -456,7 +462,7 @@ async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
         const updatedAccount = await popupExchangeAccount(userProfile._id, payload)
         if(!updatedAccount.error){
 
-          console.log("UserProfileProvider().updateExchangeAccounts() -popup- received updated account : ", updatedAccount)
+          // console.log("UserProfileProvider().updateExchangeAccounts() -popup- received updated account : ", updatedAccount)
 
           const index = userProfile.exchangeAccounts.findIndex((account) => account._id === updatedAccount._id)
 
@@ -467,13 +473,13 @@ async function updateExchangeAccounts(action, payload, afterUpdateCallback ){
             ...userProfile,
             exchangeAccounts: updatedAccounts
           }
-          console.log("UserProfileProvider().updateExchangeAccounts() -popup- received updated User Profile: ", updatedUserProfile) 
+          // console.log("UserProfileProvider().updateExchangeAccounts() -popup- received updated User Profile: ", updatedUserProfile) 
 
           setUserProfile(updatedUserProfile)
           afterUpdateCallback(updatedUserProfile.exchangeAccounts)
         } else {
 
-          console.log("UserProfileProvider().updateExchangeAccounts() -popup- received updating account error: ", updatedAccount)
+          // console.log("UserProfileProvider().updateExchangeAccounts() -popup- received updating account error: ", updatedAccount)
 
           afterUpdateCallback({error:'popup account failure.'})
         }
@@ -510,7 +516,7 @@ async function populatePortfolioWithPriceAndValue(portfolio){
   const responses = await Promise.all(promises)
   const portfolioWithPrice = responses.map(response => response.data)
   
-  console.log('UserProfileProvider().populatePortfolioWithPriceAndValue() received portfolio with price populated: ', portfolioWithPrice)
+  // console.log('UserProfileProvider().populatePortfolioWithPriceAndValue() received portfolio with price populated: ', portfolioWithPrice)
   
     const portfolioWithPriceAndValue = portfolio.map(ticker => {
       const filtered = portfolioWithPrice.filter(t => t.ticker === ticker.ticker)[0]
@@ -522,7 +528,7 @@ async function populatePortfolioWithPriceAndValue(portfolio){
       }
     })
   
-  console.log('UserProfileProvider().populatePortfolioWithPriceAndValue() returns: ', portfolioWithPriceAndValue)
+  // console.log('UserProfileProvider().populatePortfolioWithPriceAndValue() returns: ', portfolioWithPriceAndValue)
 
   return portfolioWithPriceAndValue
 }

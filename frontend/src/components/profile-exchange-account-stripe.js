@@ -21,8 +21,11 @@ import {
 
 import axios from 'axios'
 
+import { useAuth0 } from '@auth0/auth0-react' 
 
-export default function ProfileExchangeAccounts({ userId, accounts }) {
+
+
+export default function ProfileExchangeAccountsWithStripe({ userId, accounts }) {
 
   // get updateExchangeAccount() from Context, use it to update the exchange 
   // account list in the UserProfileContext
@@ -42,7 +45,7 @@ export default function ProfileExchangeAccounts({ userId, accounts }) {
     none: null
   }
 
-  
+  const {getAccessTokenSilently} = useAuth0();
   
 
   // the payload be sent to backend to process.
@@ -63,41 +66,161 @@ export default function ProfileExchangeAccounts({ userId, accounts }) {
   function afterUpdateCallback(updatedExchangeAccounts){
     if(!updatedExchangeAccounts.error) {
       window.alert('Exchange Account updated successfully.')
-      //setOperation(Operations.none)
+      
     } else {
-      //setOperation(Actions.none)
+      
       window.alert(updatedExchangeAccounts.error)
       console.log(updatedExchangeAccounts)
     } 
   }
   
-
-
-  // write the changes happened on the exchangeAccounts to backend 
-  // and userProfile context as well
-  useEffect(()=>{
+  // will be moved into user-profile-provider.
+  async function checkoutWithStripe(payload){
     
-    //console.log('useEffect)() checking operation: ', operation)
+    window.alert('checkoutWithStripe() is calling.')
+    
+    const checkoutEndpoint = process.env.REACT_APP_BACKEND_URL + '/payment/checkout'
+    const token = await getAccessTokenSilently()
 
+    // will get the url to access the created stripe checkout session.
+    
+    // axios.defaults.withCredentials = true;
+
+    const response = await axios.post(
+      checkoutEndpoint,
+      payload, 
+      { 
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": 'application/json'
+        },
+        withCredentials: true
+      }
+    )
+
+    const checkoutSessionUrl = response.data.url
+
+    console.log("checkoutSessionUrl: ", checkoutSessionUrl)
+   
+    window.location = checkoutSessionUrl
+
+  }
+
+useEffect(()=>{
+
+  // put all the following into an async function
+
+  async function updateExchangeAccountsWithStripe(){
     if(operation){
-      console.log('useEffect() checking operation: ', operation)
-      console.log("payload: ", payload)
 
-    
+      console.log('check payload: ', payload)
+  
+      const {
+        user, 
+        accountId,
+        account_number,
+        value
+      } = payload
 
-      // call the updateExchangeAccounts() interface referred from UserProfileContext
-      // pass 'action', 'payload' to update the changes to backend as well as the 
-      // userProfile context. 
-      // the callback is used to update local [exchangeAccounts] state after
-      // the userProfile context is updated.
-      // watch what does happen on the local exchangeAccounts[] if I don't 
-      // call the setExchangeAccounts() in the callback
-      updateExchangeAccounts(operation, payload, afterUpdateCallback )  
-      setOperation(Operations.none)
 
+      // remove operation
+      if(operation === Operations.remove){
+        updateExchangeAccounts(operation, payload, afterUpdateCallback)
+        setOperation(Operations.none)
+        return
+      }
+
+      /**
+       *  * possible create account and popup conditions:
+       * c1. receive a request to create a new exchange account with 0 init balance
+       * c2. a create request with inti balance
+       * c3. a popup request with balance
+       * c4. a popup request with 0 balance
+       * 
+       * if c1, create account to backend but without calling stripe api. then
+       * if c4, return without any action.
+       * if c3, pass the payload to /payment/checkout endpoint.
+       * if c2, create a new exchange account with the given accountNumber
+       * and zero balance, then fill up all the information to the payload
+       * and pass the payload to payment/checkout endpoint to popup account.
+       */
+
+      if (accountId && value === 0){ // c4
+        window.alert('woops, popup 0 balance to account.')
+        setOperation(Operations.none)
+        return
+      
+      } else if (!accountId && value ===0) { // c1
+        
+        updateExchangeAccounts(operation, payload, afterUpdateCallback)
+        setOperation(Operations.none)
+        return
+      
+      } else if (accountId && value > 0) { // c3
+        
+        const payloadWithCurrency = {
+          ...payload,
+          currency: 'USD'
+        }
+        // call the /payment/checkout endpoint with payload.
+        // the endpoint should receive the turn back from stripe
+        // and update the exchange account, then redirect the 
+        // user agent to the /payment/returned/:status path.
+        // the /payment/returned/:status pass shows up the result
+        // and redirect user agent to /profile path.
+        checkoutWithStripe(payloadWithCurrency)
+        setOperation(Operations.none)
+        return
+
+      } else if (!accountId && value > 0) { // c2
+  
+        // call updateExchangeAccounts first with zero value
+        // then in the callback send request to the /payment/checkout
+        // endpoint. 
+        
+        // set zero value payload
+        const zeroValuePayload = {
+          ...payload,
+          value: 0
+        }
+  
+        console.log('zeroValuePayload: ', zeroValuePayload)
+        
+        updateExchangeAccounts(operation, zeroValuePayload, function (updatedExchangeAccounts){
+          if(updateExchangeAccounts.error){
+            window.alert(updateExchangeAccounts.error)
+            setOperation(Operations.none)
+            return
+          } else {
+  
+            console.log('updatedExchangeAccounts after creating zeroValuePayload: ', updatedExchangeAccounts)
+  
+            // get the accountId of the new account which created with the given account_number
+            const createdAccountId = updatedExchangeAccounts.filter(account=>account.account_number === account_number)[0]._id
+            
+            // new payload
+            const newPayloadWithCurrency = {
+              ...payload,
+              accountId: createdAccountId,
+              currency: 'USD'
+            }
+  
+            console.log('after create zero init balance new payload: ', newPayloadWithCurrency)
+  
+            // call the payment/checkout endpoint with new payload
+            checkoutWithStripe(newPayloadWithCurrency)  
+            setOperation(Operations.none)
+            return
+          }
+        })
+      }
     }
+  }
 
-  },[operation])
+  updateExchangeAccountsWithStripe()
+
+},[operation])
+
   
   // it is called by input modal's cancel or confirm button,
   // action, accountNumber, balance params passed in.
