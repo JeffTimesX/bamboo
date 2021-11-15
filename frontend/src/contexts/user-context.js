@@ -26,6 +26,8 @@ const UserProfileContext = React.createContext({
 
   checkoutWithStripe:  (payload) => {},
 
+  getNewsFromPolygon: () => {},
+
 })
 
 export default UserProfileContext

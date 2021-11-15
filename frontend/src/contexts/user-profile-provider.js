@@ -34,7 +34,8 @@ export default function UserProfileProvider({ backendUrl, stockApiUrl, postApiUr
   const aggregateEndpoint = stockApiUrl + '/aggregate/'
   // checkout with stripe endpoint
   const checkoutEndpoint = backendUrl + '/payment/checkout'
-
+  // polygon.io news endpoint
+  const polygonNewsEndpoint = process.env.REACT_APP_NEWS_API_URL
 
   // user profile state will be enclosed in the context.
   const [userProfile, setUserProfile] = useState({})
@@ -578,6 +579,15 @@ async function checkoutWithStripe(payload){
   window.location = checkoutSessionUrl
 
 }
+
+async function getNewsFromPolygon(){
+  const response = await axios.get(polygonNewsEndpoint)
+  const news = response.data
+  //console.log('getNewsFromPolygon: ', news)
+  return news
+}
+
+
 const contextValue = {
     userProfile,
     setUserProfile,
@@ -599,6 +609,8 @@ const contextValue = {
     getTickerCurrentPrice,
 
     getAggregateBySymbolAndInterval,
+    
+    getNewsFromPolygon,
 
     checkoutWithStripe,
   

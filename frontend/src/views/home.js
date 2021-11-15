@@ -1,5 +1,5 @@
 import { Container, Row, Col} from 'react-bootstrap'
-import { IndexCarousel } from '../components'
+import { IndexCarousel, NewsBlock } from '../components'
 
 export default function Home () {
 
@@ -18,12 +18,7 @@ export default function Home () {
           <Row className="pu-5 pd-5 ">
             <h3>News</h3>
           </Row>
-          <hr />
-          <hr />
-          <hr />
-          <hr />
-          <hr />
-          <hr />
+          <NewsBlock />
         </Col>
         <Col >
           <Row className="pu-5 pd-5 ">

@@ -55,7 +55,7 @@ export default function App() {
             <ProtectedRoute path="/profile" component={ Profile } />
             <Route path="/ticker-detail/:ticker" component={ WrapperTickerDetail } />
             <ProtectedRoute path="/authorized" component={ AfterAuthorization } />
-            <Route path='/checkout' component={ PaymentStripe } />
+            <Route path='/post' component={ PaymentStripe } />
             <Route path='/payment/returned/:status' component={ PaymentResponse } />
           </Switch>
         </div>

@@ -14,6 +14,7 @@ import WatchesTable from './watches-table'
 import DealInputModal from './modal-deal-input'
 import PortfolioAccountSection from "./portfolio-account-section"
 import ProfileExchangeAccountsWithStripe from './profile-exchange-account-stripe'
+import NewsBlock from './news-block'
 
 
 export { 
@@ -25,6 +26,7 @@ export {
   Loading,
   MainNav,
   NavBar,
+  NewsBlock,
   ProfileAuth,
   ProfileExt, 
   SearchNav,
