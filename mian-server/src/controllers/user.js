@@ -68,6 +68,8 @@ function updateWatches(req, res, next){
     })
 }
 
+
+
 const getPosts = function (req, res, next) {
 
   if(!req.params || !req.params.userId){
@@ -76,19 +78,20 @@ const getPosts = function (req, res, next) {
   const { userId } = req.params
 
   let filter={}
-  if ( userId.includes('auth0|')) {
+  if ( userId.includes('auth0|') ) {
     filter = { "profile.auth.sub": userId } 
   }else{
     filter = { _id: userId } 
   }
   
-  console.log("getPost() for user: ", sub)
-
   User
-    .findById(filter)
+    .findOne(filter)
     .populate({path: "posts"})
     .exec((err, user) => {
-      if(err) return next(err)
+      if(err){
+        console.log("getPost() error:", err.message)
+        return next(err)
+      } 
       return res.json(user)
     })
 }

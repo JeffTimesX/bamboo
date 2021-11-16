@@ -6,6 +6,7 @@ import Portfolio from './portfolio'
 import Watches from './watches'
 import PaymentStripe from './payment-stripe'
 import PaymentResponse from './payment-response';
+import Post from './post'
 
 export {
   Home,
@@ -16,5 +17,6 @@ export {
   WrapperTickerDetail,
   PaymentStripe,
   PaymentResponse,
+  Post,
   
 }

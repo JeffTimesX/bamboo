@@ -63,9 +63,7 @@ export default function ProfileExchangeAccountsWithStripe({ userId, accounts }) 
       window.alert('Exchange Account updated successfully.')
       
     } else {
-      
       window.alert(updatedExchangeAccounts.error)
-      console.log(updatedExchangeAccounts)
     } 
   }
   
@@ -77,7 +75,7 @@ useEffect(()=>{
   async function updateExchangeAccountsWithStripe(){
     if(operation){
 
-      console.log('check payload: ', payload)
+      // console.log('check payload: ', payload)
   
       const {
         user, 
@@ -148,7 +146,7 @@ useEffect(()=>{
           value: 0
         }
   
-        console.log('zeroValuePayload: ', zeroValuePayload)
+        // console.log('zeroValuePayload: ', zeroValuePayload)
         
         updateExchangeAccounts(operation, zeroValuePayload, function (updatedExchangeAccounts){
           if(updateExchangeAccounts.error){
@@ -157,7 +155,7 @@ useEffect(()=>{
             return
           } else {
   
-            console.log('updatedExchangeAccounts after creating zeroValuePayload: ', updatedExchangeAccounts)
+            // console.log('updatedExchangeAccounts after creating zeroValuePayload: ', updatedExchangeAccounts)
   
             // get the accountId of the new account which created with the given account_number
             const createdAccountId = updatedExchangeAccounts.filter(account=>account.account_number === account_number)[0]._id
@@ -169,7 +167,7 @@ useEffect(()=>{
               currency: 'USD'
             }
   
-            console.log('after create zero init balance new payload: ', newPayloadWithCurrency)
+            // console.log('after create zero init balance new payload: ', newPayloadWithCurrency)
   
             // call the payment/checkout endpoint with new payload
             checkoutWithStripe(newPayloadWithCurrency)  
@@ -192,7 +190,7 @@ useEffect(()=>{
   // the useEffect() to call the updateExchangeAccounts() which
   // provided by UserProfileContext to work with backend API.
   function handleModalInput(action, accountNumber, balance, operation){
-    //window.alert(action + accountNumber + balance)
+
     // console.log("action: ", action, "operation: ", operation, "balance: ", balance, "accNum: ", accountNumber)
 
     switch(action){
@@ -273,7 +271,9 @@ useEffect(()=>{
     const account = accounts.filter(account => account._id === accountId)[0]
     const remainedTickers = account.tickers.length
     const remainedBalance = account.balance
-    console.log('delete account: ', remainedTickers, remainedBalance)
+
+    // console.log('delete account: ', remainedTickers, remainedBalance)
+
     if(remainedTickers !== 0 || remainedBalance !== 0){
       window.alert('account still has tickers and balance, can not remove.')
       setOperation(Operations.none)

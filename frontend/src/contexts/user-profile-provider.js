@@ -36,6 +36,14 @@ export default function UserProfileProvider({ backendUrl, stockApiUrl, postApiUr
   const checkoutEndpoint = backendUrl + '/payment/checkout'
   // polygon.io news endpoint
   const polygonNewsEndpoint = process.env.REACT_APP_NEWS_API_URL
+  // get all the posts with author and comments populated: getPostsEndpoint 
+  const getPostsEndpoint = process.env.REACT_APP_POST_API_URL + '/post/posts'
+  // crate a post: createPostEndpoint + userId and body to create a post
+  const createPostEndpoint = process.env.REACT_APP_POST_API_URL + '/post/'
+  // create a comment: commentPostEndpoint + postId with body to create a comment
+  const commentPostEndpoint = process.env.REACT_APP_POST_API_URL + '/post/comment/'
+  // save a like to a post: saveLikePostEndpoint + postId with userId as who in the body
+  const updateLikePostEndpoint = process.env.REACT_APP_POST_API_URL + '/post/like/'
 
   // user profile state will be enclosed in the context.
   const [userProfile, setUserProfile] = useState({})
@@ -122,7 +130,7 @@ async function updateUserProfile(user){
   )
   let checked = firstCheck.data
 
-  console.log('UserProfileProvider().updateUserProfile() first check: ', checked)
+  // console.log('UserProfileProvider().updateUserProfile() first check: ', checked)
   
   // when error: user not found shows up in the response, 
   // it means that this is the first time user signed up
@@ -162,7 +170,7 @@ async function updateUserProfile(user){
   )
   const updated = await response.data
   setUserProfile(updated) 
-  console.log("UserProfileProvider().updateUserProfile(): update profile successfully ", updated)
+  // console.log("UserProfileProvider().updateUserProfile(): update profile successfully ", updated)
 
   return updated
 }
@@ -218,7 +226,7 @@ async function createExchangeAccount( userId, account ){
 
     try {
       
-      console.log("UserProfileProvider().createExchangeAccount() will create account: ", account)
+      // console.log("UserProfileProvider().createExchangeAccount() will create account: ", account)
       
       const response = await axios.post(
         createExchangeAccountEndpoint + userId,
@@ -227,13 +235,13 @@ async function createExchangeAccount( userId, account ){
       ) 
       const updatedUserProfile = await response.data
       
-      console.log("UserProfileProvider().createExchangeAccount() received updated profile: ", updatedUserProfile)
+      // console.log("UserProfileProvider().createExchangeAccount() received updated profile: ", updatedUserProfile)
       
       return updatedUserProfile
 
     } catch (err) {
 
-      console.log("UserProfileProvider().createExchangeAccount() received error: ", err.message)
+      // console.log("UserProfileProvider().createExchangeAccount() received error: ", err.message)
       
       return ({error: 'creating account at backend failure.'})
     }
@@ -270,7 +278,7 @@ async function popupExchangeAccount(userId, account) {
   } else {
     const token = await getAccessTokenSilently()
     
-    console.log("UserProfileProvider().popupExchangeAccount() will popup account: ", account)
+    // console.log("UserProfileProvider().popupExchangeAccount() will popup account: ", account)
     
     try {
       const response = await axios.post(
@@ -278,10 +286,14 @@ async function popupExchangeAccount(userId, account) {
         account,
         { headers: { Authorization: `Bearer ${token}` }}
       )
-      console.log("UserProfileProvider().popupExchangeAccount() received: ", response.data)
+
+      // console.log("UserProfileProvider().popupExchangeAccount() received: ", response.data)
+
       return await response.data 
     } catch (err) {
-      console.log("UserProfileProvider().popupExchangeAccount() received error: ", err.message)
+
+      // console.log("UserProfileProvider().popupExchangeAccount() received error: ", err.message)
+
       return {error: 'popup account at backend failure.'}
     }
   }
@@ -548,11 +560,11 @@ async function getAggregateBySymbolAndInterval(symbol, interval) {
   
   const path = aggregateEndpoint + symbol + '/' + interval
   
-  const token = await getAccessTokenSilently()
+  //const token = await getAccessTokenSilently()
 
   return axios.get(
     path,
-    { headers: { Authorization: `Bearer ${token}` }}
+    //{ headers: { Authorization: `Bearer ${token}` }}
     )
 }
 
@@ -587,6 +599,83 @@ async function getNewsFromPolygon(){
   return news
 }
 
+async function loadPosts( callback ) {
+    
+  try {
+
+    const response = await axios.get(getPostsEndpoint)
+    const receivedPosts = response.data
+    callback(null, receivedPosts)
+  
+  } catch (err) {
+  
+    callback(err, null)
+  
+  }
+}
+
+async function publishNewPost( newPost, callback ){
+    
+  try{
+
+    const response = await axios.post(
+      createPostEndpoint + userProfile._id, 
+      { 
+        post: {
+          title: newPost,
+          body: newPost,
+          date: DateTime.now().toISO(),
+        }
+      }
+    )
+    
+    const updatedUserProfile = response.data
+
+    if(updatedUserProfile) {
+      const response = await axios.get(getPostsEndpoint)
+      const updatedPosts = response.data
+      callback(null, updatedPosts)
+    } else {
+      const err= new Error('update post failure.')
+      callback(err, null)
+    }
+  } catch (err) {
+    callback(err, null)
+  }    
+  
+}
+
+async function updateLikeToPost( postId, userId, like, callback ) {
+  const payload = {who: userId, like:like}
+  try {
+    const response = await axios.post(
+      updateLikePostEndpoint + postId, 
+      payload
+      )
+    const updatedPost = response.data
+    if(updatedPost) callback(null, updatedPost)
+    callback(new Error('update like post failed'), null)
+  } catch (err) {
+    callback(new Error('update like post failed'), null)
+  }
+}
+
+async function saveCommentToPost( postId, userId, commentText, callback ) {
+  const payload = { body: commentText, author: userId, date: DateTime.now().toISO() }
+  try {
+    const response = await axios.post(
+      commentPostEndpoint + postId, 
+      payload
+    )
+    const updatedPost = response.data
+    if(updatedPost) callback(null, updatedPost)
+    callback(new Error('save comment post failed'), null)
+
+  } catch (err) {
+    callback(new Error('save comment post failed'), null)
+  }
+}
+
 
 const contextValue = {
     userProfile,
@@ -613,6 +702,11 @@ const contextValue = {
     getNewsFromPolygon,
 
     checkoutWithStripe,
+
+    loadPosts,
+    publishNewPost,
+    updateLikeToPost,
+    saveCommentToPost
   
   }
 

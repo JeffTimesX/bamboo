@@ -174,27 +174,47 @@ Content-Type: application/json
 
 
 ### GET /user/posts/:id for getPosts() with posts populated
-GET http://localhost:5050/user/posts/6175ca28e3d3030939d300b0
+GET http://localhost:5050/user/posts/618c851f728705be7974ddd2
 
 ### POST /post/:userId for createPost()
-POST http://localhost:5050/post/6175ca28e3d3030939d300b0
+POST http://localhost:5050/post/618c851f728705be7974ddd2
 Content-Type: application/json
 
 { "post":
   {
-    "title": "good evening.",
-    "body" : "I want a good sleep."
+    "title": "Seven say hello to you again.",
+    "body" : "Seven say hello to you again."
   }
 }
 
 ### DELETE /post/:id deletePost()
-DELETE  http://localhost:5050/post/61760a0a8232207179dabda7
+DELETE  http://localhost:5050/post/619302773f3dae797a4efc30
 
 
 ### GET /post/user/:id for getPostsByUserId()
-GET http://localhost:5050/post/user/6175ca28e3d3030939d300b0 
+GET http://localhost:5050/post/user/618c851f728705be7974ddd2
 
 ### GET /post/title/:title for getPostsByTitle()
-GET http://localhost:5050/post/title/HeLLo
+GET http://localhost:5050/post/title/Seven
 
+### GET all posts with authors 
+GET http://localhost:5050/post/posts
+
+### POST a comment to a post
+POST http://localhost:5050/post/comment/61929cab9a3e9deed3fb7049
+Content-Type: application/json
+
+{
+  "body": "welcome seven.",
+  "author": "618c851f728705be7974ddd2"
+}
+
+### POST a like to a post
+POST http://localhost:5050/post/like/61929cab9a3e9deed3fb7049
+Content-Type: application/json
+
+{
+  "who": "618c851f728705be7974ddd2",
+  "like" : false
+}
 

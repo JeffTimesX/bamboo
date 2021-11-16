@@ -31,9 +31,9 @@ export default function Portfolio() {
 
   const {isAuthenticated} = useAuth0()
 
-  console.log('App() checking isAuthorized: ', isAuthenticated)
-  console.log('App() checking isProfileLoading: ', isProfileLoading)
-  console.log('App() checking isProfileLoaded: ', isProfileLoaded)
+  // console.log('App() checking isAuthorized: ', isAuthenticated)
+  // console.log('App() checking isProfileLoading: ', isProfileLoading)
+  // console.log('App() checking isProfileLoaded: ', isProfileLoaded)
 
   // populate price and value of each ticker for the given portfolio.
   async function populatePortfolios(){
@@ -52,7 +52,7 @@ export default function Portfolio() {
     })
     const populated = await Promise.all(promises)
 
-    console.log('Portfolio().populatePortfolios() received: ', populated)
+    // console.log('Portfolio().populatePortfolios() received: ', populated)
 
     setPopulatedPortfolios(populated) 
     setIsTimerOn(true)

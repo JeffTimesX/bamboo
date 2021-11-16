@@ -56,7 +56,6 @@ export default function DealInputModal({
 
   const handleConfirm = (e) => {
     e.preventDefault()
-    console.log('confirm button clicked:', action)
     handleDealInput(action, createFilledInputs())
   }
 
@@ -109,7 +108,6 @@ export default function DealInputModal({
                   const account = initAccounts.filter((account) => account._id === e.target.value)[0]
                   const ticker = account.tickers.filter((t) => t.ticker === tickerSymbol)[0]
                   const amount = ticker ? ticker.amount : 0
-                  console.log('account, amount:', account, amount)
                   setAmount(amount)
                 }}
               >

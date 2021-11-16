@@ -85,7 +85,7 @@ export default function Profile () {
     })
   }
 
-  console.log("Profile() checking isAuthenticated and isLoading: ", isAuthenticated, isLoading)
+  // console.log("Profile() checking isAuthenticated and isLoading: ", isAuthenticated, isLoading)
 
   return isAuthenticated && (
     <Container>

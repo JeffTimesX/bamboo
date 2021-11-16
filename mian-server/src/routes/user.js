@@ -16,8 +16,8 @@ router.post('/user/:sub',  checkJwt, hasPermission('write:user'), user.updateUse
 router.delete('/user/:id',  checkJwt, hasPermission('manage:user'), user.deleteUserById)
 
 
+router.get('/posts/:userId', user.getPosts)
 
-router.get('/posts/:userId',  user.getPosts)
 
 // router.post('/posts/:sub', user.addToPosts)
 // router.put('/posts/:sub', user.updateToPosts)

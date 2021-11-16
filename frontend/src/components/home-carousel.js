@@ -81,14 +81,11 @@ function setStockOptions(symbol, ts) {
       }
     ]
   }
-  // console.log('updateStockChartOptions: ', plotOptions)
   return plotOptions
 }
 
 async function ChartOptionWithAggregate ( symbol, interval ){
   const getAggregatePath = stockApiUrl + '/aggregate/' + symbol + '/' + interval
-  // to check the path.
-  console.log("getAggregatePath: ", getAggregatePath)
   const response = await axios.get(getAggregatePath)
   const data = await response.data
   const formattedTs = data.aggregate.ts.map( t => {
@@ -112,7 +109,6 @@ async function ChartOptionWithAggregate ( symbol, interval ){
         })
       })
       const results = await Promise.all(resultPromises)
-      // console.log(results)
       setChartOptions(results)
     }
     readyCarouselChartOptions()

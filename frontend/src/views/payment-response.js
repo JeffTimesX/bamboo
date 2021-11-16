@@ -9,7 +9,7 @@ export default function PaymentResponse() {
 
   // console.log('checking cookies after checkout with stripe: ', allCookies)
   
-  console.log('checking status: ', status)
+  // console.log('checking status: ', status)
 
   // window.alert(`popup ${status}, redirect to your account detail`)
 

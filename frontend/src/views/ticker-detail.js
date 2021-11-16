@@ -139,7 +139,7 @@ export default function TickerDetail ({tickerSymbol}) {
       ]
     }
     
-    console.log('TickerDetail().updateStockChartOptions() returned: ', plotOptions)
+    // console.log('TickerDetail().updateStockChartOptions() returned: ', plotOptions)
     
     setStockOptions(plotOptions)
     
@@ -178,7 +178,7 @@ export default function TickerDetail ({tickerSymbol}) {
 
     if( !ticker || !price || !amount || !accountId || !type) {
       
-      console.log('TickerDetail().processDeal() report error: contract parameters are missing.')
+      // console.log('TickerDetail().processDeal() report error: contract parameters are missing.')
       
       return ({error: 'contract parameters are missing.'})
 
@@ -189,7 +189,7 @@ export default function TickerDetail ({tickerSymbol}) {
         issue_at: DateTime.now().toISO(),
       } 
 
-      console.log('TickerDetail().processDeal() is processing: ', transaction )
+      // console.log('TickerDetail().processDeal() is processing: ', transaction )
 
       const result = await dealTickerAndUpdateUserProfile(transaction) 
 
@@ -309,7 +309,8 @@ export default function TickerDetail ({tickerSymbol}) {
   // the contract with the backend server.
   function handleDealInput(action, filledInputs){
 
-    console.log("handleDealInput() received action:", action, filledInputs)
+    // console.log("handleDealInput() received action:", action, filledInputs)
+
     const contract = { ...filledInputs, type: action } 
     const account = userProfile.exchangeAccounts.filter(account => account._id === contract.accountId)[0]
     const ticker = account && account.tickers.filter(t => t.ticker === contract.ticker)[0]
@@ -338,7 +339,8 @@ export default function TickerDetail ({tickerSymbol}) {
         // if the inventory of current accountId is smaller than the amount
         // alert() user to change the values.
 
-        console.log('account, ticker, amount: ', account, ticker)
+        // console.log('account, ticker, amount: ', account, ticker)
+        
         if( ticker && ticker.amount >= contract.amount ){
 
           // pass contract to useEffect() by the state

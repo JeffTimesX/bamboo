@@ -19,8 +19,8 @@ import {
   Profile, 
   Watches,
   WrapperTickerDetail,
-  PaymentStripe,
-  PaymentResponse
+  PaymentResponse,
+  Post,
 } from './views';
 
 import { 
@@ -55,7 +55,7 @@ export default function App() {
             <ProtectedRoute path="/profile" component={ Profile } />
             <Route path="/ticker-detail/:ticker" component={ WrapperTickerDetail } />
             <ProtectedRoute path="/authorized" component={ AfterAuthorization } />
-            <Route path='/post' component={ PaymentStripe } />
+            <ProtectedRoute path='/post' component={ Post } />
             <Route path='/payment/returned/:status' component={ PaymentResponse } />
           </Switch>
         </div>

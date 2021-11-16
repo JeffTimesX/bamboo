@@ -30,7 +30,4 @@ export default function NewsBlock(){
       }
     </ul>
   )
-
-
-
 }

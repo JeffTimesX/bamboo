@@ -28,6 +28,8 @@ const UserProfileContext = React.createContext({
 
   getNewsFromPolygon: () => {},
 
+  loadPosts: (cb) => {},
+
 })
 
 export default UserProfileContext

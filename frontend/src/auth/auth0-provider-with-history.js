@@ -25,7 +25,6 @@ const Auth0ProviderWithHistory = ({ children }) => {
   };
 
   const url = 'http://localhost:' + process.env.REACT_APP_PORT + '/authorized'
-  // console.log('url: ', url)
   
   return (
     <Auth0Provider

@@ -15,6 +15,8 @@ import DealInputModal from './modal-deal-input'
 import PortfolioAccountSection from "./portfolio-account-section"
 import ProfileExchangeAccountsWithStripe from './profile-exchange-account-stripe'
 import NewsBlock from './news-block'
+import PostCard from './post-card'
+import PostBlock from './post-block'
 
 
 export { 
@@ -33,6 +35,8 @@ export {
   StockChart,
 
   PortfolioAccountSection,
+  PostBlock,
+  PostCard,
   
   ProfileExchangeAccountsWithStripe,
   ProtectedRoute,
