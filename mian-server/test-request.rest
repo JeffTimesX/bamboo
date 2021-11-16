@@ -1,0 +1,220 @@
+
+
+### GET user/profile/:sub endpoint for getProfile()
+GET http://localhost:5050/user/profile/618957e49ed98ba08cfb46a6
+
+
+### POST user/profile/:sub for updateProfile()
+POST http://localhost:5050/user/profile/auth0|636a4aaacac37f00684a95d5
+Content-Type: application/json
+
+{
+  "_id": {
+    "$oid": "636a4aaacac37f00684a95d5"
+  },
+  "profile": {
+    "auth": {
+      "nickname": "Mike",
+      "name": "eleven@eleven.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "eleven@eleven.com",
+      "email_verified": false,
+      "sub": "auth0|636a4aaacac37f00684a95d5"
+    },
+    "ext": {
+      "first_name": "Two",
+      "last_name": "Eleven",
+      "gender": "female",
+      "date_of_birth": "",
+      "occupation": "student"
+    }
+  },
+  "portfolio": [],
+  "watches": [],
+  "posts": [],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": []
+}
+
+### GET /user/portfolio/:sub for getPortfolio()
+GET http://localhost:5050/user/portfolio/618463c503d71d13427750c6
+
+### POST /user/portfolio/:sub for updatePortfolio()
+POST http://localhost:5050/user/portfolio/618463c503d71d13427750c6
+Content-Type: application/json
+
+{
+  "portfolio": [
+  { "ticker": "F", "inventory": 100, "purchased_at":"2020-01-01"}, 
+  { "ticker": "GM", "inventory": 200, "purchased_at":"2020-01-01"},
+  { "ticker": "T", "inventory": 2000 , "purchased_at":"2020-01-01"},
+  { "ticker": "FF", "inventory": 1200 , "purchased_at":"2020-01-01"},
+  { "ticker": "B", "inventory": 1200 , "purchased_at":"2020-01-01"},
+    { "ticker": "BF", "inventory": 100, "purchased_at":"2020-01-01"}, 
+  { "ticker": "G", "inventory": 200, "purchased_at":"2020-01-01"},
+  { "ticker": "TT", "inventory": 2000 , "purchased_at":"2020-01-01"},
+  { "ticker": "FFF", "inventory": 1200 , "purchased_at":"2020-01-01"},
+  { "ticker": "AAA", "inventory": 1200 , "purchased_at":"2020-01-01"}
+  ]
+}
+
+
+### GET /user/watches/:sub for getgetWatches()
+GET http://localhost:5050/user/watches/618463c503d71d13427750c6
+
+
+### POST /user/watches/:sub for updateWatches()
+POST http://localhost:5050/user/watches/auth0|636a4aaacac37f00684a95d5
+Content-Type: application/json
+
+{
+  "watches": [
+  { "ticker": "F", "watched_at": "2021-02-01" }, 
+  { "ticker": "GM", "watched_at": "2021-02-01" },
+  { "ticker": "T" , "watched_at": "2021-02-01" },
+  { "ticker": "FF" , "watched_at": "2021-02-01"},
+  { "ticker": "AA" , "watched_at": "2021-02-01" },
+  { "ticker": "IBM" , "watched_at": "2021-02-01"}
+  ]
+}
+
+
+
+
+
+### deleteUserById()
+DELETE http://localhost:5050/user/user/6175c9ccb34193cab03b2599
+
+
+
+### getUserBySub()
+GET http://localhost:5050/user/user/auth0|616bae31c69eb2007050c605
+
+###auth0|616bae31c69eb2007050c605
+
+### POST user/user/:sub for updateUserBySub()
+POST http://localhost:5050/user/user/618463c503d71d13427750c6
+Content-Type: application/json
+
+{
+  "profile": {
+    "auth": {
+      "nickname": "Thank",
+      "name": "eleven@eleven.com",
+      "picture": "https://s.gravatar.com/avatar/5e53270b40f2b3e3ae97ed7949d4aa5a?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fel.png",
+      "updated_at": "2021-10-23T22:04:15.147Z",
+      "email": "eleven@eleven.com",
+      "email_verified": false,
+      "sub": "auth0|636a4aaacac37f00684a95d5"
+    },
+    "ext": {
+      "first_name": "Two",
+      "last_name": "Eleven",
+      "gender": "female",
+      "date_of_birth": "",
+      "occupation": "student"
+    }
+  },
+  "portfolio": [
+    {"ticker":"A", "watched_at": "2021-02-01"},
+    {"ticker":"C", "watched_at": "2021-02-01"}
+    ],
+  "watches": [{"ticker":"AA", "watched_at": "2021-02-01"}],
+  "posts": [],
+  "follows": [],
+  "paymentAccounts": [],
+  "exchangeAccounts": ["618468bb8f5e9b5721117ca0"]
+}
+
+
+
+
+### remove exchange account 
+DELETE http://localhost:5050/exchange/remove/618618ec6b79fee0539d0409
+
+### create ExchangeAccount 
+POST http://localhost:5050/exchange/create/618463c503d71d13427750c6
+Content-Type: application/json
+
+{ 
+  "account_number": "13901129968",
+  "user": "618463c503d71d13427750c6",
+  "value": "6666666"
+}
+
+### update balance for exchange account /balance/:id {}
+POST http://localhost:5050/exchange/balance/618468bb8f5e9b5721117ca0
+Content-Type: application/json
+
+{ 
+  "accountId": "618468bb8f5e9b5721117ca0",
+  "account_number": "7788850355",
+  "value": "9999999"
+}
+
+### getAccountDetail() 
+GET http://localhost:5050/exchange/detail/61895d319ed98ba08cfb46f9
+
+### dealTicker()
+POST http://localhost:5050/exchange/deal/61895d319ed98ba08cfb46f9
+Content-Type: application/json
+
+{ 
+  "accountId": "61895d319ed98ba08cfb46f9",
+  "account_number": "7788850355",
+  "ticker": "F",
+  "amount": "1000",
+  "type": "sell",
+  "price": "288.88"
+}
+
+
+
+
+### GET /user/posts/:id for getPosts() with posts populated
+GET http://localhost:5050/user/posts/618c851f728705be7974ddd2
+
+### POST /post/:userId for createPost()
+POST http://localhost:5050/post/618c851f728705be7974ddd2
+Content-Type: application/json
+
+{ "post":
+  {
+    "title": "Seven say hello to you again.",
+    "body" : "Seven say hello to you again."
+  }
+}
+
+### DELETE /post/:id deletePost()
+DELETE  http://localhost:5050/post/619302773f3dae797a4efc30
+
+
+### GET /post/user/:id for getPostsByUserId()
+GET http://localhost:5050/post/user/618c851f728705be7974ddd2
+
+### GET /post/title/:title for getPostsByTitle()
+GET http://localhost:5050/post/title/Seven
+
+### GET all posts with authors 
+GET http://localhost:5050/post/posts
+
+### POST a comment to a post
+POST http://localhost:5050/post/comment/61929cab9a3e9deed3fb7049
+Content-Type: application/json
+
+{
+  "body": "welcome seven.",
+  "author": "618c851f728705be7974ddd2"
+}
+
+### POST a like to a post
+POST http://localhost:5050/post/like/61929cab9a3e9deed3fb7049
+Content-Type: application/json
+
+{
+  "who": "618c851f728705be7974ddd2",
+  "like" : false
+}
+
