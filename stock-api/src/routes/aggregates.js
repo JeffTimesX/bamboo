@@ -8,7 +8,8 @@ const { hasScope } = require('../auth/has-scope')
 // the ticker route should be accessed with the access token.
 // router.use(checkJwt)
 
-router.get('/sync/:symbol', checkJwt, hasPermission('manage:stock'), aggregatesController.syncAggregates );
+// checkJwt, hasPermission('manage:stock'),
+router.get('/sync/:symbol',  aggregatesController.syncAggregates );
 
 // this route should not been protected, because the home page carousel
 // approaches this endpoint for getting the data to fill up the home page charts.

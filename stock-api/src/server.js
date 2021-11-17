@@ -31,7 +31,7 @@ const { PORT } = process.env;
 // setting up database connections
 const mongoose = require('mongoose') 
 const mongoDb = process.env.DB_URL
-const mongoAtlas = process.env.ATLAS_URL
+
 
 // creating db connections
 // use mongDB for localhost connections, use mongoAtlas for atlas connections.

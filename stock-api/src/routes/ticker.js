@@ -6,7 +6,8 @@ const { hasPermission } = require('../auth/has-permission')
 const { hasScope } = require('../auth/has-scope')
 
 
-router.get('/init', checkJwt, hasPermission('manage:stock'), tickerController.initTickers );
+// checkJwt, hasPermission('manage:stock'),
+router.get('/init',  tickerController.initTickers );
 
 router.get('/search', tickerController.searchTickers);
 

@@ -118,7 +118,7 @@ const initTickers = async function (req, res, next) {
       status: status,
       count: count,
       next_url: nextUrl
-    } = await getTickersWithDelay(15010);
+    } = await getTickersWithDelay(20000);
 
     if(status && status === 'OK'){
       Ticker

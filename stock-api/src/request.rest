@@ -8,19 +8,19 @@ GET https://api.polygon.io/v3/reference/tickers?exchange=XNYS&active=true&sort=t
 GET https://api.polygon.io/v3/reference/tickers?apiKey=z0WumBiwbxcFPEDsiqcqA8XsPOSwdB97&cursor=YWN0aXZlPXRydWUmZGF0ZT0yMDIxLTEwLTE5JmV4Y2hhbmdlPVhOWVMmbGltaXQ9MTAwMCZvcmRlcj1hc2MmcGFnZV9tYXJrZXI9RE9DUyU3QzI5YTZmMjBkMjI5NWZhYTk2Y2NlYzE0ZTMzYzlmYzRkOWQ3NDI5ZjBkNjJmNjRkYzhkNjk5YzFmZjFlYjM2ODQmc29ydD10aWNrZXI
 
 ### Ticker initialisation, get all tickers from polygon.io
-GET http://localhost:6061/ticker/init
+GET http://localhost:5051/ticker/init
 
 ### get ticker by name, support fuzzy search
-GET http://localhost:6061/ticker/name/AT&T
+GET http://localhost:5051/ticker/name/AT&T
 
 ### get ticker by symbol, exactly matched, case-insensitive.
-GET http://localhost:6061/ticker/symbol/T
+GET http://localhost:5051/ticker/symbol/T
 
 ### get ticker by id, return the exactly matched.
-GET http://localhost:6061/ticker/id/6170d9d8913511aa4af87fb9
+GET http://localhost:5051/ticker/id/6170d9d8913511aa4af87fb9
 
 ### get ticker by multi-factors query string, support fuzzy search
-GET http://localhost:6061/ticker/search?ticker=f&primary_exchange=xnys
+GET http://localhost:5051/ticker/search?ticker=f&primary_exchange=xnys
 
 
 
@@ -38,20 +38,20 @@ GET https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apik
 
 
 ### test route
-GET http://localhost:6061/ticker/aggs/APPL/minute/1/2020-10-10/2020-10-14
+GET http://localhost:5051/ticker/aggs/APPL/minute/1/2020-10-10/2020-10-14
 
 ###multi/1/start/2020-10-10/end/2020-10-14
 
 ### ticker current 
-GET http://localhost:6061/ticker/current/TSLA
+GET http://localhost:5051/ticker/current/TSLA
 
 
 ### sync aggregates from alphaVantages.co
-GET http://localhost:6061/aggregate/sync/GM
+GET http://localhost:5051/aggregate/sync/GM
 
 
 ### get aggregate by symbol and interval locally 
-GET http://localhost:6061/aggregate/GM/15min
+GET http://localhost:5051/aggregate/GM/15min
 
 
 ### daily

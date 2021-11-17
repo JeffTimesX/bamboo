@@ -87,7 +87,7 @@ function setStockOptions(symbol, ts) {
 async function ChartOptionWithAggregate ( symbol, interval ){
   const getAggregatePath = stockApiUrl + '/aggregate/' + symbol + '/' + interval
   const response = await axios.get(getAggregatePath)
-  const data = await response.data
+  const data = response.data
   const formattedTs = data.aggregate.ts.map( t => {
     return [
       DateTime.fromISO(t.timestamp).ts,
@@ -110,8 +110,12 @@ async function ChartOptionWithAggregate ( symbol, interval ){
       })
       const results = await Promise.all(resultPromises)
       setChartOptions(results)
+
     }
     readyCarouselChartOptions()
+
+    return ()=>{setChartOptions({})}
+    
   },[])
 
 
