@@ -25,7 +25,7 @@ export default function Post(){
   const [newPost, setNewPost] = useState('')
   const [fireNewPost, setFireNewPost] = useState(false)
 
-  console.log(posts)
+  // console.log(posts)
 
   function compareDateOfPost(firstPost, secondPost){
     return DateTime.fromISO(secondPost.date).toMillis() - DateTime.fromISO(firstPost.date).toMillis()
