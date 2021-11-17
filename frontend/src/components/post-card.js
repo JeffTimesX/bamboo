@@ -34,7 +34,7 @@ export default function PostCard({inputPost}){
 
   // loading post to the state
   useEffect(() => {
-    console.log('PostCard().useEffect() loading inputPost.')
+    // console.log('PostCard().useEffect() loading inputPost.')
     setPost(inputPost)
   },[])
 
