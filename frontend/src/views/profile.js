@@ -17,7 +17,6 @@ import {
 import {
   ProfileAuth,
   ProfileExt,
-  ProfileExchangeAccounts,
   ProfileExchangeAccountsWithStripe,
 } from '../components'
 
@@ -128,10 +127,10 @@ export default function Profile () {
         accounts={ userProfile.exchangeAccounts }
       />
       <hr />
-      {/* payment accounts */}
+      {/* account transactions */}
       <Row className="p-2 justify-content-center">
         <h3>Transactions</h3>
-        <p>To be replaced by a list of Bank Account information.</p>
+        <p>To be replaced by a list of chosen Account transactions.</p>
       </Row>
       <hr />
       

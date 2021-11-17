@@ -146,7 +146,7 @@ useEffect(()=>{
           value: 0
         }
   
-        // console.log('zeroValuePayload: ', zeroValuePayload)
+        console.log('zeroValuePayload: ', zeroValuePayload)
         
         updateExchangeAccounts(operation, zeroValuePayload, function (updatedExchangeAccounts){
           if(updateExchangeAccounts.error){
@@ -155,7 +155,7 @@ useEffect(()=>{
             return
           } else {
   
-            // console.log('updatedExchangeAccounts after creating zeroValuePayload: ', updatedExchangeAccounts)
+            console.log('updatedExchangeAccounts after creating zeroValuePayload: ', updatedExchangeAccounts)
   
             // get the accountId of the new account which created with the given account_number
             const createdAccountId = updatedExchangeAccounts.filter(account=>account.account_number === account_number)[0]._id
@@ -167,7 +167,7 @@ useEffect(()=>{
               currency: 'USD'
             }
   
-            // console.log('after create zero init balance new payload: ', newPayloadWithCurrency)
+            console.log('after create zero init balance new payload: ', newPayloadWithCurrency)
   
             // call the payment/checkout endpoint with new payload
             checkoutWithStripe(newPayloadWithCurrency)  
@@ -180,6 +180,10 @@ useEffect(()=>{
   }
 
   updateExchangeAccountsWithStripe()
+
+  return ()=> {
+    setPayload({})
+  }
 
 },[operation])
 
