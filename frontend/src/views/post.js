@@ -11,10 +11,10 @@ import {
 import { UserProfileContext } from '../contexts'
 
 import { PostCard } from '../components'
-import axios from 'axios'
+
+import {DateTime} from 'luxon'
 
 export default function Post(){
-
 
   const { 
     loadPosts, 
@@ -25,12 +25,17 @@ export default function Post(){
   const [newPost, setNewPost] = useState('')
   const [fireNewPost, setFireNewPost] = useState(false)
 
+  console.log(posts)
+
+  function compareDateOfPost(firstPost, secondPost){
+    return DateTime.fromISO(secondPost.date).toMillis() - DateTime.fromISO(firstPost.date).toMillis()
+  }
 
   // load all posts from backend while mounted
   useEffect(() =>{
     loadPosts( (err, receivedPosts) =>{
       if(err) return
-      setPosts(receivedPosts)
+      setPosts(receivedPosts.sort(compareDateOfPost))
     })
   },[])
 
@@ -41,7 +46,7 @@ export default function Post(){
           setFireNewPost(false)
           return
         }
-        setPosts(updatedPosts)
+        setPosts(updatedPosts.sort(compareDateOfPost))
         setFireNewPost(false)
       })
     }

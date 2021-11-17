@@ -40,14 +40,14 @@ export default function PostCard({inputPost}){
 
   
   // update like to the backend and the state
-  // useEffect(() =>{
-  //   if(post){
-  //     updateLikeToPost(post._id, userProfile._id, like, (err, updatedPost) => {
-  //       if(err) return 
-  //       setPost(updatedPost)
-  //     })
-  //   }
-  // },[like])
+  useEffect(() =>{
+    if(post && post._id){
+      updateLikeToPost(post._id, userProfile._id, like, (err, updatedPost) => {
+        if(err) return 
+        setPost(updatedPost)
+      })
+    }
+  },[like])
 
 
   // save comment 
