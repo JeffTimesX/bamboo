@@ -78,7 +78,7 @@ useEffect(()=>{
       // console.log('check payload: ', payload)
   
       const {
-        user, 
+        // user, 
         accountId,
         account_number,
         value

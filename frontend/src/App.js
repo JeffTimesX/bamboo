@@ -34,7 +34,7 @@ import  {AfterAuthorization} from './auth'
 
 export default function App() {
 
-  const {isProfileLoading , isProfileLoaded} = useContext(UserProfileContext)
+  const {isProfileLoaded} = useContext(UserProfileContext)
   const {isAuthenticated} = useAuth0()
 
   

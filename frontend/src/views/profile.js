@@ -34,7 +34,7 @@ export default function Profile () {
     updateUserProfile,
   } = useContext(UserProfileContext)
 
-  const {isAuthenticated, isLoading} = useAuth0()
+  const {isAuthenticated} = useAuth0()
   
   const [user, setUser] = useState(userProfile)
   const [save, setSave] = useState(false)

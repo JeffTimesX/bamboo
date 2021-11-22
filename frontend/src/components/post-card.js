@@ -6,12 +6,10 @@ import React,
 } from 'react';
 
 import {
-  Container, 
   Card,
   Row, 
   Col, 
   Form, 
-  FormControl, 
   Button, 
 } from 'react-bootstrap'
 

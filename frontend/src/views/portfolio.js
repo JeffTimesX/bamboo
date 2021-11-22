@@ -16,20 +16,16 @@ import {
   PortfolioAccountSection
 } from '../components'
 
-import {useAuth0} from '@auth0/auth0-react'
+
 export default function Portfolio() {
 
   const {
     userProfile,
-    isProfileLoading,
-    isProfileLoaded,
     populatePortfolioWithPriceAndValue 
   } = useContext(UserProfileContext)
 
   const [isTimerOn, setIsTimerOn] = useState(false)
   const [populatedPortfolios, setPopulatedPortfolios] = useState([])
-
-  const {isAuthenticated} = useAuth0()
 
   // console.log('App() checking isAuthorized: ', isAuthenticated)
   // console.log('App() checking isProfileLoading: ', isProfileLoading)
