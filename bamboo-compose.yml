@@ -14,7 +14,7 @@ services:
     image: bamboo-frontend-react:compose
     build:
       context: ./frontend 		# The context will pick this directory as the "build context"
-      dockerfile: Dockerfile.react 	# This will simply tell which dockerfile to read
+      dockerfile: Dockerfile.compose 	# This will simply tell which dockerfile to read
     ports:
       - 3000:3000
     container_name: frontend-compose	# This will name the container hello-front-dev
