@@ -1,17 +1,8 @@
 services:
-  proxy:
-    image: nginx:latest
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    ports: 
-      - 80:80
-    container_name: reversed-proxy-compose
-    volumes:
-      - ./reversed-proxy/nginx.conf:/etc/nginx/nginx.conf:ro   
+
 
   frontend:
-    image: bamboo-frontend-react:compose
+    image: bamboo-frontend-pro-nginx:compose
     build:
       context: ./frontend 		# The context will pick this directory as the "build context"
       dockerfile: Dockerfile.compose 	# This will simply tell which dockerfile to read
@@ -20,7 +11,7 @@ services:
     container_name: frontend-compose	# This will name the container hello-front-dev
 
   main-server:
-    image: bamboo-main-server-compose:compose
+    image: bamboo-main-server:compose
     build:
       context: ./main-server
       dockerfile: Dockerfile.compose
@@ -29,7 +20,7 @@ services:
     container_name: main-server-compose
 
   stock-api:
-    image: bamboo-stock-api-compose:compose
+    image: bamboo-stock-api:compose
     build: 
       context: ./stock-api
       dockerfile: Dockerfile.compose

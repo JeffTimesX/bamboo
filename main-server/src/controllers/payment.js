@@ -47,51 +47,56 @@ async function createCheckoutSession (req, res, next) {
 
 
   // creating the stripe session.
-  const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        price_data: { 
-          currency: currency,
-          product_data: { name: 'popup ' + account_number },
-          unit_amount: 100,
+  try {
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: { 
+            currency: currency,
+            product_data: { name: 'popup ' + account_number },
+            unit_amount: 100,
+          },
+          quantity: value,
         },
-        quantity: value,
-      },
-    ],
-    payment_method_types: [
-      'card',
-    ],
-    mode: 'payment',
-    success_url: `${PaymentEndpoint}/payment/response/success`,
-    cancel_url: `${PaymentEndpoint}/payment/response/cancel`,
-  });
-
-  const receipt = {
-    user: user,
-    accountId: accountId,
-    account_number: account_number,  
-    value: value,
-    currency: currency
-  }
-
-  const signedReceipt = jwt.sign(receipt, secret)
+      ],
+      payment_method_types: [
+        'card',
+      ],
+      mode: 'payment',
+      success_url: `${PaymentEndpoint}/payment/response/success`,
+      cancel_url: `${PaymentEndpoint}/payment/response/cancel`,
+    });
   
-  // console.log('signed receipt: ', signedReceipt)  
-
-  // directing user to stripe checkout endpoint.
-  // returns the session.url to frontend, let frontend 
-  // redirect the user agent to stripe.com 
-  res
-    .header({
-      'Content-Type': 'application/json',
-      //'Access-Control-Allow-Credentials': true,
-      //'Access-Control-Allow-Origin': 'http://localhost:3000',
-      //'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-      //'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    })
-    .cookie('receipt', signedReceipt, {sameSite: false})
-    .cookie('accessToken', accessToken, {sameSite: false} )
-    .json({url:session.url})
+    const receipt = {
+      user: user,
+      accountId: accountId,
+      account_number: account_number,  
+      value: value,
+      currency: currency
+    }
+  
+    const signedReceipt = jwt.sign(receipt, secret)
+    
+    // console.log('signed receipt: ', signedReceipt)  
+  
+    // directing user to stripe checkout endpoint.
+    // returns the session.url to frontend, let frontend 
+    // redirect the user agent to stripe.com 
+    res
+      .header({
+        'Content-Type': 'application/json',
+        //'Access-Control-Allow-Credentials': true,
+        //'Access-Control-Allow-Origin': 'http://localhost:3000',
+        //'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+        //'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      })
+      .cookie('receipt', signedReceipt, {sameSite: false})
+      .cookie('accessToken', accessToken, {sameSite: false} )
+      .json({url:session.url})
+  
+  } catch (err) {
+    console.log('createCheckoutSession() error: ', err)
+  }
 }
 
 
@@ -101,6 +106,8 @@ async function createCheckoutSession (req, res, next) {
 // if returns with success or cancel, the res.status = 200
 // res.status = 500 if the redirect is processed with failure.
 async function checkPaymentResponse (req, res, next) {
+
+  console.log('params:', req.params)
 
   const { status: responseStatus } = req.params
   const { receipt, accessToken } = req.cookies
@@ -133,46 +140,58 @@ async function checkPaymentResponse (req, res, next) {
 
   }else if(receipt && accessToken) {
     
-    const verifiedReceipt = jwt.verify(receipt, secret)
+    try{
 
-    console.log('received receipt: ', verifiedReceipt)
+      const verifiedReceipt = jwt.verify(receipt, secret)
 
-    const { accountId, value, account_number} = verifiedReceipt
+      console.log('received receipt: ', verifiedReceipt)
+  
+      const { accountId, value, account_number} = verifiedReceipt
+  
+      // the receipt params are missing.
+      if(!accountId || !value || !account_number) {
+  
+        url = frontEndPaymentReturned + '/' + 'receipt-params-missing'
+        return res
+          .clearCookie('receipt')
+          .redirect(302, url)
+  
+      } else {
+  
+        const updateExchangeAccountUrl = updateBalanceEndpoint + '/' + accountId
+        
+        const response = await axios.post(
+          updateExchangeAccountUrl,
+          {
+            accountId: accountId,
+            account_number: account_number,
+            value: value
+          },
+          {
+            headers: { Authorization: `Bearer ${accessToken}`}
+          }
+        )
+  
+        const updatedExchangeAccount = response.data
+        
+        console.log('updated exchange account: ', updatedExchangeAccount)
+        
+        url = frontEndPaymentReturned + '/' + 'account-updated'
+        return res
+        .clearCookie('receipt')
+        .redirect(302, url)
+  
+      }
 
-    // the receipt params are missing.
-    if(!accountId || !value || !account_number) {
-
-      url = frontEndPaymentReturned + '/' + 'receipt-params-missing'
+    } catch(err) {
+      console.error('verifying access token failed: ', err)
+      url = frontEndPaymentReturned + '/' + 'verifying-receipt-failed'
       return res
         .clearCookie('receipt')
         .redirect(302, url)
-
-    } else {
-
-      const updateExchangeAccountUrl = updateBalanceEndpoint + '/' + accountId
-      
-      const response = await axios.post(
-        updateExchangeAccountUrl,
-        {
-          accountId: accountId,
-          account_number: account_number,
-          value: value
-        },
-        {
-          headers: { Authorization: `Bearer ${accessToken}`}
-        }
-      )
-
-      const updatedExchangeAccount = response.data
-      
-      console.log('updated exchange account: ', updatedExchangeAccount)
-      
-      url = frontEndPaymentReturned + '/' + 'account-updated'
-      return res
-      .clearCookie('receipt')
-      .redirect(302, url)
-
     }
+    
+    
   }
 }
 

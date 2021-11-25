@@ -30,13 +30,23 @@ db.on('error', function () {
     console.error.bind(console, 'MongoDB connection error.')
 })
 
+const whitelist = process.env.FRONT_END_DOMAIN
 const corsOptions = {
-  origin: process.env.FRONT_END_DOMAIN,
+  origin: function (origin, callback){
+    if(!origin || whitelist.indexOf(origin) !== -1){
+      callback(null, true)
+    } else {
+      callback( new Error('Not allowed CORS origin: ' + origin))
+    }
+  },
   credentials: true, 
   preflightContinue: true,
-  //methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  //optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTION",
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
+
+
+
 app.use(logger.dev, logger.combined)
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -58,7 +68,9 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  
+  console.log("error report from main-server: ",err.message)
+  
   // render the error page
   res.status(err.status || 500);
   res.json(res.locals.error);

@@ -1,0 +1,37 @@
+services:
+  proxy:
+    image: bamboo-proxy-dev:compose
+    build:
+      context: ./reversed-proxy
+      dockerfile: Dockerfile.dev
+    ports:
+      - 80:80
+    container_name: proxy-dev
+
+  frontend:
+    image: bamboo-frontend-dev:compose
+    build:
+      context: ./frontend 		# The context will pick this directory as the "build context"
+      dockerfile: Dockerfile.dev 	# This will simply tell which dockerfile to read
+    ports:
+      - 3000:3000
+    container_name: frontend-dev	# This will name the container hello-front-dev
+
+  main-server:
+    image: bamboo-main-server-dev:compose
+    build:
+      context: ./main-server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5050:5050
+    container_name: main-server-dev
+
+  stock-api:
+    image: bamboo-stock-api-dev:compose
+    build: 
+      context: ./stock-api
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5051:5051
+    container_name: stock-api-dev
+

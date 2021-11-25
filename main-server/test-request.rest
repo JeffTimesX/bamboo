@@ -218,3 +218,5 @@ Content-Type: application/json
   "like" : false
 }
 
+### 
+GET http://localhost:5050/payment/response/success
