@@ -8,7 +8,9 @@ const { default: axios } = require('axios');
 const secret = crypto.randomBytes(64).toString('hex')
 
 const PaymentEndpoint = process.env.PAYMENT_ENDPOINT;
-const frontEndPaymentReturned = process.env.FRONT_END_PAYMENT_RETURNED
+
+//const frontEndPaymentReturned = process.env.FRONT_END_PAYMENT_RETURNED
+
 const updateBalanceEndpoint = process.env.UPDATE_BALANCE_ENDPOINT
 
 async function createCheckoutSession (req, res, next) {
@@ -63,8 +65,10 @@ async function createCheckoutSession (req, res, next) {
         'card',
       ],
       mode: 'payment',
-      success_url: `${PaymentEndpoint}/payment/response/success`,
-      cancel_url: `${PaymentEndpoint}/payment/response/cancel`,
+      // success_url: `${PaymentEndpoint}/payment/response/success`,
+      // cancel_url: `${PaymentEndpoint}/payment/response/cancel`,
+      success_url: `${req.origin}/main/payment/response/success`,
+      cancel_url: `${req.origin}/main/payment/response/cancel`,
     });
   
     const receipt = {
@@ -111,6 +115,9 @@ async function checkPaymentResponse (req, res, next) {
 
   const { status: responseStatus } = req.params
   const { receipt, accessToken } = req.cookies
+
+  const frontEndPaymentReturned = req.origin + 'payment/returned'
+
 
   console.log('checkPaymentResponse() received accessToken: ', accessToken )
 
