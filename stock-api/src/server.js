@@ -16,8 +16,15 @@ const logger = require('./util/logger');
 require('dotenv').config()
 
 // cors options
+const whitelist = process.env.FRONT_END_DOMAIN
 const corsOptions = {
-    origin: process.env.FRONT_END_DOMAIN,
+    origin: function (origin, callback){
+        if(!origin || whitelist.indexOf(origin) !== -1){
+            callback(null, true)
+        } else {
+            callback( new Error('Not allowed CORS origin: ' + origin))
+        }
+    },
     credentials: true, 
     preflightContinue: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

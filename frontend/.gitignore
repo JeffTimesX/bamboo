@@ -28,3 +28,6 @@ Trying.js
 src/tmp
 
 .gitignore
+
+certificate-chained.cert
+private.key
