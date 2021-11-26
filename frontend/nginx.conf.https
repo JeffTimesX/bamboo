@@ -5,11 +5,20 @@ events { }
 http {
   server {
     listen 80;
+    
+    listen 443 ssl;
+    server_name bamboo.jefftimes.com;
+    
+    # sslforfree.com Cert
+    ssl_certificate     /etc/ssl/certs/certificate-chained.crt;
+    ssl_certificate_key /etc/ssl/private/private.key;
+
+    # ssl protocol
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
     root /usr/share/nginx/html;
     include /etc/nginx/mime.types;
-    
-    
-    # error_page 404 =200 /index.html;    
 
     location / {
       index index.html;      

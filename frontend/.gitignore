@@ -14,11 +14,11 @@
 # misc
 .VS_Code
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.frontend
+.env
+.env.dev.compose
+.env.pro.compose
+.env.compose
+.env.https
 
 npm-debug.log*
 yarn-debug.log*
@@ -26,3 +26,5 @@ yarn-error.log*
 
 Trying.js
 src/tmp
+
+.gitignore
