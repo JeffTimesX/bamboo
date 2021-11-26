@@ -60,6 +60,8 @@ typings/
 node_modules
 
 .env
+.env.https
 
 .DS_Store
 
+.gitignore
