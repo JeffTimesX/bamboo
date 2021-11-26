@@ -1,0 +1,30 @@
+services:
+
+  frontend:
+    image: bamboo-frontend-https:compose
+    build:
+      context: ./frontend 		
+      dockerfile: Dockerfile.https 	
+    ports:
+      - 443:443
+      - 80:80
+    container_name: frontend-nginx-https 
+
+  main-server:
+    image: bamboo-main-server-https:compose
+    build:
+      context: ./main-server
+      dockerfile: Dockerfile.https
+    ports:
+      - 5050:5050
+    container_name: main-server-https
+
+  stock-api:
+    image: bamboo-stock-api-https:compose
+    build: 
+      context: ./stock-api
+      dockerfile: Dockerfile.https
+    ports:
+      - 5051:5051
+    container_name: stock-api-https
+
