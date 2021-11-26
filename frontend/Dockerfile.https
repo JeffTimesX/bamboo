@@ -18,7 +18,7 @@ RUN npm run build
 
 FROM nginx:latest
 
-COPY nginx.conf.https /etc/nginx/nginx.conf
+COPY ./nginx.conf.https /etc/nginx/nginx.conf
 
 RUN rm -rf /usr/share/nginx/html/*
 
