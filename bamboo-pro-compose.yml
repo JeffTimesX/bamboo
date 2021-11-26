@@ -1,0 +1,30 @@
+services:
+
+  frontend:
+    image: bamboo-frontend-pro:compose
+    build:
+      context: ./frontend 		
+      dockerfile: Dockerfile.pro 	
+    ports:
+      - 3000:3000
+      - 80:80
+    container_name: frontend-nginx-pro 
+
+  main-server:
+    image: bamboo-main-server-pro:compose
+    build:
+      context: ./main-server
+      dockerfile: Dockerfile.pro
+    ports:
+      - 5050:5050
+    container_name: main-server-pro
+
+  stock-api:
+    image: bamboo-stock-api-pro:compose
+    build: 
+      context: ./stock-api
+      dockerfile: Dockerfile.pro
+    ports:
+      - 5051:5051
+    container_name: stock-api-pro
+

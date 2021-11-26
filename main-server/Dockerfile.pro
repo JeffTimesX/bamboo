@@ -10,13 +10,16 @@ RUN npm install --production --silent && mv node_modules ../
 
 COPY ["./src", "./src"]
 
-COPY [".env.compose", ".env"]
+COPY ["./public", "./public"]
 
-EXPOSE 5051
+COPY ["./bin", "./bin"]
+
+COPY [".env.pro.compose", ".env"]
+
+EXPOSE 5050
 
 RUN chown -R node /usr/src/app
 
 USER node
 
 CMD ["npm", "start"]
-
