@@ -20,6 +20,10 @@ FROM nginx:latest
 
 COPY ./nginx.conf.https /etc/nginx/nginx.conf
 
+COPY ./certificate-chained.crt /etc/ssl/certs/
+
+COPY ./private.key /etc/ssl/private/
+
 RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=build-stage /usr/src/app/build /usr/share/nginx/html
