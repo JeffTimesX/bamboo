@@ -31,7 +31,7 @@ export default function DealInputModal({
   useEffect(() => {
     setPrice(initPrice)
     setAmount(initAmount)
-    initAccounts && setAccountId(initAccounts[0]._id)
+    initAccounts[0] && initAccounts[0]._id && setAccountId(initAccounts[0]._id)
   },[initPrice, initAmount, initAccounts])
 
   // // amount changes with the selected account.
@@ -105,14 +105,14 @@ export default function DealInputModal({
                 aria-label="Default select example"
                 onChange={(e)=>{
                   setAccountId(e.target.value)
-                  const account = initAccounts && initAccounts.filter((account) => account._id === e.target.value)[0]
+                  const account = initAccounts[0] && initAccounts.filter((account) => account._id === e.target.value)[0]
                   const ticker = account.tickers.filter((t) => t.ticker === tickerSymbol)[0]
                   const amount = ticker ? ticker.amount : 0
                   setAmount(amount)
                 }}
               >
                 <option>Select an account</option>
-                { initAccounts && initAccounts.map(account => (
+                { initAccounts[0] && initAccounts.map(account => (
                   <option 
                     key={account._id} 
                     value={account._id}>
