@@ -24,13 +24,12 @@ const Auth0ProviderWithHistory = ({ children }) => {
     history.push(appState?.returnTo || window.location.pathname);
   };
 
-  // const url = 'http://localhost:' + process.env.REACT_APP_PORT + '/authorized'
-  const url = 'http://localhost:/authorized'
+  const url = process.env.REACT_APP_FRONTEND_URL + '/authorized'
   return (
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      redirectUri={url} //{window.location.origin}
+      redirectUri={url} 
       onRedirectCallback={onRedirectCallback}
       audience={audience}
     >

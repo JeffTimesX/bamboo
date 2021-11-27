@@ -29,5 +29,5 @@ src/tmp
 
 .gitignore
 
-certificate-chained.cert
+certificate-chained.crt
 private.key
