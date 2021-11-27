@@ -20,6 +20,7 @@ http {
     root /usr/share/nginx/html;
     include /etc/nginx/mime.types;
 
+
     location / {
       index index.html;      
     }
@@ -69,6 +70,9 @@ http {
       proxy_set_header Connection 'upgrade';
       proxy_pass http://stock-api:5051/;
     }
+
+    error_page 404 =200 /index.html;
+  
   }
 }
 
