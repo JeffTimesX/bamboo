@@ -12,17 +12,17 @@ COPY ["./src", "./src"]
 
 COPY ["./public","./public"]
 
-COPY ["../../bamboo.conf/.env.https.frontend", ".env"]
+COPY [".env.https", ".env"]
 
 RUN npm run build
 
 FROM nginx:latest
 
-COPY ../../bamboo.conf/nginx.conf.https.frontend /etc/nginx/nginx.conf
+COPY nginx.conf.https /etc/nginx/nginx.conf
 
-COPY ../../bamboo.conf/certificate-chained.crt /etc/ssl/certs/
+COPY certificate-chained.crt /etc/ssl/certs/
 
-COPY ../../bamboo.conf/private.key /etc/ssl/private/
+COPY private.key /etc/ssl/private/
 
 RUN rm -rf /usr/share/nginx/html/*
 
