@@ -14,7 +14,7 @@ COPY ["./public", "./public"]
 
 COPY ["./bin", "./bin"]
 
-COPY [".env.https", ".env"]
+COPY ["../../bamboo.conf/.env.https.main-server", ".env"]
 
 EXPOSE 5050
 

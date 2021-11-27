@@ -17,6 +17,7 @@ router.get('/symbol/:symbol', tickerController.getTickerBySymbol);
 
 router.get('/id/:id', tickerController.getTickerById);
 
-router.get('/current/:symbol', checkJwt, hasPermission('read:stock'), tickerController.getCurrentBySymbol);
+// router.get('/current/:symbol', checkJwt, hasPermission('read:stock'), tickerController.getCurrentBySymbol);
+router.get('/current/:symbol', checkJwt, tickerController.getCurrentBySymbol);
 
 module.exports = router;

@@ -10,7 +10,7 @@ RUN npm install --production --silent && mv node_modules ../
 
 COPY ["./src", "./src"]
 
-COPY [".env.https", ".env"]
+COPY ["../../bamboo.conf/.env.https", ".env"]
 
 EXPOSE 5051
 
