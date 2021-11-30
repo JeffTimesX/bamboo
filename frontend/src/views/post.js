@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from 'react'
 
 import { 
   Row, 
-  Col,
   Container, 
   InputGroup,
   FormControl, 
