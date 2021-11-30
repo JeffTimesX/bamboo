@@ -22,14 +22,14 @@ export default function PortfolioAccountSection({
   return (
     <Container>
       <Row className="pt-3 pb-3">
-        <h3>Exchange Account:  {accountNumber}</h3>
+        <h5>Exchange Account:  {accountNumber}</h5>
       </Row>
 
       <Row sm={2} md={4} lg={4} xl={4}>
-        <Col md={3}><h5>Tickers:</h5></Col>
-        <Col><h5>{totalTickers}</h5></Col>
-        <Col md={3}><h5>Total Value:</h5></Col>
-        <Col><h5>$ {totalValue}</h5></Col>
+        <Col md={3}><h6>Tickers:</h6></Col>
+        <Col><h6>{totalTickers}</h6></Col>
+        <Col md={3}><h6>Total Value:</h6></Col>
+        <Col><h6>$ {totalValue.toFixed(2)}</h6></Col>
       </Row>
 
       <Row>
@@ -39,9 +39,9 @@ export default function PortfolioAccountSection({
               <tr key='table-head'>
                 <th>#</th>
                 <th>Ticker</th>
-                <th>Price</th>
+                <th>Price (USD)</th>
                 <th>Inventory</th>
-                <th>Value</th>
+                <th>Value (USD)</th>
                 <th style={{textAlign:"center"}}>Action</th>
               </tr>
             </thead>
@@ -51,9 +51,9 @@ export default function PortfolioAccountSection({
                     <tr key={ticker.ticker}>
                       <td style={{width: '5rem'}}>{ index + 1 }</td>
                       <td style={{width: '10rem'}}>{ ticker.ticker}</td>
-                      <td style={{width: '20rem'}}>${ ticker.price}</td>
+                      <td style={{width: '20rem'}}>$ { ticker.price}</td>
                       <td style={{width: '20rem'}}>{ ticker.inventory }</td>
-                      <td style={{width: '20rem'}}>${ ticker.value}</td>
+                      <td style={{width: '20rem'}}>$ { ticker.value.toFixed(2)}</td>
                       <td
                         style={{width: '10rem'}}
                         className="d-flex justify-content-center"

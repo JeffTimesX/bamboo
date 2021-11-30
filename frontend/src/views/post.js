@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from 'react'
 
 import { 
   Row, 
+  Col,
   Container, 
   InputGroup,
   FormControl, 
@@ -61,7 +62,11 @@ export default function Post(){
     setFireNewPost(true)
   }
   return(
-    <Container style={{height: "90vh", overflow:"scroll"}}>
+    <Container className="min-vh-100">
+      <Row className="pt-5 justify-content-center"style={{textAlign: "center"}}>
+          <h3>Sotcker Post</h3>
+      </Row>
+      <hr/>
       <Row className="justify-content-center pt-5">
         <Row style={{width:'63rem'}}>
           <InputGroup className="mb-3">

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import { DateTime } from 'luxon'
 
 
 
@@ -26,7 +27,7 @@ export default function WatchesTable({ watches, handleRemoveWatched }) {
                 <tr key={ticker.ticker}>
                   <td style={{width: '5rem'}} >{ index + 1 }</td>
                   <td style={{width: '15rem'}} >{ ticker.ticker }</td>
-                  <td style={{width: '65rem'}} >{ ticker.watched_at}</td>
+                  <td style={{width: '65rem'}} >{ DateTime.fromISO(ticker.watched_at).toFormat('yyyy-mm-dd HH:mm:ss') }</td>
                   <td 
                     style={{width: '15rem'}}
                     className="d-flex justify-content-center"

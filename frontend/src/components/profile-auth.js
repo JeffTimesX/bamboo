@@ -1,11 +1,13 @@
-
 import { 
-  Container, 
+
   Col, 
   InputGroup, 
   FormControl, 
-  Row 
+
 } from 'react-bootstrap';
+
+import { DateTime } from 'luxon'
+
 
 export default function ProfileAuth({authProfile}){
   const authProfileArray = Object.keys(authProfile).map(key=>{
@@ -26,7 +28,7 @@ export default function ProfileAuth({authProfile}){
             type="text"
             aria-label={key}
             name={key}
-            placeholder={authProfile[key].toString()}
+            placeholder={key === 'updated_at' ? DateTime.fromISO(authProfile[key]).toFormat('yyyy-MM-dd HH:mm:ss') : authProfile[key].toString()}
             style={{
               color:'black', 
               boardColor:'#c1c7c7',

@@ -22,7 +22,7 @@ export default function ProfileExt({
     <Container>
       <Row xs={1} md={2} className="p-2 justify-content-center">
         <Col className="d-flex justify-content-start">
-          <h3>General Information</h3>
+          <h5>General Information</h5>
         </Col>
         <Col className="d-flex justify-content-end">
         {/* save change button */}

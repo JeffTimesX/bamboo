@@ -79,12 +79,12 @@ export default function Portfolio() {
   }
   
   return (
-    <Container style={{height: "90vh", overflow:"scroll"}}>
+    <Container className="min-vh-100">
       <Row className="ps-2" > {/* close button */}
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.alert("I am still not work.")}}/>
       </Row>
       <Row className="d-flex justify-content-center" style={{textAlign: "center"}}>
-          <h2>Portfolio</h2>
+          <h3>Portfolio</h3>
       </Row>
       <hr />
       { populatedPortfolios[0] && populatedPortfolios.map( p => (

@@ -320,7 +320,7 @@ return (
   <Container>
     <Row sm={2}className="p-2 justify-content-center">
       <Col className="d-flex justify-content-start">
-        <h3>Exchange Accounts</h3>
+        <h5>Exchange Accounts</h5>
       </Col>
       <Col className="d-flex justify-content-end">
         <Button 
@@ -354,9 +354,10 @@ return (
                 return (
                   <tr key={account._id}>
                     <td style={{width: '5rem'}}>{index +1}</td>
-                    <td style={{width: '15rem'}}>{account.account_number}</td>
-                    <td style={{width: '15rem'}}>{account.balance}</td>
+                    <td style={{width: '25rem'}}>{account.account_number}</td>
+                    <td style={{width: '25rem'}}>$ {account.balance.toFixed(2)}</td>
                     <td 
+                      style={{width: '25rem'}}
                       className="d-flex justify-content-center"
                     >
                       <AccountActionsButtonGroup 

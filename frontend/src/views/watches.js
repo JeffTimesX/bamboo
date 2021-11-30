@@ -34,18 +34,18 @@ export default function Watches() {
   },[remove])
   
   return (
-    <Container style={{height: "90vh", overflow:"scroll"}}>
+    <Container className="min-vh-100">
       <Row className="ps-2" > {/* close button */}
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.alert("I am still not work.")}}/>
       </Row>
       <Row style={{textAlign: "center"}}>
-        <h2>Watches</h2>
+        <h3>Watches</h3>
       </Row>
       <hr />
       <Row>
-        <Row sm={2} md={4} lg={4} xl={4}>
-          <Col md={3}><h3>Total Watched:</h3></Col>
-          <Col><h3>{userProfile.watches.length}</h3></Col>
+        <Row sm={2} >
+          <Col><h6>Total Watched:</h6></Col>
+          <Col className="pe-3 d-flex justify-content-end"><h6>{userProfile.watches.length}</h6></Col>
         </Row>
       </Row>
       
@@ -55,7 +55,7 @@ export default function Watches() {
           handleRemoveWatched={ setRemove }
         />
       </Row>
-      <hr />
+    
     </Container>
   )
 }

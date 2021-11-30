@@ -4,7 +4,7 @@ import { IndexCarousel, NewsBlock, PostBlock } from '../components'
 export default function Home () {
 
   return (
-    <Container style={{height: "90vh", overflow:"scroll"}}>
+    <Container className="min-vh-100">
       <Row className="pt-2 pb-3 ">
         <h3>Today's Recommendations</h3>
       </Row>

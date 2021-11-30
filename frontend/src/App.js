@@ -45,9 +45,9 @@ export default function App() {
 
 
   return (!isAuthenticated || isProfileLoaded) ? (
-    <div className="d-flex flex-column mh-100 bg-light pb-5" >
+    <div className="d-flex flex-column bg-light " >
       <NavBar />
-      <Container >
+      <Container className="w-75">
         <div className="mt-3 pe-1 ps-1">
           <Switch>
             <Route path="/" exact component={ Home } />

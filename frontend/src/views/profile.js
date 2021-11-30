@@ -87,7 +87,7 @@ export default function Profile () {
   // console.log("Profile() checking isAuthenticated and isLoading: ", isAuthenticated, isLoading)
 
   return isAuthenticated && (
-    <Container style={{height: "90vh", overflow:"scroll"}}>
+    <Container className="min-vh-100">
       <Row className="ps-2" > {/* close button */}
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.alert("I am still not work.")}}/>
       </Row>
@@ -95,9 +95,9 @@ export default function Profile () {
         <Col xs='auto' style={{'color': "#212121"}}>
           {
             user && user.profile && user.profile.auth ? (
-              <h1>Welcome {user.profile.auth.nickname} </h1>
+              <h3>Welcome {user.profile.auth.nickname} </h3>
             ) : (
-              <h1>Welcome Unknown</h1> 
+              <h3>Welcome Unknown</h3> 
             )
           }
         </Col>
@@ -107,7 +107,7 @@ export default function Profile () {
       <Container>
         <Row>
           <Col className="ps-4">
-            <h3> Authentication </h3>
+            <h5> Authentication </h5>
           </Col>
         </Row>
         <Row xs={1} md={2} className="p-2 justify-content-center ">
@@ -132,13 +132,6 @@ export default function Profile () {
         userId={ userProfile._id }
         accounts={ userProfile.exchangeAccounts }
       />
-      <hr />
-      {/* account transactions */}
-      <Row className="p-2 justify-content-center">
-        <h3>Transactions</h3>
-        <p>To be replaced by a list of chosen Account transactions.</p>
-      </Row>
-      <hr />
       
     </Container>
   )

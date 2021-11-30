@@ -368,7 +368,7 @@ export default function TickerDetail ({tickerSymbol}) {
 
 
   return (  
-    <Container style={{height: "90vh", overflow:"scroll"}}>
+    <Container className="min-vh-100">
       <Row className="ps-2">
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.alert('close detail')}}/>
       </Row>

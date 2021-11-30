@@ -13,6 +13,8 @@ import {
   Button, 
 } from 'react-bootstrap'
 
+import {DateTime} from 'luxon'
+
 import { UserProfileContext } from '../contexts'
 
 
@@ -82,7 +84,7 @@ export default function PostCard({inputPost}){
         <Form.Group className="mb-3" controlId={post._id}>
           <Form.Label>
             Post by{': '} {post.author && post.author.profile && post.author.profile.auth && post.author.profile.auth.nickname }.<br/>
-            Post at: {post.date} <br/>
+            Post at: {DateTime.fromISO(post.date).toFormat("yyyy-mm-dd HH:mm:ss")} <br/>
             { post.who_likes ? post.who_likes.length : 0}{' '} people like. <br/>
           </Form.Label>
           <Form.Control readOnly type="text" value={post.body} />
@@ -93,7 +95,7 @@ export default function PostCard({inputPost}){
               <Form.Group key={comment._id} className="mb-3" controlId={comment._id}>
                 <Form.Label>
                   Comment by: {comment.author && comment.author.profile && comment.author.profile.auth && comment.author.profile.auth.nickname } <br/>
-                  Comment at: {comment.date} <br/>
+                  Comment at: {DateTime.fromISO(comment.date).toFormat("yyyy-mm-dd HH:mm:")} <br/>
                 </Form.Label>
                 <Form.Control readOnly type="text" value={comment.body} />
               </Form.Group>
@@ -111,7 +113,7 @@ export default function PostCard({inputPost}){
           />
         </Form.Group>
         <Row className="p-3">
-          <Col>
+          <Col className="p-2">
             <Form.Check
               inline
               label="like"
