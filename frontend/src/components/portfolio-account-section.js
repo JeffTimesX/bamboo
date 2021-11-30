@@ -52,10 +52,10 @@ export default function PortfolioAccountSection({
                       <td style={{width: '5rem'}}>{ index + 1 }</td>
                       <td style={{width: '10rem'}}>{ ticker.ticker}</td>
                       <td style={{width: '20rem'}}>${ ticker.price}</td>
-                      <td style={{width: '10rem'}}>{ ticker.inventory }</td>
+                      <td style={{width: '20rem'}}>{ ticker.inventory }</td>
                       <td style={{width: '20rem'}}>${ ticker.value}</td>
                       <td
-                        style={{width: '8rem'}}
+                        style={{width: '10rem'}}
                         className="d-flex justify-content-center"
                       >
                         <Button 
