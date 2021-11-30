@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  Container,
   Row,
   Col,
   Table, 
@@ -19,16 +20,16 @@ export default function PortfolioAccountSection({
   const history = useHistory()
 
   return (
-    <>
-      <Row>
-        <h3>Exchange Account: {accountNumber}</h3>
+    <Container>
+      <Row className="pt-3 pb-3">
+        <h3>Exchange Account:  {accountNumber}</h3>
       </Row>
 
       <Row sm={2} md={4} lg={4} xl={4}>
-        <Col md={3}><h4>Tickers:</h4></Col>
-        <Col><h4>{totalTickers}</h4></Col>
-        <Col md={3}><h4>Total Value:</h4></Col>
-        <Col><h4>{totalValue}</h4></Col>
+        <Col md={3}><h5>Tickers:</h5></Col>
+        <Col><h5>{totalTickers}</h5></Col>
+        <Col md={3}><h5>Total Value:</h5></Col>
+        <Col><h5>$ {totalValue}</h5></Col>
       </Row>
 
       <Row>
@@ -41,21 +42,25 @@ export default function PortfolioAccountSection({
                 <th>Price</th>
                 <th>Inventory</th>
                 <th>Value</th>
-                <th>Action</th>
+                <th style={{textAlign:"center"}}>Action</th>
               </tr>
             </thead>
             <tbody>
               { portfolio.map((ticker, index)=>{
                   return(
                     <tr key={ticker.ticker}>
-                      <td >{ index + 1 }</td>
-                      <td>{ ticker.ticker}</td>
-                      <td>{ ticker.price}</td>
-                      <td>{ ticker.inventory }</td>
-                      <td>{ ticker.value}</td>
-                      <td>
+                      <td style={{width: '5rem'}}>{ index + 1 }</td>
+                      <td style={{width: '10rem'}}>{ ticker.ticker}</td>
+                      <td style={{width: '20rem'}}>${ ticker.price}</td>
+                      <td style={{width: '10rem'}}>{ ticker.inventory }</td>
+                      <td style={{width: '20rem'}}>${ ticker.value}</td>
+                      <td
+                        style={{width: '8rem'}}
+                        className="d-flex justify-content-center"
+                      >
                         <Button 
-                          variant="outline-warning"
+                          className='ms-1 me-2'
+                          variant="outline-primary"
                           id= {ticker.ticker}
                           onClick={() => history.push('/ticker-detail/'+ticker.ticker)}
                         >
@@ -71,6 +76,6 @@ export default function PortfolioAccountSection({
           </Table>
         )}
       </Row>
-    </>
+    </Container>
   )
 }

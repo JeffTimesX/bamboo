@@ -61,29 +61,32 @@ export default function Post(){
     setFireNewPost(true)
   }
   return(
-    <Container>
-      <Row>
-        <InputGroup className="mb-3">
-          <FormControl
-            placeholder="write a new post"
-            aria-label="write a new post"
-            aria-describedby="write-new-post"
-            value={newPost}
-            onChange={handleNewPostInput}
-          />
-          <Button 
-            variant="outline-warning" 
-            id="button-new-post"
-            onClick={handlePostButtonOnClick}
-          >
-          New Post
-          </Button>
-        </InputGroup>
-      </Row>
+    <Container style={{height: "90vh", overflow:"scroll"}}>
+      <Row className="justify-content-center pt-5">
+        <Row style={{width:'63rem'}}>
+          <InputGroup className="mb-3">
+            <FormControl
+              
+              placeholder="write a new post"
+              aria-label="write a new post"
+              aria-describedby="write-new-post"
+              value={newPost}
+              onChange={handleNewPostInput}
+            />
+            <Button 
+              variant="primary" 
+              id="button-new-post"
+              onClick={handlePostButtonOnClick}
+            >
+            New Post
+            </Button>
+          </InputGroup>
+        </Row>       
+      </Row >
       { 
         posts && posts.map(post => {
           return (
-            <Row key={post._id}>
+            <Row key={post._id} className="justify-content-center">
               <PostCard inputPost={post}/>
             </Row>
           )

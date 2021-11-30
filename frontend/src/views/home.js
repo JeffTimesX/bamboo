@@ -4,27 +4,33 @@ import { IndexCarousel, NewsBlock, PostBlock } from '../components'
 export default function Home () {
 
   return (
-    <Container >
-      <Row className="pu-5 pd-5 ">
+    <Container style={{height: "90vh", overflow:"scroll"}}>
+      <Row className="pt-2 pb-3 ">
         <h3>Today's Recommendations</h3>
       </Row>
-      <Row className="justify-content-md-center">
-        <Col  >
-          <IndexCarousel inputTickers={['T','IBM','BABA']} />
-        </Col>
+      <Row 
+        className="d-flex justify-content-center pt-3 pb-3 mb-3"
+        style={{border:"1px solid", borderColor: "green"}}
+      >
+        <IndexCarousel inputTickers={['T','IBM','BABA']} />
       </Row>
-      <Row sm={1} md={1} lg={2} xl={2}>
-        <Col >
-          <Row className="pu-5 pd-5 ">
+      <Row xs={1} sm={1} md={1} lg={2} className="p-2 justify-content-center" >
+        <Col className="ps-1 pe-5">
+          <Row >
             <h3>News</h3>
           </Row>
-          <NewsBlock />
+          <Row style={{height: '40vh', overflow: 'scroll'}}>
+            <NewsBlock />
+          </Row>
+          
         </Col>
-        <Col >
-          <Row className="pu-5 pd-5 ">
+        <Col className="ps-1 pe-5">
+          <Row >
             <h3>Posts</h3>
           </Row>
-          <PostBlock />
+          <Row style={{height: '40vh', overflow: 'scroll'}}>
+            <PostBlock />
+          </Row>
         </Col>
       </Row>
     </Container>

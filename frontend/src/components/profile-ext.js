@@ -2,6 +2,7 @@ import {
   Button,
   Row,
   Col, 
+  Container,
   InputGroup, 
   FormControl, 
   Dropdown, 
@@ -18,25 +19,34 @@ export default function ProfileExt({
 }) {
 
   return extProfile ? ( 
-    <Row>
-      <Row xs={1} md={2} lg={2} xl={2} className="p-2 justify-content-center ">
-        <Col>
-          <h2>General Information</h2>
+    <Container>
+      <Row xs={1} md={2} className="p-2 justify-content-center">
+        <Col className="d-flex justify-content-start">
+          <h3>General Information</h3>
         </Col>
-        <Col>
+        <Col className="d-flex justify-content-end">
         {/* save change button */}
           <Button 
-          variant="success"
+          variant="outline-success"
           onClick={handleSave}
           >
             Save Changes
           </Button>
         </Col>
       </Row>
-      <Row xs={1} md={2} lg={2} xl={2} className="p-2 justify-content-center ">
+      <Row xs={1} md={2} className="p-2 justify-content-center ">
         <Col key='first_name'>
           <InputGroup className="mb-4">
-            <InputGroup.Text id="profile-ext-first-name" className='bg-secondary' style={{color:'white'}}>First Name:</InputGroup.Text>
+            <InputGroup.Text 
+              id="profile-ext-first-name" 
+              style={{
+                color:'black', 
+                boardColor:'#c1c7c7',
+                backgroundColor:'white'
+              }}
+            >
+              First Name
+            </InputGroup.Text>
             <FormControl
               placeholder="John"
               type="text"
@@ -49,7 +59,16 @@ export default function ProfileExt({
         </Col>
         <Col key='last_name'>
           <InputGroup className="mb-4">
-            <InputGroup.Text id="profile-ext-first-name" className='bg-secondary' style={{color:'white'}}>Last Name:</InputGroup.Text>
+            <InputGroup.Text 
+              id="profile-ext-first-name" 
+              style={{
+                color:'black', 
+                boardColor:'#c1c7c7',
+                backgroundColor:'white'
+              }}
+            >
+              Last Name
+            </InputGroup.Text>
             <FormControl
               placeholder="Smith"
               type="text"
@@ -62,7 +81,16 @@ export default function ProfileExt({
         </Col>
         <Col key='date_of_birth'>
           <InputGroup className="mb-4">
-            <InputGroup.Text id="profile-ext-first-name" className='bg-secondary' style={{color:'white'}}>Date of Birth:</InputGroup.Text>
+            <InputGroup.Text 
+              id="profile-ext-first-name" 
+              style={{
+                color:'black', 
+                boardColor:'#c1c7c7',
+                backgroundColor:'white'
+              }}
+            >
+              Date of Birth
+            </InputGroup.Text>
             <FormControl
               type="date"
               aria-label="date of birth"
@@ -75,7 +103,7 @@ export default function ProfileExt({
         <Col key='gender'>
           <InputGroup className="mb-4">
             <DropdownButton
-              variant="outline-light"
+              variant="outline-secondary"
               title="Gender"
               onSelect={handleDropdownSelect}
             >
@@ -86,7 +114,7 @@ export default function ProfileExt({
             </DropdownButton>
             <FormControl 
               aria-label="Gender" 
-              style={{color:'gray'}} 
+              style={{backgroundColor:'white'}} 
               placeholder={extProfile.gender.toString()}
               readOnly
               />
@@ -94,7 +122,7 @@ export default function ProfileExt({
           </InputGroup>
         </Col>
       </Row>
-    </Row>
+    </Container>
   ) : null
 }
 

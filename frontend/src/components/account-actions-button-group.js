@@ -11,12 +11,12 @@ export default function AccountActionsButtonGroup({
 }){
 
   return (
-    <Row sm={1} md={3} lg={3} xl={3}>
+    <Row sm={1} md={3}>
       <Col>
         <Button
           name="delete"
           id={accountId}
-          variant="outline-warning"
+          variant="outline-danger"
           onClick={onButtonClick}
         >
           Delete
@@ -36,10 +36,10 @@ export default function AccountActionsButtonGroup({
         <Button
           name="popup"
           id={accountId}
-          variant="outline-warning"
+          variant="outline-success"
           onClick={onButtonClick}
         >
-          Pup Up
+          Popup
         </Button>  
       </Col>
     </Row>

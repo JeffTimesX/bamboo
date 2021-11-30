@@ -55,6 +55,7 @@ export default function PostCard({inputPost}){
         if(err) return
         setPost(updatedPost)
         setSaveComment(false)
+        setComment('')
       })
     }
   },[saveComment])
@@ -76,7 +77,7 @@ export default function PostCard({inputPost}){
 
   return post && post._id ? 
   (
-    <Card>
+    <Card className='mt-5 p-5' style={{ width: '60rem' }}>
       <Form>
         <Form.Group className="mb-3" controlId={post._id}>
           <Form.Label>
@@ -109,8 +110,8 @@ export default function PostCard({inputPost}){
             onChange={handleCommentChange}
           />
         </Form.Group>
-        <Row>
-        <Col>
+        <Row className="p-3">
+          <Col>
             <Form.Check
               inline
               label="like"
@@ -121,9 +122,9 @@ export default function PostCard({inputPost}){
               onChange={handleLike}
             />
           </Col>
-          <Col>
+          <Col className="d-flex justify-content-end">
             <Button 
-              variant="primary"
+              variant="outline-primary"
               onClick={handleCommentButtonClick}
             >
               Comment

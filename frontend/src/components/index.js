@@ -17,10 +17,12 @@ import ProfileExchangeAccountsWithStripe from './profile-exchange-account-stripe
 import NewsBlock from './news-block'
 import PostCard from './post-card'
 import PostBlock from './post-block'
+import AppFooter from "./footer"
 
 
 export { 
   AccountActionsButtonGroup,
+  AppFooter,
   AuthNav,
   CreateAccountInputModal,
   DealInputModal,

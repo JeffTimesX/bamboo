@@ -10,7 +10,7 @@ export default function PostBlock(){
   useEffect(() => {
     loadPosts((err, posts) => {
       if(err) return
-      setPosts(posts)
+      setPosts(posts.reverse())
     })
   },[])
 
@@ -21,8 +21,8 @@ export default function PostBlock(){
         posts.map(post => {
           return (
             <li key={post._id}>
-              <h6><a href='/post' style={{color: 'white'}}> { post.title } </a></h6>
-              <h6>published by { post.author.profile.auth.nickname }</h6>
+              <h6><a href='/post' style={{color: 'deepskyblue'}}> { post.title } </a></h6>
+              <h6 >posted by  { post.author.profile.auth.nickname }</h6>
             </li>
           )
         })

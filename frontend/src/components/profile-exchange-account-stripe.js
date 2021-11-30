@@ -7,6 +7,7 @@ import React, {
 import { UserProfileContext } from '../contexts'
 
 import { 
+  Container,
   Table, 
   Row, 
   Col, 
@@ -316,55 +317,62 @@ useEffect(()=>{
   }
 
 return (
-  <Row className="p-2 justify-content-center">
-    <Col sm={12} md={8} lg={8} xl={8}>
-      <h3>Exchange Accounts</h3>
-    </Col>
-    <Col sm={12} md={4} lg={4} xl={4}>
-      <Button 
-        variant="success"
-        name='add-exchange-account'
-        onClick={handleAdd}
-      >
-        Add Account
-      </Button>
-      <CreateAccountInputModal 
-        show={modalSwitch} 
-        operation={modalSwitch}
-        initAccountId={accountNumberPassToPopup}
-        handleModalInput={handleModalInput}
-      />
-    </Col>
-    <Table striped bordered hover variant=''>
-      <thead>
-        <tr key='exchange-account-table-head'>
-          <th>#</th>
-          <th>Account Number</th>
-          <th>Balance</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          accounts && accounts.map((account, index) => {
-            return (
-              <tr key={account._id}>
-                <td>{index +1}</td>
-                <td>{account.account_number}</td>
-                <td>{account.balance}</td>
-                <td>
-                  <AccountActionsButtonGroup 
-                    onButtonClick={handleGroupButtonsOnClick}
-                    accountId={account._id}
-                  />
-                </td>
-              </tr>
-            )
-          })
-        }
-      </tbody>
-    </Table>
-  </Row>
+  <Container>
+    <Row sm={2}className="p-2 justify-content-center">
+      <Col className="d-flex justify-content-start">
+        <h3>Exchange Accounts</h3>
+      </Col>
+      <Col className="d-flex justify-content-end">
+        <Button 
+          variant="outline-success"
+          name='add-exchange-account'
+          onClick={handleAdd}
+        >
+          Add Account
+        </Button>
+        <CreateAccountInputModal 
+          show={modalSwitch} 
+          operation={modalSwitch}
+          initAccountId={accountNumberPassToPopup}
+          handleModalInput={handleModalInput}
+        />
+      </Col>
+    </Row>
+    <Row className="d-flex justify-content-start ps-3 pe-3 pt-2">
+        <Table striped bordered hover variant='light'>
+          <thead>
+            <tr key='exchange-account-table-head'>
+              <th >#</th>
+              <th >Account Number</th>
+              <th >Balance</th>
+              <th style={{textAlign:"center"}}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              accounts && accounts.map((account, index) => {
+                return (
+                  <tr key={account._id}>
+                    <td style={{width: '5rem'}}>{index +1}</td>
+                    <td style={{width: '15rem'}}>{account.account_number}</td>
+                    <td style={{width: '15rem'}}>{account.balance}</td>
+                    <td 
+                      className="d-flex justify-content-center"
+                    >
+                      <AccountActionsButtonGroup 
+                        onButtonClick={handleGroupButtonsOnClick}
+                        accountId={account._id}
+                      />
+                    </td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </Table>
+      </Row>
+  </Container>
+  
 
 )
 }

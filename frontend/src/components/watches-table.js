@@ -16,7 +16,7 @@ export default function WatchesTable({ watches, handleRemoveWatched }) {
             <th>#</th>
             <th>Ticker</th>
             <th>Watched At</th>
-            <th>Actions</th>
+            <th style={{textAlign:"center"}}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -24,11 +24,15 @@ export default function WatchesTable({ watches, handleRemoveWatched }) {
             watches && watches.map((ticker, index)=>{
               return(
                 <tr key={ticker.ticker}>
-                  <td >{ index + 1 }</td>
-                  <td>{ ticker.ticker }</td>
-                  <td>{ ticker.watched_at}</td>
-                  <td>
+                  <td style={{width: '5rem'}} >{ index + 1 }</td>
+                  <td style={{width: '15rem'}} >{ ticker.ticker }</td>
+                  <td style={{width: '65rem'}} >{ ticker.watched_at}</td>
+                  <td 
+                    style={{width: '15rem'}}
+                    className="d-flex justify-content-center"
+                  >
                     <Button 
+                      className='ms-2 me-1'
                       variant="outline-warning"
                       onClick={()=>{handleRemoveWatched(ticker.ticker)}}
                       name="remove"
@@ -36,7 +40,8 @@ export default function WatchesTable({ watches, handleRemoveWatched }) {
                       Remove
                     </Button>                  
                     <Button
-                      variant="outline-warning" 
+                      className='ms-1 me-2'
+                      variant="outline-primary" 
                       onClick={()=>{history.push('/ticker-detail/' + ticker.ticker)}}
                       name="detail"
                     >

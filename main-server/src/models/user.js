@@ -38,7 +38,6 @@ const userSchema = new Schema({
     }
   },
 
-  // the data model of portfolio and watches should be changed to [{ ticker: String, inventory: Number }] 
   portfolio: [portfolioSchema],
   watches: [watchesSchema],
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],

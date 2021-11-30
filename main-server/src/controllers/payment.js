@@ -81,18 +81,12 @@ async function createCheckoutSession (req, res, next) {
   
     const signedReceipt = jwt.sign(receipt, secret)
     
-    // console.log('signed receipt: ', signedReceipt)  
-  
     // directing user to stripe checkout endpoint.
     // returns the session.url to frontend, let frontend 
     // redirect the user agent to stripe.com 
     res
       .header({
         'Content-Type': 'application/json',
-        //'Access-Control-Allow-Credentials': true,
-        //'Access-Control-Allow-Origin': 'http://localhost:3000',
-        //'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-        //'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       })
       .cookie('receipt', signedReceipt, {sameSite: false})
       .cookie('accessToken', accessToken, {sameSite: false} )
@@ -116,13 +110,8 @@ async function checkPaymentResponse (req, res, next) {
   const { status: responseStatus } = req.params
   const { receipt, accessToken } = req.cookies
 
-  // const frontEndPaymentReturned = `${req.protocol}://${req.hostname}` + '/payment/returned'
-
-
   console.log('checkPaymentResponse() received accessToken: ', accessToken )
-
-  let url = frontEndPaymentReturned + '/' + responseStatus
-  
+  let url = frontEndPaymentReturned + '/' + responseStatus  
   // stripe returned without status, failure.
   if(!responseStatus) {
 
@@ -166,7 +155,6 @@ async function checkPaymentResponse (req, res, next) {
       } else {
   
         const updateExchangeAccountUrl = updateBalanceEndpoint + '/' + accountId
-        
         const response = await axios.post(
           updateExchangeAccountUrl,
           {
@@ -180,9 +168,7 @@ async function checkPaymentResponse (req, res, next) {
         )
   
         const updatedExchangeAccount = response.data
-        
         console.log('updated exchange account: ', updatedExchangeAccount)
-        
         url = frontEndPaymentReturned + '/' + 'account-updated'
         return res
         .clearCookie('receipt')

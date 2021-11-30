@@ -8,6 +8,7 @@ import {
   CloseButton,
   Container,
   Row, 
+  Col,
 } from 'react-bootstrap'
 
 import { UserProfileContext } from '../contexts'
@@ -78,12 +79,12 @@ export default function Portfolio() {
   }
   
   return (
-    <Container>
+    <Container style={{height: "90vh", overflow:"scroll"}}>
       <Row className="ps-2" > {/* close button */}
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.alert("I am still not work.")}}/>
       </Row>
-      <Row>
-        <h1>Portfolio</h1>
+      <Row className="d-flex justify-content-center" style={{textAlign: "center"}}>
+          <h2>Portfolio</h2>
       </Row>
       <hr />
       { populatedPortfolios[0] && populatedPortfolios.map( p => (

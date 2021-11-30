@@ -8,6 +8,7 @@ import {
   from 'react-router-dom'
 
 import { 
+  AppFooter,
   Loading,
   NavBar, 
   ProtectedRoute,
@@ -44,7 +45,7 @@ export default function App() {
 
 
   return (!isAuthenticated || isProfileLoaded) ? (
-    <div className="d-flex flex-column mh-100 bg-secondary pb-5" >
+    <div className="d-flex flex-column mh-100 bg-light pb-5" >
       <NavBar />
       <Container >
         <div className="mt-3 pe-1 ps-1">
@@ -60,6 +61,7 @@ export default function App() {
           </Switch>
         </div>
       </Container>
+      <AppFooter />
     </div>
   ):(
     <Loading />

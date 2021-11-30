@@ -368,21 +368,24 @@ export default function TickerDetail ({tickerSymbol}) {
 
 
   return (  
-    <Container className="vh-100">
+    <Container style={{height: "90vh", overflow:"scroll"}}>
       <Row className="ps-2">
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.alert('close detail')}}/>
       </Row>
       <hr />
-      <Row className="p-2 justify-content-center ">
+      <Row 
+        className="justify-content-center mb-2 mt-3 pt-2"
+        style={{border: '1px solid', borderColor:"green"}}
+      >
+        <Row className="p-2 justify-content-center mb-3">
         <Col sm={12} >
-            {/* <LineChart />  */}
             <StockChart options={stockOptions} highcharts={Highcharts} />
         </Col>
-      </Row>
-      <Row className="p-2 justify-content-center mb-1">
+        </Row>
+        <Row className="p-2 justify-content-center mb-3">
         <Col sm={8} md={3} lg={2}>
           <Button 
-            variant="outline-light" 
+            variant="outline-dark" 
             style={{width:"10rem"}} 
             name='fiveMinutes'
             onClick={handleIntervalButtonOnClick}
@@ -392,7 +395,7 @@ export default function TickerDetail ({tickerSymbol}) {
         </Col>
         <Col sm={8} md={3} lg={2}>
           <Button 
-            variant="outline-light" 
+            variant="outline-dark" 
             style={{width:"10rem"}}
             name='fifteenMinutes'
             onClick={handleIntervalButtonOnClick}
@@ -402,7 +405,7 @@ export default function TickerDetail ({tickerSymbol}) {
         </Col>
         <Col sm={8} md={3} lg={2}>
           <Button 
-            variant="outline-light" 
+            variant="outline-dark" 
             style={{width:"10rem"}}
             name='thirtyMinutes'
             onClick={handleIntervalButtonOnClick}
@@ -412,7 +415,7 @@ export default function TickerDetail ({tickerSymbol}) {
         </Col>
         <Col sm={8} md={3} lg={2}>
           <Button 
-            variant="outline-light" 
+            variant="outline-dark" 
             style={{width:"10rem"}}
             name='hourly'
             onClick={handleIntervalButtonOnClick}
@@ -422,7 +425,7 @@ export default function TickerDetail ({tickerSymbol}) {
         </Col>
         <Col sm={8} md={3} lg={2}>
           <Button 
-            variant="outline-light" 
+            variant="outline-dark" 
             style={{width:"10rem"}}
             name='daily'
             onClick={handleIntervalButtonOnClick}
@@ -430,13 +433,15 @@ export default function TickerDetail ({tickerSymbol}) {
             Daily
           </Button>
         </Col >
+        </Row>
       </Row>
+      
       <hr />
       {isAuthenticated && (
         <Row className="p-2 justify-content-center">
           <Col md={3}>
             <Button 
-              variant="outline-warning" 
+              variant="outline-primary" 
               style={{width:"200px"}}  
               onClick={handleWatchButtonOnClick}
             >
@@ -445,7 +450,7 @@ export default function TickerDetail ({tickerSymbol}) {
           </Col>
           <Col md={3}>
             <Button 
-              variant="outline-warning" 
+              variant="outline-primary" 
               name='buy'
               style={{width:"200px"}} 
               onClick={handleDealsButtonOnClick}
@@ -455,7 +460,7 @@ export default function TickerDetail ({tickerSymbol}) {
           </Col>
           <Col md={3}>
             <Button 
-              variant="outline-warning" 
+              variant="outline-primary" 
               name='sell'
               style={{width:"200px"}}
               onClick={handleDealsButtonOnClick}

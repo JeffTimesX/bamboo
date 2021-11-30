@@ -87,30 +87,36 @@ export default function Profile () {
   // console.log("Profile() checking isAuthenticated and isLoading: ", isAuthenticated, isLoading)
 
   return isAuthenticated && (
-    <Container>
+    <Container style={{height: "90vh", overflow:"scroll"}}>
       <Row className="ps-2" > {/* close button */}
         <CloseButton variant="white" className="mt-2" onClick={ (e) => { window.alert("I am still not work.")}}/>
       </Row>
       <Row className="p-2 justify-content-center"> {/* title */}
-        <Col xs='auto' style={{'color': "#e5e5e5"}}>
+        <Col xs='auto' style={{'color': "#212121"}}>
           {
             user && user.profile && user.profile.auth ? (
               <h1>Welcome {user.profile.auth.nickname} </h1>
             ) : (
-              <h3>Welcome Unknown</h3> 
+              <h1>Welcome Unknown</h1> 
             )
           }
         </Col>
       </Row>
       <hr />
       {/* auth profile */}
-      <Row xs={1} md={2} lg={2} xl={2} className="p-2 justify-content-center ">
-        <Col sm={12} md={12} lg={12} xl={12}>
-          <h3> From Auth0 </h3>
-        </Col>
-        <ProfileAuth authProfile={user.profile.auth} />
-        <Col></Col>
-      </Row>
+      <Container>
+        <Row>
+          <Col className="ps-4">
+            <h3> Authentication </h3>
+          </Col>
+        </Row>
+        <Row xs={1} md={2} className="p-2 justify-content-center ">
+          
+          <ProfileAuth authProfile={user.profile.auth} />
+          <Col></Col>
+        </Row>
+      </Container>
+      
       <hr />
       {/* extended profile */}
       <ProfileExt 

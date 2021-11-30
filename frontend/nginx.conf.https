@@ -47,13 +47,11 @@ http {
 
     location /authorized {
       index index.html;
-
       try_files $uri /index.html;
     }
 
     location /payment/returned {
       index index.html;
-
       try_files $uri /index.html;
     }
 
