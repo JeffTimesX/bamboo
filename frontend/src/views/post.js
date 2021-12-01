@@ -63,7 +63,7 @@ export default function Post(){
   return(
     <Container className="min-vh-100">
       <Row className="pt-5 justify-content-center"style={{textAlign: "center"}}>
-          <h3>Sotcker Post</h3>
+          <h3>Stocker Post</h3>
       </Row>
       <hr/>
       <Row className="justify-content-center pt-5">
